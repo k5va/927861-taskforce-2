@@ -1,7 +1,7 @@
 # Личный проект «TaskForce»
 
 * Студент: [Алексей Куликов](https://up.htmlacademy.ru/nodejs-2/2/user/927861).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
