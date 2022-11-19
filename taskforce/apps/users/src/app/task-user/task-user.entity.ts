@@ -11,6 +11,10 @@ export class TaskUserEntity implements User {
   public role: UserRole;
   public avatar: string;
   public birthDate: Date;
+  public registerDate?: Date;
+  public description?: string;
+  public skills?: string[];
+
 
   constructor(data: User) {
     this._id = data._id;
@@ -21,6 +25,9 @@ export class TaskUserEntity implements User {
     this.role = data.role;
     this.avatar = data.avatar;
     this.birthDate = data.birthDate;
+    this.registerDate = data.registerDate;
+    this.description = data.description;
+    this.skills = data.skills;
   }
 
   public toObject(): User {

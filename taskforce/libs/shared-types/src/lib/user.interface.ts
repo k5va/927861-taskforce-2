@@ -9,4 +9,7 @@ export interface User {
   role: UserRole;
   avatar: string;
   birthDate: Date;
+  registerDate?: Date;
+  description?: string;
+  skills?: string[];
 }
