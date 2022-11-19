@@ -1,6 +1,7 @@
 import { CRUDRepository } from '@taskforce/core';
 import { User } from '@taskforce/shared-types';
 import { TaskUserEntity } from '../task-user.entity';
+import * as crypto from 'crypto';
 
 export class TaskUserMemoryRepository implements CRUDRepository<TaskUserEntity, string, User> {
   private repository: {[key: string]: User} = {};
