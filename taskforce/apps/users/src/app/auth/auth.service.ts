@@ -14,7 +14,10 @@ export class AuthService {
 
   async register(dto: CreateUserDto): Promise<User> {
     const {name, email, city, password, role, birthDate} = dto;
-    const taskUser: User = {_id: '', name, email, city, passwordHash: '', role, birthDate, avatar: ''};
+    const taskUser: User = {
+      _id: '', name, email, city, passwordHash: '',
+      role, birthDate: new Date(birthDate), avatar: ''
+    };
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
     if (existingUser) {
@@ -53,7 +56,12 @@ export class AuthService {
       throw new Error(USER_NOT_FOUND_ERROR);
     }
 
-    const userEntity = new TaskUserEntity({...existingUser, ...dto});
+    const userEntity = new TaskUserEntity({
+      ...existingUser,
+      ...dto,
+      birthDate: dto.birthDate ? new Date(dto.birthDate) : existingUser.birthDate
+    });
+
     return this.taskUserRepository.update(id, userEntity);
   }
 

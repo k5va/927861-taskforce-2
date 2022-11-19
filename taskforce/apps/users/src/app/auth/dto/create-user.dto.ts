@@ -6,5 +6,5 @@ export class CreateUserDto {
   public city: string;
   public password: string;
   public role: UserRole;
-  public birthDate: Date;
+  public birthDate: string;
 }
