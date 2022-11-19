@@ -2,7 +2,9 @@ import { CRUDRepository } from '@taskforce/core';
 import { User } from '@taskforce/shared-types';
 import { TaskUserEntity } from '../task-user.entity';
 import * as crypto from 'crypto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class TaskUserMemoryRepository implements CRUDRepository<TaskUserEntity, string, User> {
   private repository: {[key: string]: User} = {};
 
