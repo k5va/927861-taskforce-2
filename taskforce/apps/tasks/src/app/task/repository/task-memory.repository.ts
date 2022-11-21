@@ -1,5 +1,5 @@
 import { CRUDRepository } from '@taskforce/core';
-import { Task } from '@taskforce/shared-types';
+import { Task, TaskStatus } from '@taskforce/shared-types';
 import { TaskEntity } from '../task.entity';
 import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
@@ -30,5 +30,23 @@ export class TaskMemoryRepository implements CRUDRepository<TaskEntity, string, 
   public async update(id: string, item: TaskEntity): Promise<Task> {
     this.repository[id] = {...item.toObject(), _id: id};
     return this.findById(id);
+  }
+
+  public async findNew(): Promise<Task[]> {
+    return Object
+      .values(this.repository)
+      .filter(({status}) => status === TaskStatus.New);
+  }
+
+  public async findByCustomer(id: string): Promise<Task[]> {
+    return Object
+      .values(this.repository)
+      .filter(({customer}) => customer === id);
+  }
+
+  public async findByContractor(id: string): Promise<Task[]> {
+    return Object
+      .values(this.repository)
+      .filter(({contractor}) => contractor === id);
   }
 }

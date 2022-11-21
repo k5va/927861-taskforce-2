@@ -52,4 +52,16 @@ export class TaskService {
 
     return this.taskRepository.destroy(id);
   }
+
+  async findNew(): Promise<Task[]> {
+    return this.taskRepository.findNew();
+  }
+
+  async findByCustomer(id: string): Promise<Task[]> {
+    return this.taskRepository.findByCustomer(id);
+  }
+
+  async findByContractor(id: string): Promise<Task[]> {
+    return this.taskRepository.findByContractor(id);
+  }
 }

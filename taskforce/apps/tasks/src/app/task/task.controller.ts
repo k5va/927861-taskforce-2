@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
+import { UserRole } from '@taskforce/shared-types';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskResponse } from './resnpose/task.response';
@@ -33,5 +34,18 @@ export class TaskController {
     return this.taskService.deleteTask(id);
   }
 
+  @Get('new')
+  async showNew() {
+    return fillObject(TaskResponse, this.taskService.findNew());
+  }
 
+  @Get('personal')
+  async showPersonal() {
+    const userId = '';
+    const userRole = UserRole.Customer;
+
+    return userRole === UserRole.Customer
+      ? fillObject(TaskResponse, this.taskService.findByCustomer(userId))
+      : fillObject(TaskResponse, this.taskService.findByContractor(userId));
+  }
 }
