@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
 import { AuthService } from './auth.service';
@@ -15,7 +15,7 @@ import { UserResponse } from './response/user.response';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('register')
+  @Post('user')
   async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
     return fillObject(UserResponse, newUser);
@@ -28,7 +28,7 @@ export class AuthController {
     return fillObject(LoggedInUserResponse, {id, email, token: 'JWT token'});
   }
 
-  @Get(':id')
+  @Get('user/:id')
   async show(@Param('id') id: string) {
     const existingUser = await this.authService.getUser(id);
     return existingUser.role === UserRole.Customer ?
@@ -36,13 +36,13 @@ export class AuthController {
       fillObject(ContractorResponse, existingUser);
   }
 
-  @Put(':id')
+  @Patch('user/:id')
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
     const updatedUser = await this.authService.updateUser(id, dto);
     return fillObject(UserResponse, updatedUser);
   }
 
-  //TODO: add method decorator
+  @Put('user/:id/password')
   async changePassword(@Param('id') id: string, @Body() dto: ChangePasswordDto) {
     const updatedUser = await this.authService.changePassword(id, dto);
     return fillObject(UserResponse, updatedUser);
