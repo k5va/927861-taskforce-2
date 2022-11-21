@@ -9,16 +9,17 @@ import { CommentMemoryRepository } from './repository/comment-memory.repository'
 export class CommentService {
   constructor(private readonly commentRepository: CommentMemoryRepository) {}
 
-  public async create(authorId: string, dto: CreateCommentDto): Promise<Comment> {
+  public async create(authorId: string, taskId: string, dto: CreateCommentDto): Promise<Comment> {
     const commentEntity = new CommentEntity({
       ...dto,
       _id: '',
       author: authorId,
+      task: taskId,
     });
     return this.commentRepository.create(commentEntity);
   }
 
-  public async delete(id: string): Promise<void> {
+  public async deleteComment(id: string): Promise<void> {
     const existingComment = this.commentRepository.findById(id);
     if (!existingComment) {
       throw new Error(COMMENT_NOT_FOUND_ERROR);
