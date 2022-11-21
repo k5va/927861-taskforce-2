@@ -3,7 +3,7 @@ import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskResponse } from './resnpose/task.response';
+import { TaskResponse } from './response/task.response';
 import { TaskService } from './task.service';
 
 @Controller('tasks')
