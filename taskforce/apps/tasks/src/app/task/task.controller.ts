@@ -19,19 +19,19 @@ export class TaskController {
   }
 
   @Get('task/:id')
-  async show(@Param() id: string) {
+  async show(@Param('id') id: string) {
     const task = await this.taskService.getTask(id);
     return fillObject(TaskRdo, task);
   }
 
   @Patch('task/:id')
-  async update(@Param() id: string, @Body() dto: UpdateTaskDto) {
+  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
     const updatedTask = await this.taskService.updateTask(id, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 
   @Delete('task/:id')
-  async deleteTask(@Param() id: string) {
+  async deleteTask(@Param('id') id: string) {
     return this.taskService.deleteTask(id);
   }
 
@@ -51,7 +51,7 @@ export class TaskController {
   }
 
   @Patch('task/:id/status')
-  async changeTaskStatus(@Param() id: string, @Body() dto: ChangeTaskStatusDto) {
+  async changeTaskStatus(@Param('id') id: string, @Body() dto: ChangeTaskStatusDto) {
     const updatedTask = await this.taskService.changeTaskStatus(id, dto);
     return fillObject(TaskRdo, updatedTask);
   }

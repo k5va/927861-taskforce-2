@@ -6,4 +6,7 @@ export class ResponseRdo {
 
   @Expose()
   contractor: string;
+
+  @Expose()
+  task: string;
 }

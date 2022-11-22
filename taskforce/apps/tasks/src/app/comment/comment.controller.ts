@@ -9,14 +9,14 @@ export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post('task/:id/comment')
-  async create(@Param() taskId: string, @Body() dto: CreateCommentDto) {
+  async create(@Param('id') taskId: string, @Body() dto: CreateCommentDto) {
     const userId = '';
     const newComment = await this.commentService.create(userId, taskId, dto);
     return fillObject(CommentRdo, newComment);
   }
 
   @Delete('task/:taskId/comment/:commentId')
-  async deleteComment(@Param() commentId: string) {
+  async deleteComment(@Param('commentId') commentId: string) {
     return this.commentService.deleteComment(commentId);
   }
 }

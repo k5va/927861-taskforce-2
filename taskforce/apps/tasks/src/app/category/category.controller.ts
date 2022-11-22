@@ -5,7 +5,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryRdo } from './rdo/category.rdo';
 
 @Controller('tasks')
-export class CommentController {
+export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post('category')
@@ -16,6 +16,6 @@ export class CommentController {
 
   @Get('category')
   async showAll() {
-    return this.categoryService.findAll();
+    return fillObject(CategoryRdo, await this.categoryService.findAll());
   }
 }

@@ -25,7 +25,14 @@ export class TaskService {
   }
 
   async getTask(id: string): Promise<Task> {
-    return this.taskRepository.findById(id);
+    const existingTask = await this.taskRepository.findById(id);
+
+    if (!existingTask) {
+      throw new Error(TASK_NOT_FOUND_ERROR);
+    }
+
+
+    return existingTask;
   }
 
   async updateTask(id: string, dto: UpdateTaskDto): Promise<Task> {
