@@ -78,6 +78,6 @@ export class AuthService {
       throw new Error(USER_NOT_FOUND_ERROR);
     }
 
-    return userEntity.setPassword(newPassword);
+    return this.taskUserRepository.update(id, await userEntity.setPassword(newPassword));
   }
 }
