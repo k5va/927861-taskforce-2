@@ -1,0 +1,90 @@
+# Create a new task
+POST http://localhost:3333/api/tasks/task HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Task's title",
+  "description": "Task's description",
+  "category": "category1",
+  "price": "100",
+  "dueDate": "2023-02-22",
+  "role": "Customer"
+}
+
+###
+
+# Update task data
+PATCH http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Not Task's title",
+  "description": "Not Task's description"
+}
+
+###
+
+# Get task by ID
+GET http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835 HTTP/1.1
+
+###
+
+# Delete task by Id
+DELETE http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835 HTTP/1.1
+
+###
+
+# Get new tasks
+GET http://localhost:3333/api/tasks/new HTTP/1.1
+
+###
+
+# Change task's status
+PATCH http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835/status HTTP/1.1
+Content-Type: application/json
+
+{
+  "status": "canceled"
+}
+
+###
+
+# Add comment to task
+POST http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835/comment HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "Nice comment text!"
+}
+
+###
+
+# Delete comment
+DELETE http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835/comment/530ae1b3-7e4d-41fb-85ba-3ec84c159da8 HTTP/1.1
+
+###
+
+# Create new category
+POST http://localhost:3333/api/tasks/category HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "cleaning"
+}
+
+###
+
+# Get all categories
+GET http://localhost:3333/api/tasks/category HTTP/1.1
+
+###
+
+# Create new contractor's response
+POST http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835/response HTTP/1.1
+
+###
+
+# Get all responses by task
+GET http://localhost:3333/api/tasks/task/1282499d-5b42-4007-b103-a8b7f8f51835/response HTTP/1.1
+
+###
