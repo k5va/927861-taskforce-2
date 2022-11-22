@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class ContractorResponse {
+export class CustomerRdo {
   @Expose({ name: '_id'})
   id: string;
 
@@ -23,20 +23,8 @@ export class ContractorResponse {
   role: string;
 
   @Expose()
-  age: string;
+  publishedTasks: number;
 
   @Expose()
-  rating: number;
-
-  @Expose()
-  placeInRating: number;
-
-  @Expose()
-  CompletedTasks: number;
-
-  @Expose()
-  failedTasks: number;
-
-  @Expose()
-  skills: number;
+  newTasks: number;
 }
