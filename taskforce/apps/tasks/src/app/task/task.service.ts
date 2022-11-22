@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from '@taskforce/shared-types';
+import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskMemoryRepository } from './repository/task-memory.repository';
@@ -34,13 +35,13 @@ export class TaskService {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    const userEntity = new TaskEntity({
+    const taskEntity = new TaskEntity({
       ...existingTask,
       ...dto,
       dueDate: dto.dueDate ? new Date(dto.dueDate) : existingTask.dueDate,
     });
 
-    return this.taskRepository.update(id, userEntity);
+    return this.taskRepository.update(id, taskEntity);
   }
 
   async deleteTask(id: string): Promise<void> {
@@ -63,5 +64,20 @@ export class TaskService {
 
   async findByContractor(id: string): Promise<Task[]> {
     return this.taskRepository.findByContractor(id);
+  }
+
+  async changeTaskStatus(id: string, dto: ChangeTaskStatusDto): Promise<Task> {
+    const existingTask = await this.taskRepository.findById(id);
+
+    if (!existingTask) {
+      throw new Error(TASK_NOT_FOUND_ERROR);
+    }
+
+    const taskEntity = new TaskEntity({
+      ...existingTask,
+      ...dto,
+    });
+
+    return this.taskRepository.update(id, taskEntity);
   }
 }

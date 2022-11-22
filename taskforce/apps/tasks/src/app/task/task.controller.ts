@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
+import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskResponse } from './response/task.response';
@@ -47,5 +48,11 @@ export class TaskController {
     return userRole === UserRole.Customer
       ? fillObject(TaskResponse, this.taskService.findByCustomer(userId))
       : fillObject(TaskResponse, this.taskService.findByContractor(userId));
+  }
+
+  @Patch('task/:id/status')
+  async changeTaskStatus(@Param() id: string, @Body() dto: ChangeTaskStatusDto) {
+    const updatedTask = await this.taskService.changeTaskStatus(id, dto);
+    return fillObject(TaskResponse, updatedTask);
   }
 }
