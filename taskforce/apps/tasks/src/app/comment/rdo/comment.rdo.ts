@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class CommentResponse {
+export class CommentRdo {
   @Expose({ name: '_id'})
   id: string;
 

@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class CategoryResponse {
+export class CategoryRdo {
   @Expose({ name: '_id'})
   id: string;
 

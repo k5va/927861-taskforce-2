@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { CategoryResponse } from './response/category.response';
+import { CategoryRdo } from './rdo/category.rdo';
 
 @Controller('tasks')
 export class CommentController {
@@ -11,7 +11,7 @@ export class CommentController {
   @Post('category')
   async create(@Body() dto: CreateCategoryDto) {
     const newCategory = await this.categoryService.create(dto);
-    return fillObject(CategoryResponse, newCategory);
+    return fillObject(CategoryRdo, newCategory);
   }
 
   @Get('category')

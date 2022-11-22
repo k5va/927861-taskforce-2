@@ -4,7 +4,7 @@ import { UserRole } from '@taskforce/shared-types';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskResponse } from './response/task.response';
+import { TaskRdo } from './rdo/task.rdo';
 import { TaskService } from './task.service';
 
 @Controller('tasks')
@@ -15,19 +15,19 @@ export class TaskController {
   async create(@Body() dto: CreateTaskDto) {
     const customerId = '';
     const newTask = await this.taskService.create(customerId, dto);
-    return fillObject(TaskResponse, newTask);
+    return fillObject(TaskRdo, newTask);
   }
 
   @Get('task/:id')
   async show(@Param() id: string) {
     const task = await this.taskService.getTask(id);
-    return fillObject(TaskResponse, task);
+    return fillObject(TaskRdo, task);
   }
 
   @Patch('task/:id')
   async update(@Param() id: string, @Body() dto: UpdateTaskDto) {
     const updatedTask = await this.taskService.updateTask(id, dto);
-    return fillObject(TaskResponse, updatedTask);
+    return fillObject(TaskRdo, updatedTask);
   }
 
   @Delete('task/:id')
@@ -37,7 +37,7 @@ export class TaskController {
 
   @Get('new')
   async showNew() {
-    return fillObject(TaskResponse, this.taskService.findNew());
+    return fillObject(TaskRdo, this.taskService.findNew());
   }
 
   @Get('personal')
@@ -46,13 +46,13 @@ export class TaskController {
     const userRole = UserRole.Customer;
 
     return userRole === UserRole.Customer
-      ? fillObject(TaskResponse, this.taskService.findByCustomer(userId))
-      : fillObject(TaskResponse, this.taskService.findByContractor(userId));
+      ? fillObject(TaskRdo, this.taskService.findByCustomer(userId))
+      : fillObject(TaskRdo, this.taskService.findByContractor(userId));
   }
 
   @Patch('task/:id/status')
   async changeTaskStatus(@Param() id: string, @Body() dto: ChangeTaskStatusDto) {
     const updatedTask = await this.taskService.changeTaskStatus(id, dto);
-    return fillObject(TaskResponse, updatedTask);
+    return fillObject(TaskRdo, updatedTask);
   }
 }

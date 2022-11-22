@@ -1,7 +1,7 @@
 import { TaskStatus } from '@taskforce/shared-types';
 import { Expose } from 'class-transformer';
 
-export class TaskResponse {
+export class TaskRdo {
   @Expose({ name: '_id'})
   id: string;
 

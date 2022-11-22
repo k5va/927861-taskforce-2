@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { CommentResponse } from './response/comment.response';
+import { CommentRdo } from './rdo/comment.rdo';
 
 @Controller('tasks')
 export class CommentController {
@@ -12,7 +12,7 @@ export class CommentController {
   async create(@Param() taskId: string, @Body() dto: CreateCommentDto) {
     const userId = '';
     const newComment = await this.commentService.create(userId, taskId, dto);
-    return fillObject(CommentResponse, newComment);
+    return fillObject(CommentRdo, newComment);
   }
 
   @Delete('task/:taskId/comment/:commentId')
