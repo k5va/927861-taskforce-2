@@ -16,8 +16,8 @@ async function bootstrap() {
   const port = process.env.PORT || 3333;
 
   const config = new DocumentBuilder()
-    .setTitle('Taskforce:users service')
-    .setDescription('Taskforce:users service api')
+    .setTitle('Taskforce:tasks service')
+    .setDescription('Taskforce:tasks service api')
     .setVersion('1.0')
     .build();
 

@@ -1,0 +1,51 @@
+# Create a new user
+POST http://localhost:3333/api/auth/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Keks",
+  "email": "user@notfound.local",
+  "city": "Москва",
+  "birthDate": "2012-02-22",
+  "password": "123456",
+  "role": "Customer"
+}
+
+###
+
+# Update user data
+PATCH http://localhost:3333/api/auth/user/67feb3c0-befd-4420-8d36-cfadea441f94 HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "NotKeks"
+}
+
+###
+
+# Change password
+PUT http://localhost:3333/api/auth/user/67feb3c0-befd-4420-8d36-cfadea441f94/password HTTP/1.1
+Content-Type: application/json
+
+{
+  "oldPassword": "123456",
+  "newPassword": "1234567"
+}
+
+###
+
+# Get user by ID
+GET http://localhost:3333/api/auth/user/67feb3c0-befd-4420-8d36-cfadea441f94 HTTP/1.1
+
+###
+
+# Login user by email and password
+POST http://localhost:3333/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user@notfound.local",
+  "password": "1234567"
+}
+
+###
