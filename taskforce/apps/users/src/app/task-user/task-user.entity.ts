@@ -1,8 +1,9 @@
+import { AbstractEntity } from '@taskforce/core';
 import { User, UserRole } from '@taskforce/shared-types';
 import { genSalt, compare, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './task-user.const';
 
-export class TaskUserEntity implements User {
+export class TaskUserEntity extends AbstractEntity implements User {
   public _id: string;
   public name: string;
   public email: string;
@@ -15,8 +16,9 @@ export class TaskUserEntity implements User {
   public description?: string;
   public skills?: string[];
 
-
   constructor(data: User) {
+    super();
+
     this._id = data._id;
     this.name = data.name;
     this.email = data.email;
@@ -30,10 +32,6 @@ export class TaskUserEntity implements User {
     this.skills = data.skills;
   }
 
-  public toObject(): User {
-    return {...this};
-  }
-
   public async setPassword(password: string): Promise<TaskUserEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
@@ -43,5 +41,4 @@ export class TaskUserEntity implements User {
   public async comparePassword(password: string): Promise<boolean> {
     return compare(password, this.passwordHash);
   }
-
 }

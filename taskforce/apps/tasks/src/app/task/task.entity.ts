@@ -1,6 +1,7 @@
+import { AbstractEntity } from '@taskforce/core';
 import { Task, TaskStatus } from '@taskforce/shared-types';
 
-export class TaskEntity implements Task {
+export class TaskEntity extends AbstractEntity implements Task {
   public _id: string;
   public title: string;
   public description: string;
@@ -16,6 +17,8 @@ export class TaskEntity implements Task {
   public contractor?: string;
 
   constructor(data: Task) {
+    super();
+
     this._id = data._id;
     this.title = data.title;
     this.description = data.description;
@@ -29,9 +32,5 @@ export class TaskEntity implements Task {
     this.registerDate = data.registerDate;
     this.status = data.status;
     this.contractor = data.contractor;
-  }
-
-  public toObject(): Task {
-    return {...this};
   }
 }
