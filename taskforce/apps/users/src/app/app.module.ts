@@ -4,6 +4,7 @@ import { TaskUserModule } from './task-user/task-user.module';
 import { ConfigModule } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import databaseConfig from '../config/database.config';
+import envSchema from './env.schema';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import databaseConfig from '../config/database.config';
       isGlobal: true,
       envFilePath: ENV_FILE_PATH,
       load: [databaseConfig],
+      validationSchema: envSchema,
     }),
     AuthModule,
     TaskUserModule,

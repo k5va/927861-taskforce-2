@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { User } from '@taskforce/shared-types';
 import { TaskUserMemoryRepository } from '../task-user/repository/task-user-memory.repository';
 import { TaskUserEntity } from '../task-user/task-user.entity';
@@ -11,10 +10,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly taskUserRepository: TaskUserMemoryRepository,
-    private readonly configService: ConfigService
-  ) {}
+  constructor(private readonly taskUserRepository: TaskUserMemoryRepository) {}
 
   async register(dto: CreateUserDto): Promise<User> {
     const { name, email, city, password, role, birthDate } = dto;
