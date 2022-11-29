@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import databaseConfig from '../config/database.config';
 import envSchema from './env.schema';
+import { MongooseModule } from '@nestjs/mongoose';
+import { getMongoConfig } from '../config/get-mongo-config';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import envSchema from './env.schema';
       load: [databaseConfig],
       validationSchema: envSchema,
     }),
+    MongooseModule.forRootAsync(getMongoConfig()),
     AuthModule,
     TaskUserModule,
   ],
