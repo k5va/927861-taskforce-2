@@ -43,9 +43,7 @@ export class TaskUserModel extends Document implements User {
   })
   public birthDate: Date;
 
-  @Prop({
-    required: true,
-  })
+  @Prop()
   public registerDate: Date;
 
   @Prop()

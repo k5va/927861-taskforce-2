@@ -15,7 +15,6 @@ export class AuthService {
   async register(dto: CreateUserDto): Promise<User> {
     const { name, email, city, password, role, birthDate } = dto;
     const taskUser: User = {
-      _id: '',
       name,
       email,
       city,
@@ -52,7 +51,13 @@ export class AuthService {
   }
 
   async getUser(id: string): Promise<User> {
-    return this.taskUserRepository.findById(id);
+    const existingUser = await this.taskUserRepository.findById(id);
+
+    if (!existingUser) {
+      throw new Error(USER_NOT_FOUND_ERROR);
+    }
+
+    return existingUser;
   }
 
   async updateUser(id: string, dto: UpdateUserDto): Promise<User> {

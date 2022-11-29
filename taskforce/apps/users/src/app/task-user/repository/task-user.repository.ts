@@ -21,11 +21,11 @@ export class TaskUserRepository
   }
 
   public async destroy(id: string): Promise<void> {
-    this.taskUserModel.deleteOne({ id });
+    this.taskUserModel.findByIdAndDelete(id);
   }
 
   public async findById(id: string): Promise<User | null> {
-    return this.taskUserModel.findOne({ id }).exec();
+    return this.taskUserModel.findById(id).exec();
   }
 
   public async findByEmail(email: string): Promise<User | null> {
