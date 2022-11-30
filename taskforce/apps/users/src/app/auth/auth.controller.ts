@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -21,7 +31,7 @@ export class AuthController {
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.CREATED,
-    description: 'User was successfully created'
+    description: 'User was successfully created',
   })
   async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
@@ -33,16 +43,16 @@ export class AuthController {
   @ApiResponse({
     type: LoggedInUserRdo,
     status: HttpStatus.OK,
-    description: 'User was successfully logged in'
+    description: 'User was successfully logged in',
   })
   @ApiResponse({
     status: HttpStatus.UNAUTHORIZED,
-    description: 'User such login or password not found'
+    description: 'User such login or password not found',
   })
   async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
-    const {_id: id, email} = verifiedUser;
-    return fillObject(LoggedInUserRdo, {id, email, token: 'JWT token'});
+    const { _id: id, email } = verifiedUser;
+    return fillObject(LoggedInUserRdo, { id, email, token: 'JWT token' });
   }
 
   @Get('user/:id')
@@ -56,16 +66,16 @@ export class AuthController {
   })
   async show(@Param('id') id: string) {
     const existingUser = await this.authService.getUser(id);
-    return existingUser.role === UserRole.Customer ?
-      fillObject(CustomerRdo, existingUser) :
-      fillObject(ContractorRdo, existingUser);
+    return existingUser.role === UserRole.Customer
+      ? fillObject(CustomerRdo, existingUser)
+      : fillObject(ContractorRdo, existingUser);
   }
 
   @Patch('user/:id')
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
-    description: 'User was successfully updated'
+    description: 'User was successfully updated',
   })
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
     const updatedUser = await this.authService.updateUser(id, dto);
@@ -76,9 +86,12 @@ export class AuthController {
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
-    description: 'Password was successfully updated'
+    description: 'Password was successfully updated',
   })
-  async changePassword(@Param('id') id: string, @Body() dto: ChangePasswordDto) {
+  async changePassword(
+    @Param('id') id: string,
+    @Body() dto: ChangePasswordDto
+  ) {
     const updatedUser = await this.authService.changePassword(id, dto);
     return fillObject(UserRdo, updatedUser);
   }
