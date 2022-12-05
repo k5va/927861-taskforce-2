@@ -1,10 +1,11 @@
-import { TaskStatus } from './task-status.enum';
+import { Comment } from './comment.interface';
+import { Response } from './response.interface';
 
 export interface Task {
-  _id: string;
+  id?: number;
   title: string;
   description: string;
-  category: string;
+  categoryId: number;
   price?: number;
   dueDate?: Date;
   image?: string;
@@ -12,6 +13,8 @@ export interface Task {
   tags?: string[];
   customer: string;
   registerDate?: Date;
-  status: TaskStatus;
+  status: string;
   contractor?: string;
+  comments: Comment[];
+  responses: Response[];
 }

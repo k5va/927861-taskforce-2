@@ -20,11 +20,11 @@ export class CreateTaskDto {
   public description: string;
 
   @ApiProperty({
-    description: 'Task category',
+    description: 'Task category id',
     required: true,
-    example: 'cleaning',
+    example: '123',
   })
-  public category: string;
+  public categoryId: number;
 
   @ApiProperty({
     description: 'Task price',
