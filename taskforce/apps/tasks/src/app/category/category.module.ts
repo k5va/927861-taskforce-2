@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
-import { CategoryMemoryRepository } from './repository/category-memory.repository';
+import { CategoryRepository } from './repository/category.repository';
 
 @Module({
   controllers: [CategoryController],
-  providers: [CategoryMemoryRepository, CategoryService],
+  providers: [CategoryRepository, CategoryService],
   exports: [CategoryService],
 })
 export class CategoryModule {}
