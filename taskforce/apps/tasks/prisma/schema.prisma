@@ -42,7 +42,7 @@ model Comment {
   task            Task @relation(fields: [taskId], references: [id])
   taskId          Int
   author          String
-  rergisterDate   DateTime @default(now())
+  registerDate   DateTime @default(now())
 }
 
 model Response {

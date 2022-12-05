@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from '@taskforce/shared-types';
+import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -9,7 +10,10 @@ import { TaskEntity } from './task.entity';
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly taskRepository: TaskRepository) {}
+  constructor(
+    private readonly taskRepository: TaskRepository,
+    private readonly commentService: CommentService
+  ) {}
 
   async create(customerId: string, dto: CreateTaskDto): Promise<Task> {
     const taskEntity = new TaskEntity({
@@ -56,7 +60,7 @@ export class TaskService {
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
-
+    await this.commentService.deleteAll(id);
     return this.taskRepository.destroy(id);
   }
 

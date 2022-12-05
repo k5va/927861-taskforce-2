@@ -60,7 +60,7 @@ Content-Type: application/json
 ###
 
 # Delete comment
-DELETE http://localhost:3333/api/tasks/task/5/comment/530ae1b3-7e5d-51fb-85ba-3ec85c159da8 HTTP/1.1
+DELETE http://localhost:3333/api/tasks/task/5/comment/5 HTTP/1.1
 
 ###
 
