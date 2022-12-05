@@ -13,11 +13,14 @@ export class ResponseController {
   @ApiResponse({
     type: ResponseRdo,
     status: HttpStatus.CREATED,
-    description: 'Response was successfully created'
+    description: 'Response was successfully created',
   })
   async create(@Param('id') id: string) {
-    const userId = '';
-    const newResponse = await this.responseService.create(userId, id);
+    const userId = '123'; //TODO: temporary
+    const newResponse = await this.responseService.create(
+      userId,
+      Number.parseInt(id, 10)
+    );
     return fillObject(ResponseRdo, newResponse);
   }
 
@@ -27,7 +30,10 @@ export class ResponseController {
     status: HttpStatus.OK,
   })
   @Get('task/:id/response')
-  async showAll(@Param('id') id: string) {
-    return fillObject(ResponseRdo, await this.responseService.findAllByTask(id));
+  async showAll(@Param('id') taskId: string) {
+    return fillObject(
+      ResponseRdo,
+      await this.responseService.findAllByTask(Number.parseInt(taskId, 10))
+    );
   }
 }
