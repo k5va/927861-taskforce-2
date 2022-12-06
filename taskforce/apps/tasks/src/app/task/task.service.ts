@@ -1,41 +1,44 @@
 import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from '@taskforce/shared-types';
+import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskMemoryRepository } from './repository/task-memory.repository';
+import { TaskRepository } from './repository/task.repository';
 import { TASK_NOT_FOUND_ERROR } from './task.const';
 import { TaskEntity } from './task.entity';
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly taskRepository: TaskMemoryRepository) {}
+  constructor(
+    private readonly taskRepository: TaskRepository,
+    private readonly commentService: CommentService
+  ) {}
 
   async create(customerId: string, dto: CreateTaskDto): Promise<Task> {
     const taskEntity = new TaskEntity({
       ...dto,
-      _id: '',
       status: TaskStatus.New,
       customer: customerId,
       dueDate: dto.dueDate ? new Date(dto.dueDate) : undefined,
-      registerDate: new Date(),
+      comments: [],
+      responses: [],
     });
 
     return this.taskRepository.create(taskEntity);
   }
 
-  async getTask(id: string): Promise<Task> {
+  async getTask(id: number): Promise<Task> {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-
     return existingTask;
   }
 
-  async updateTask(id: string, dto: UpdateTaskDto): Promise<Task> {
+  async updateTask(id: number, dto: UpdateTaskDto): Promise<Task> {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {
@@ -51,13 +54,13 @@ export class TaskService {
     return this.taskRepository.update(id, taskEntity);
   }
 
-  async deleteTask(id: string): Promise<void> {
+  async deleteTask(id: number): Promise<void> {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
-
+    await this.commentService.deleteAll(id);
     return this.taskRepository.destroy(id);
   }
 
@@ -73,7 +76,7 @@ export class TaskService {
     return this.taskRepository.findByContractor(id);
   }
 
-  async changeTaskStatus(id: string, dto: ChangeTaskStatusDto): Promise<Task> {
+  async changeTaskStatus(id: number, dto: ChangeTaskStatusDto): Promise<Task> {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {

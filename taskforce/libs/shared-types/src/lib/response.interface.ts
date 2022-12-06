@@ -1,5 +1,5 @@
 export interface Response {
-  _id: string;
+  id?: number;
   contractor: string;
-  task: string;
+  taskId: number;
 }

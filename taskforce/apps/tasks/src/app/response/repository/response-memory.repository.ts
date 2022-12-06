@@ -4,14 +4,23 @@ import { ResponseEntity } from '../response.entity';
 import { AbstractMemoryRepository } from '@taskforce/core';
 
 @Injectable()
-export class ResponseMemoryRepository extends AbstractMemoryRepository<ResponseEntity, Response> {
-  public async findByContractorAndTask(contractor: string, task: string): Promise<Response[]> {
-    return Object.values(this.repository)
-      .filter((response) => response.task === task && response.contractor === contractor);
+export class ResponseMemoryRepository extends AbstractMemoryRepository<
+  ResponseEntity,
+  Response
+> {
+  public async findByContractorAndTask(
+    contractor: string,
+    taskId: number
+  ): Promise<Response[]> {
+    return Object.values(this.repository).filter(
+      (response) =>
+        response.taskId === taskId && response.contractor === contractor
+    );
   }
 
-  public async findByTask(task: string): Promise<Response[]> {
-    return Object.values(this.repository)
-      .filter((response) => response.task === task);
+  public async findByTask(taskId: number): Promise<Response[]> {
+    return Object.values(this.repository).filter(
+      (response) => response.taskId === taskId
+    );
   }
 }

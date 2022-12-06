@@ -1,11 +1,11 @@
 import { AbstractEntity } from '@taskforce/core';
-import { Task, TaskStatus } from '@taskforce/shared-types';
+import { Task, Comment, Response } from '@taskforce/shared-types';
 
 export class TaskEntity extends AbstractEntity implements Task {
-  public _id: string;
+  public id?: number;
   public title: string;
   public description: string;
-  public category: string;
+  public categoryId: number;
   public price?: number;
   public dueDate?: Date;
   public image?: string;
@@ -13,16 +13,17 @@ export class TaskEntity extends AbstractEntity implements Task {
   public tags?: string[];
   public customer: string;
   public registerDate: Date;
-  public status: TaskStatus;
+  public status: string;
   public contractor?: string;
+  public comments: Comment[];
+  public responses: Response[];
 
   constructor(data: Task) {
     super();
-
-    this._id = data._id;
+    this.id = data.id;
     this.title = data.title;
     this.description = data.description;
-    this.category = data.category;
+    this.categoryId = data.categoryId;
     this.price = data.price;
     this.dueDate = data.dueDate;
     this.image = data.image;
@@ -32,5 +33,7 @@ export class TaskEntity extends AbstractEntity implements Task {
     this.registerDate = data.registerDate;
     this.status = data.status;
     this.contractor = data.contractor;
+    this.comments = data.comments;
+    this.responses = data.responses;
   }
 }

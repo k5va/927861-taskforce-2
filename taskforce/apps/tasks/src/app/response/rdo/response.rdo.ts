@@ -5,10 +5,10 @@ export class ResponseRdo {
   @ApiProperty({
     description: 'Response id',
     required: true,
-    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+    example: '2',
   })
-  @Expose({ name: '_id'})
-  id: string;
+  @Expose()
+  id: number;
 
   @ApiProperty({
     description: 'Contractor id',
@@ -21,8 +21,8 @@ export class ResponseRdo {
   @ApiProperty({
     description: 'Task id',
     required: true,
-    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+    example: '12',
   })
   @Expose()
-  task: string;
+  taskId: number;
 }

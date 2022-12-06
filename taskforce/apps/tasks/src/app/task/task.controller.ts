@@ -1,5 +1,14 @@
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
@@ -17,10 +26,10 @@ export class TaskController {
   @ApiResponse({
     type: TaskRdo,
     status: HttpStatus.CREATED,
-    description: 'Task was successfully created'
+    description: 'Task was successfully created',
   })
   async create(@Body() dto: CreateTaskDto) {
-    const customerId = '';
+    const customerId = '123'; //TODO: temporary
     const newTask = await this.taskService.create(customerId, dto);
     return fillObject(TaskRdo, newTask);
   }
@@ -32,10 +41,10 @@ export class TaskController {
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found'
+    description: 'Task with give id not found',
   })
   async show(@Param('id') id: string) {
-    const task = await this.taskService.getTask(id);
+    const task = await this.taskService.getTask(Number.parseInt(id, 10));
     return fillObject(TaskRdo, task);
   }
 
@@ -43,28 +52,31 @@ export class TaskController {
   @ApiResponse({
     type: TaskRdo,
     status: HttpStatus.OK,
-    description: 'Task successfully updated'
+    description: 'Task successfully updated',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found'
+    description: 'Task with give id not found',
   })
   async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const updatedTask = await this.taskService.updateTask(id, dto);
+    const updatedTask = await this.taskService.updateTask(
+      Number.parseInt(id, 10),
+      dto
+    );
     return fillObject(TaskRdo, updatedTask);
   }
 
   @Delete('task/:id')
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: 'Task successfully deleted'
+    description: 'Task successfully deleted',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found'
+    description: 'Task with give id not found',
   })
   async deleteTask(@Param('id') id: string) {
-    return this.taskService.deleteTask(id);
+    return this.taskService.deleteTask(Number.parseInt(id, 10));
   }
 
   @Get('new')
@@ -84,7 +96,7 @@ export class TaskController {
     status: HttpStatus.OK,
   })
   async showPersonal() {
-    const userId = '';
+    const userId = '123'; // TODO: temporary
     const userRole = UserRole.Customer;
 
     return userRole === UserRole.Customer
@@ -96,14 +108,20 @@ export class TaskController {
   @ApiResponse({
     type: TaskRdo,
     status: HttpStatus.OK,
-    description: 'Task status successfully updated'
+    description: 'Task status successfully updated',
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found'
+    description: 'Task with give id not found',
   })
-  async changeTaskStatus(@Param('id') id: string, @Body() dto: ChangeTaskStatusDto) {
-    const updatedTask = await this.taskService.changeTaskStatus(id, dto);
+  async changeTaskStatus(
+    @Param('id') id: string,
+    @Body() dto: ChangeTaskStatusDto
+  ) {
+    const updatedTask = await this.taskService.changeTaskStatus(
+      Number.parseInt(id, 10),
+      dto
+    );
     return fillObject(TaskRdo, updatedTask);
   }
 }

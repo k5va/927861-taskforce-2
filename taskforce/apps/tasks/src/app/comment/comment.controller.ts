@@ -1,5 +1,12 @@
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, Delete, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -14,20 +21,24 @@ export class CommentController {
   @ApiResponse({
     type: CommentRdo,
     status: HttpStatus.CREATED,
-    description: 'Comment was successfully created'
+    description: 'Comment was successfully created',
   })
   async create(@Param('id') taskId: string, @Body() dto: CreateCommentDto) {
-    const userId = '';
-    const newComment = await this.commentService.create(userId, taskId, dto);
+    const userId = '123'; // TODO: temporary
+    const newComment = await this.commentService.create(
+      userId,
+      Number.parseInt(taskId, 10),
+      dto
+    );
     return fillObject(CommentRdo, newComment);
   }
 
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: 'Comment was successfully deleted'
+    description: 'Comment was successfully deleted',
   })
   @Delete('task/:taskId/comment/:commentId')
   async deleteComment(@Param('commentId') commentId: string) {
-    return this.commentService.deleteComment(commentId);
+    return this.commentService.deleteComment(Number.parseInt(commentId, 10));
   }
 }

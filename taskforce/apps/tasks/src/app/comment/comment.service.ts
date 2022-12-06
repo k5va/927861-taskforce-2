@@ -3,23 +3,26 @@ import { Comment } from '@taskforce/shared-types';
 import { COMMENT_NOT_FOUND_ERROR } from './comment.const';
 import { CommentEntity } from './comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { CommentMemoryRepository } from './repository/comment-memory.repository';
+import { CommentRepository } from './repository/comment.repository';
 
 @Injectable()
 export class CommentService {
-  constructor(private readonly commentRepository: CommentMemoryRepository) {}
+  constructor(private readonly commentRepository: CommentRepository) {}
 
-  public async create(authorId: string, taskId: string, dto: CreateCommentDto): Promise<Comment> {
+  public async create(
+    authorId: string,
+    taskId: number,
+    dto: CreateCommentDto
+  ): Promise<Comment> {
     const commentEntity = new CommentEntity({
       ...dto,
-      _id: '',
       author: authorId,
-      task: taskId,
+      taskId,
     });
     return this.commentRepository.create(commentEntity);
   }
 
-  public async deleteComment(id: string): Promise<void> {
+  public async deleteComment(id: number): Promise<void> {
     const existingComment = this.commentRepository.findById(id);
     if (!existingComment) {
       throw new Error(COMMENT_NOT_FOUND_ERROR);
@@ -28,7 +31,7 @@ export class CommentService {
     return this.commentRepository.destroy(id);
   }
 
-  public async deleteAll(taskId: string) {
+  public async deleteAll(taskId: number) {
     return this.commentRepository.destroyByTaskId(taskId);
   }
 }

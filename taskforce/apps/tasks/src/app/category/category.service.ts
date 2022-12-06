@@ -3,11 +3,11 @@ import { Category } from '@taskforce/shared-types';
 import { CATEGORY_ALREADY_EXISTS } from './category.const';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
-import { CategoryMemoryRepository } from './repository/category-memory.repository';
+import { CategoryRepository } from './repository/category.repository';
 
 @Injectable()
 export class CategoryService {
-  constructor(private readonly categoryRepository: CategoryMemoryRepository) {}
+  constructor(private readonly categoryRepository: CategoryRepository) {}
 
   public async create(dto: CreateCategoryDto): Promise<Category> {
     const existingCategory = await this.categoryRepository.findByName(dto.name);
@@ -17,7 +17,6 @@ export class CategoryService {
 
     const categoryEntity = new CategoryEntity({
       ...dto,
-      _id: '',
     });
 
     return this.categoryRepository.create(categoryEntity);

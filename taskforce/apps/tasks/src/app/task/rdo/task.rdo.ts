@@ -1,4 +1,4 @@
-import { TaskStatus } from '@taskforce/shared-types';
+import { TaskStatus, Category } from '@taskforce/shared-types';
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -8,8 +8,8 @@ export class TaskRdo {
     required: true,
     example: '1282499d-5b42-4007-b103-a8b7f8f51835',
   })
-  @Expose({ name: '_id'})
-  id: string;
+  @Expose()
+  id: number;
 
   @ApiProperty({
     description: 'Task title',
@@ -46,10 +46,10 @@ export class TaskRdo {
   @ApiProperty({
     description: 'Task category',
     required: true,
-    example: 'cleaning',
+    example: '{id: 1, name: "cleaning"}',
   })
   @Expose()
-  category: string;
+  category: Category;
 
   @ApiProperty({
     description: 'Task price',
