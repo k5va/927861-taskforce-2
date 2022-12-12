@@ -21,6 +21,7 @@ import { ContractorRdo } from './rdo/contractor.rdo';
 import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
+import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -64,7 +65,7 @@ export class AuthController {
     type: ContractorRdo,
     status: HttpStatus.OK,
   })
-  async show(@Param('id') id: string) {
+  async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existingUser = await this.authService.getUser(id);
     return existingUser.role === UserRole.Customer
       ? fillObject(CustomerRdo, existingUser)
@@ -77,7 +78,10 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User was successfully updated',
   })
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  async update(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Body() dto: UpdateUserDto
+  ) {
     const updatedUser = await this.authService.updateUser(id, dto);
     return fillObject(UserRdo, updatedUser);
   }
@@ -89,7 +93,7 @@ export class AuthController {
     description: 'Password was successfully updated',
   })
   async changePassword(
-    @Param('id') id: string,
+    @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto
   ) {
     const updatedUser = await this.authService.changePassword(id, dto);

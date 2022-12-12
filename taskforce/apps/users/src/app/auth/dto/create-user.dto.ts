@@ -1,13 +1,6 @@
 import { CITIES, UserRole } from '@taskforce/shared-types';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsIn,
-  IsISO8601,
-  IsString,
-  Length,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsIn, IsISO8601, IsString, Length } from 'class-validator';
 import {
   CITY_NOT_VALID_ERROR,
   USER_NAME_MAX_LENGTH,
