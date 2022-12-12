@@ -43,8 +43,8 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
-  async show(@Param('id') id: string) {
-    const task = await this.taskService.getTask(Number.parseInt(id, 10));
+  async show(@Param('id') id: number) {
+    const task = await this.taskService.getTask(id);
     return fillObject(TaskRdo, task);
   }
 
@@ -58,11 +58,8 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
-  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto) {
-    const updatedTask = await this.taskService.updateTask(
-      Number.parseInt(id, 10),
-      dto
-    );
+  async update(@Param('id') id: number, @Body() dto: UpdateTaskDto) {
+    const updatedTask = await this.taskService.updateTask(id, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 
@@ -75,8 +72,8 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
-  async deleteTask(@Param('id') id: string) {
-    return this.taskService.deleteTask(Number.parseInt(id, 10));
+  async deleteTask(@Param('id') id: number) {
+    return this.taskService.deleteTask(id);
   }
 
   @Get('new')
@@ -115,13 +112,10 @@ export class TaskController {
     description: 'Task with give id not found',
   })
   async changeTaskStatus(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() dto: ChangeTaskStatusDto
   ) {
-    const updatedTask = await this.taskService.changeTaskStatus(
-      Number.parseInt(id, 10),
-      dto
-    );
+    const updatedTask = await this.taskService.changeTaskStatus(id, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 }
