@@ -4,6 +4,7 @@ import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
 import { TASK_NOT_FOUND_ERROR } from './task.const';
 import { TaskEntity } from './task.entity';
@@ -64,16 +65,19 @@ export class TaskService {
     return this.taskRepository.destroy(id);
   }
 
-  async findNew(): Promise<Task[]> {
-    return this.taskRepository.findNew();
+  async findNew(query: TaskQuery): Promise<Task[]> {
+    return this.taskRepository.findNew(query);
   }
 
-  async findByCustomer(id: string): Promise<Task[]> {
-    return this.taskRepository.findByCustomer(id);
+  async findByCustomer(id: string, query: PersonalTaskQuery): Promise<Task[]> {
+    return this.taskRepository.findByCustomer(id, query);
   }
 
-  async findByContractor(id: string): Promise<Task[]> {
-    return this.taskRepository.findByContractor(id);
+  async findByContractor(
+    id: string,
+    query: PersonalTaskQuery
+  ): Promise<Task[]> {
+    return this.taskRepository.findByContractor(id, query);
   }
 
   async changeTaskStatus(id: number, dto: ChangeTaskStatusDto): Promise<Task> {

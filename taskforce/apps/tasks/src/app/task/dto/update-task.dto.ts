@@ -3,6 +3,7 @@ import {
   ArrayMaxSize,
   IsISO8601,
   IsNumber,
+  IsOptional,
   IsString,
   Length,
   Min,
@@ -28,6 +29,7 @@ export class UpdateTaskDto {
   })
   @IsString()
   @Length(TASK_TITLE_MIN_LENGTH, TASK_TITLE_MAX_LENGTH)
+  @IsOptional()
   public title?: string;
 
   @ApiProperty({
@@ -39,6 +41,7 @@ export class UpdateTaskDto {
   })
   @IsString()
   @Length(TASK_DESCRIPTION_MIN_LENGTH, TASK_DESCRIPTION_MAX_LENGTH)
+  @IsOptional()
   public description?: string;
 
   @ApiProperty({
@@ -47,6 +50,7 @@ export class UpdateTaskDto {
     example: '123',
   })
   @IsNumber()
+  @IsOptional()
   public categoryId?: number;
 
   @ApiProperty({
@@ -57,6 +61,7 @@ export class UpdateTaskDto {
   })
   @IsNumber()
   @Min(TASK_PRICE_MIN_VALUE)
+  @IsOptional()
   public price?: number;
 
   @ApiProperty({
@@ -65,6 +70,7 @@ export class UpdateTaskDto {
     example: '2022-11-29',
   })
   @IsISO8601()
+  @IsOptional()
   public dueDate?: string;
 
   @ApiProperty({
@@ -76,6 +82,7 @@ export class UpdateTaskDto {
   })
   @IsString()
   @Length(TASK_ADDRESS_MIN_LENGTH, TASK_ADDRESS_MAX_LENGTH)
+  @IsOptional()
   public address?: string;
 
   @ApiProperty({
@@ -85,5 +92,6 @@ export class UpdateTaskDto {
   })
   @IsString({ each: true })
   @ArrayMaxSize(TASK_TAGS_MAX_NUM)
+  @IsOptional()
   public tags?: string[];
 }

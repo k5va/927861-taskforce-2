@@ -3,6 +3,9 @@ import { Task, TaskStatus } from '@taskforce/shared-types';
 import { TaskEntity } from '../task.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { TaskQuery } from '../query/task.query';
+import { TASK_SORT } from '../task.const';
+import { PersonalTaskQuery } from '../query';
 
 @Injectable()
 export class TaskRepository
@@ -67,13 +70,31 @@ export class TaskRepository
     });
   }
 
-  public findNew(): Promise<Task[]> {
+  public findNew({
+    limit,
+    page,
+    categories,
+    tags,
+    cities,
+    sort,
+  }: TaskQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
+        categoryId: {
+          in: categories,
+        },
+        tags: tags
+          ? {
+              hasEvery: tags,
+            }
+          : undefined,
         status: {
           equals: TaskStatus.New,
         },
       },
+      take: limit,
+      skip: page > 0 ? limit * (page - 1) : undefined,
+      orderBy: [TASK_SORT[sort]],
       include: {
         category: true,
         comments: true,
@@ -82,12 +103,21 @@ export class TaskRepository
     });
   }
 
-  public findByCustomer(id: string): Promise<Task[]> {
+  public findByCustomer(
+    id: string,
+    { statuses }: PersonalTaskQuery
+  ): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         customer: {
           equals: id,
         },
+        status: {
+          in: statuses,
+        },
+      },
+      orderBy: {
+        registerDate: 'desc',
       },
       include: {
         category: true,
@@ -97,12 +127,21 @@ export class TaskRepository
     });
   }
 
-  public findByContractor(id: string): Promise<Task[]> {
+  public findByContractor(
+    id: string,
+    { statuses }: PersonalTaskQuery
+  ): Promise<Task[]> {
     return this.prisma.task.findMany({
       where: {
         contractor: {
           equals: id,
         },
+        status: {
+          in: statuses,
+        },
+      },
+      orderBy: {
+        status: 'asc',
       },
       include: {
         category: true,

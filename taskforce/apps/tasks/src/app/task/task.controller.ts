@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
@@ -16,6 +17,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRdo } from './rdo/task.rdo';
 import { TaskService } from './task.service';
+import { PersonalTaskQuery, TaskQuery } from './query';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -82,8 +84,8 @@ export class TaskController {
     isArray: true,
     status: HttpStatus.OK,
   })
-  async showNew() {
-    return fillObject(TaskRdo, this.taskService.findNew());
+  async showNew(@Query() query: TaskQuery) {
+    return fillObject(TaskRdo, this.taskService.findNew(query));
   }
 
   @Get('personal')
@@ -92,13 +94,13 @@ export class TaskController {
     isArray: true,
     status: HttpStatus.OK,
   })
-  async showPersonal() {
+  async showPersonal(@Query() query: PersonalTaskQuery) {
     const userId = '123'; // TODO: temporary
     const userRole = UserRole.Customer;
 
     return userRole === UserRole.Customer
-      ? fillObject(TaskRdo, this.taskService.findByCustomer(userId))
-      : fillObject(TaskRdo, this.taskService.findByContractor(userId));
+      ? fillObject(TaskRdo, this.taskService.findByCustomer(userId, query))
+      : fillObject(TaskRdo, this.taskService.findByContractor(userId, query));
   }
 
   @Patch('task/:id/status')
