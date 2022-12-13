@@ -35,7 +35,15 @@ DELETE http://localhost:3333/api/tasks/task/5 HTTP/1.1
 ###
 
 # Get new tasks
+GET http://localhost:3333/api/tasks/new HTTP/1.1
+###
+
+# Get new tasks (filtered by categories, sorted and with pagination)
 GET http://localhost:3333/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+###
+
+# Get new tasks (filtered by tags)
+GET http://localhost:3333/api/tasks/new?tags=cleaning HTTP/1.1
 
 ###
 
