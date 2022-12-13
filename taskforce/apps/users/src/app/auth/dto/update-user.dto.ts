@@ -4,6 +4,7 @@ import {
   ArrayMaxSize,
   IsIn,
   IsISO8601,
+  IsOptional,
   IsString,
   Length,
   MaxLength,
@@ -27,6 +28,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @Length(USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH)
+  @IsOptional()
   public name?: string;
 
   @ApiProperty({
@@ -35,6 +37,7 @@ export class UpdateUserDto {
     example: 'Москва',
   })
   @IsIn(CITIES, { message: CITY_NOT_VALID_ERROR })
+  @IsOptional()
   public city?: string;
 
   @ApiProperty({
@@ -45,6 +48,7 @@ export class UpdateUserDto {
   @IsISO8601({
     message: USER_DATE_BIRTH_NOT_VALID_ERROR,
   })
+  @IsOptional()
   public birthDate?: string;
 
   @ApiProperty({
@@ -55,6 +59,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @MaxLength(USER_DESCRIPTON_MAX_LENGTH)
+  @IsOptional()
   public description?: string;
 
   @ApiProperty({
@@ -66,5 +71,6 @@ export class UpdateUserDto {
   })
   @ArrayMaxSize(USER_SKILLS_MAX_NUM)
   @IsString({ each: true })
+  @IsOptional()
   public skills?: string[];
 }
