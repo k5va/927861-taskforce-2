@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
@@ -22,6 +23,7 @@ import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -52,8 +54,10 @@ export class AuthController {
   })
   async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
+    const token = await this.authService.loginUser(verifiedUser);
     const { _id: id, email } = verifiedUser;
-    return fillObject(LoggedInUserRdo, { id, email, token: 'JWT token' });
+
+    return fillObject(LoggedInUserRdo, { id, email, token });
   }
 
   @Get('user/:id')
@@ -78,6 +82,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User was successfully updated',
   })
+  @UseGuards(JwtAuthGuard)
   async update(
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: UpdateUserDto
@@ -92,6 +97,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Password was successfully updated',
   })
+  @UseGuards(JwtAuthGuard)
   async changePassword(
     @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto

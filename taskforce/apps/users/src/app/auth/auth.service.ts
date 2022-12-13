@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { User } from '@taskforce/shared-types';
 import { TaskUserRepository } from '../task-user/repository/task-user.repository';
 import { TaskUserEntity } from '../task-user/task-user.entity';
@@ -10,7 +11,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly taskUserRepository: TaskUserRepository) {}
+  constructor(
+    private readonly taskUserRepository: TaskUserRepository,
+    private readonly jwtService: JwtService
+  ) {}
 
   async register(dto: CreateUserDto): Promise<User> {
     const { name, email, city, password, role, birthDate } = dto;
@@ -26,7 +30,7 @@ export class AuthService {
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
     if (existingUser) {
-      throw new Error(USER_EXISTS_ERROR);
+      throw new UnauthorizedException(USER_EXISTS_ERROR);
     }
 
     const userEntity = await new TaskUserEntity(taskUser).setPassword(password);
@@ -39,12 +43,12 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findByEmail(email);
 
     if (!existingUser) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.comparePassword(password))) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     return userEntity.toObject();
@@ -54,7 +58,7 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     return existingUser;
@@ -64,7 +68,7 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     const userEntity = new TaskUserEntity({
@@ -83,17 +87,25 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.comparePassword(oldPassword))) {
-      throw new Error(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
     return this.taskUserRepository.update(
       id,
       await userEntity.setPassword(newPassword)
     );
+  }
+
+  async loginUser({ _id, email, role, name }: User) {
+    const payload = { sub: _id, email, role, name };
+
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
   }
 }

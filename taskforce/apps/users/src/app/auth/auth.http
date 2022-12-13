@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Keks",
-  "email": "user@notfound.local",
+  "email": "user1@notfound.local",
   "city": "Москва",
   "birthDate": "2012-02-22",
   "password": "123456",
@@ -14,8 +14,9 @@ Content-Type: application/json
 ###
 
 # Update user data
-PATCH http://localhost:3333/api/auth/user/638665e9a87e29f8ab9f85ea HTTP/1.1
+PATCH http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjMGQ2M2M5NzMwMTc2ZmIxYjMiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzA5NDQ4NzcsImV4cCI6MTY3MDk0NDkzN30.BefjiHUAZJI7XztRk3wR4XmocrL7x7ya9tTRlNvkw50
 
 {
   "name": "NotKeks"
@@ -24,8 +25,9 @@ Content-Type: application/json
 ###
 
 # Change password
-PUT http://localhost:3333/api/auth/user/638665e9a87e29f8ab9f85ea/password HTTP/1.1
+PUT http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3/password HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjMGQ2M2M5NzMwMTc2ZmIxYjMiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzA5NDQ4NzcsImV4cCI6MTY3MDk0NDkzN30.BefjiHUAZJI7XztRk3wR4XmocrL7x7ya9tTRlNvkw50
 
 {
   "oldPassword": "123456",
@@ -35,7 +37,7 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3333/api/auth/user/638665e9a87e29f8ab9f85ea HTTP/1.1
+GET http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3 HTTP/1.1
 
 ###
 
@@ -44,7 +46,7 @@ POST http://localhost:3333/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.local",
+  "email": "user1@notfound.local",
   "password": "1234567"
 }
 
