@@ -8,7 +8,6 @@ import {
   Patch,
   Post,
   Put,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
@@ -25,6 +24,7 @@ import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 import { JwtAuthGuard, RtAuthGuard } from './guards';
+import { GetUser } from './decorators';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -121,8 +121,8 @@ export class AuthController {
     description: 'Invalid refresh token',
   })
   @UseGuards(RtAuthGuard)
-  async refresh(@Req() req: Request) {
-    const { id, email, refreshToken } = req['user'];
+  async refresh(@GetUser() user) {
+    const { id, email, refreshToken } = user;
     const { token, refreshToken: newRefreshToken } =
       await this.authService.refresh(id, refreshToken);
 
