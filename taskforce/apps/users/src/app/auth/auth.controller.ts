@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
@@ -23,7 +24,7 @@ import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { JwtAuthGuard, RtAuthGuard } from './guards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -54,10 +55,12 @@ export class AuthController {
   })
   async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
-    const token = await this.authService.loginUser(verifiedUser);
+    const { token, refreshToken } = await this.authService.loginUser(
+      verifiedUser
+    );
     const { _id: id, email } = verifiedUser;
 
-    return fillObject(LoggedInUserRdo, { id, email, token });
+    return fillObject(LoggedInUserRdo, { id, email, token, refreshToken });
   }
 
   @Get('user/:id')
@@ -104,5 +107,30 @@ export class AuthController {
   ) {
     const updatedUser = await this.authService.changePassword(id, dto);
     return fillObject(UserRdo, updatedUser);
+  }
+
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: LoggedInUserRdo,
+    status: HttpStatus.OK,
+    description: 'Token was refreshed',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid refresh token',
+  })
+  @UseGuards(RtAuthGuard)
+  async refresh(@Req() req: Request) {
+    const { id, email, refreshToken } = req['user'];
+    const { token, refreshToken: newRefreshToken } =
+      await this.authService.refresh(id, refreshToken);
+
+    return fillObject(LoggedInUserRdo, {
+      id,
+      email,
+      token,
+      refreshToken: newRefreshToken,
+    });
   }
 }

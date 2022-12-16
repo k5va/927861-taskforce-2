@@ -1,11 +1,11 @@
 import { ConfigService, registerAs } from '@nestjs/config';
 import { JwtModuleOptions } from '@nestjs/jwt';
 
-export const jwtOptions = registerAs('jwt', () => ({
+export const jwtConfig = registerAs('jwt', () => ({
   secret: process.env.JWT_SECRET,
 }));
 
-export async function getJwtConfig(
+export async function getJwtOptions(
   configService: ConfigService
 ): Promise<JwtModuleOptions> {
   return {

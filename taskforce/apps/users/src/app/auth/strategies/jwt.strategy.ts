@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from '@taskforce/shared-types';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(private readonly configService: ConfigService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -14,11 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate({
-    email,
-    avatar,
-    role,
-  }: Pick<User, 'email' | 'role' | 'avatar'>) {
-    return { email, avatar, role };
+  async validate({ email, name, role }: Pick<User, 'email' | 'role' | 'name'>) {
+    return { email, name, role };
   }
 }

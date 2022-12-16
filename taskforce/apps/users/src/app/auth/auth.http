@@ -14,9 +14,9 @@ Content-Type: application/json
 ###
 
 # Update user data
-PATCH http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3 HTTP/1.1
+PATCH http://localhost:3333/api/auth/user/639c11a0d451cf0460d5bd38 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjMGQ2M2M5NzMwMTc2ZmIxYjMiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzA5NDQ4NzcsImV4cCI6MTY3MDk0NDkzN30.BefjiHUAZJI7XztRk3wR4XmocrL7x7ya9tTRlNvkw50
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzExNzUyODYsImV4cCI6MTY3MTE3NTM0Nn0.MQkzJ1kczdw75kKRAJJ-LJc7kJAex_N7DIKTmDZLNCk
 
 {
   "name": "NotKeks"
@@ -25,9 +25,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjM
 ###
 
 # Change password
-PUT http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3/password HTTP/1.1
+PUT http://localhost:3333/api/auth/user/639c11a0d451cf0460d5bd38/password HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjMGQ2M2M5NzMwMTc2ZmIxYjMiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzA5NDQ4NzcsImV4cCI6MTY3MDk0NDkzN30.BefjiHUAZJI7XztRk3wR4XmocrL7x7ya9tTRlNvkw50
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzExNzI4NTEsImV4cCI6MTY3MTE3MjkxMX0.5EzZHvkmpwsr6hMGyNUNUj0N9CO81ifwBPZAx7A-JyA
 
 {
   "oldPassword": "123456",
@@ -37,7 +37,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2Mzk4OTdjM
 ###
 
 # Get user by ID
-GET http://localhost:3333/api/auth/user/639897c0d63c9730176fb1b3 HTTP/1.1
+GET http://localhost:3333/api/auth/user/639c11a0d451cf0460d5bd38 HTTP/1.1
 
 ###
 
@@ -47,7 +47,14 @@ Content-Type: application/json
 
 {
   "email": "user1@notfound.local",
-  "password": "1234567"
+  "password": "123456"
 }
+
+###
+
+# Refresh auth token
+POST http://localhost:3333/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzExNzUxNjcsImV4cCI6MTY3MTc3OTk2N30.E26FE4-7S24XY9QSMyatMKewKFrtepBJXorpQSJIUGY
 
 ###
