@@ -3,8 +3,8 @@ POST http://localhost:3333/api/tasks/task HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Task's title",
-  "description": "Task's description",
+  "title": "Task's title veeeeeeeeeeeeeery long",
+  "description": "Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
   "categoryId": 1,
   "price": 100,
   "dueDate": "2023-02-22",
@@ -18,8 +18,8 @@ PATCH http://localhost:3333/api/tasks/task/5 HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Not Task's title",
-  "description": "Not Task's description"
+  "title": "Not Task's title veeeeeeeeeeeeeery long",
+  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla "
 }
 
 ###
@@ -36,6 +36,14 @@ DELETE http://localhost:3333/api/tasks/task/5 HTTP/1.1
 
 # Get new tasks
 GET http://localhost:3333/api/tasks/new HTTP/1.1
+###
+
+# Get new tasks (filtered by categories, sorted and with pagination)
+GET http://localhost:3333/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+###
+
+# Get new tasks (filtered by tags)
+GET http://localhost:3333/api/tasks/new?tags=cleaning HTTP/1.1
 
 ###
 

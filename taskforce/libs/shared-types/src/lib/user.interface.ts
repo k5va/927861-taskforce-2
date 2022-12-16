@@ -12,4 +12,5 @@ export interface User {
   registerDate?: Date;
   description?: string;
   skills?: string[];
+  refreshTokenHash?: string;
 }

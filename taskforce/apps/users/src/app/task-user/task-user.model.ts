@@ -51,6 +51,9 @@ export class TaskUserModel extends Document implements User {
 
   @Prop()
   public skills: string[];
+
+  @Prop()
+  public refreshTokenHash: string;
 }
 
 export const TaskUserSchema = SchemaFactory.createForClass(TaskUserModel);

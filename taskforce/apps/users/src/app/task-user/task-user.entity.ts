@@ -15,6 +15,7 @@ export class TaskUserEntity extends AbstractEntity implements User {
   public registerDate?: Date;
   public description?: string;
   public skills?: string[];
+  public refreshTokenHash?: string;
 
   constructor(data: User) {
     super();
@@ -30,6 +31,7 @@ export class TaskUserEntity extends AbstractEntity implements User {
     this.registerDate = data.registerDate;
     this.description = data.description;
     this.skills = data.skills;
+    this.refreshTokenHash = data.refreshTokenHash;
   }
 
   public async setPassword(password: string): Promise<TaskUserEntity> {
@@ -38,7 +40,17 @@ export class TaskUserEntity extends AbstractEntity implements User {
     return this;
   }
 
+  public async setRefreshToken(token: string): Promise<TaskUserEntity> {
+    const salt = await genSalt(SALT_ROUNDS);
+    this.refreshTokenHash = await hash(token, salt);
+    return this;
+  }
+
   public async comparePassword(password: string): Promise<boolean> {
     return compare(password, this.passwordHash);
+  }
+
+  public async compareRefreshToken(token: string): Promise<boolean> {
+    return compare(token, this.refreshTokenHash);
   }
 }

@@ -6,3 +6,4 @@ export * from './lib/comment.interface';
 export * from './lib/review.interface';
 export * from './lib/category.interface';
 export * from './lib/response.interface';
+export * from './lib/cities';

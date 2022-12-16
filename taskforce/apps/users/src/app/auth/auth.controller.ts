@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRole } from '@taskforce/shared-types';
@@ -21,6 +22,9 @@ import { ContractorRdo } from './rdo/contractor.rdo';
 import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
+import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
+import { JwtAuthGuard, RtAuthGuard } from './guards';
+import { GetUser } from './decorators';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -51,8 +55,12 @@ export class AuthController {
   })
   async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
+    const { token, refreshToken } = await this.authService.loginUser(
+      verifiedUser
+    );
     const { _id: id, email } = verifiedUser;
-    return fillObject(LoggedInUserRdo, { id, email, token: 'JWT token' });
+
+    return fillObject(LoggedInUserRdo, { id, email, token, refreshToken });
   }
 
   @Get('user/:id')
@@ -64,7 +72,7 @@ export class AuthController {
     type: ContractorRdo,
     status: HttpStatus.OK,
   })
-  async show(@Param('id') id: string) {
+  async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existingUser = await this.authService.getUser(id);
     return existingUser.role === UserRole.Customer
       ? fillObject(CustomerRdo, existingUser)
@@ -77,7 +85,11 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'User was successfully updated',
   })
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Body() dto: UpdateUserDto
+  ) {
     const updatedUser = await this.authService.updateUser(id, dto);
     return fillObject(UserRdo, updatedUser);
   }
@@ -88,11 +100,37 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Password was successfully updated',
   })
+  @UseGuards(JwtAuthGuard)
   async changePassword(
-    @Param('id') id: string,
+    @Param('id', MongoIdValidationPipe) id: string,
     @Body() dto: ChangePasswordDto
   ) {
     const updatedUser = await this.authService.changePassword(id, dto);
     return fillObject(UserRdo, updatedUser);
+  }
+
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    type: LoggedInUserRdo,
+    status: HttpStatus.OK,
+    description: 'Token was refreshed',
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: 'Invalid refresh token',
+  })
+  @UseGuards(RtAuthGuard)
+  async refresh(@GetUser() user) {
+    const { id, email, refreshToken } = user;
+    const { token, refreshToken: newRefreshToken } =
+      await this.authService.refresh(id, refreshToken);
+
+    return fillObject(LoggedInUserRdo, {
+      id,
+      email,
+      token,
+      refreshToken: newRefreshToken,
+    });
   }
 }
