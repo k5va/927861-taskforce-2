@@ -46,13 +46,10 @@ export class TaskService {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    const taskEntity = new TaskEntity({
-      ...existingTask,
+    return this.taskRepository.update(id, {
       ...dto,
-      dueDate: dto.dueDate ? new Date(dto.dueDate) : existingTask.dueDate,
+      dueDate: dto.dueDate && new Date(dto.dueDate),
     });
-
-    return this.taskRepository.update(id, taskEntity);
   }
 
   async deleteTask(id: number): Promise<void> {
@@ -87,11 +84,6 @@ export class TaskService {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    const taskEntity = new TaskEntity({
-      ...existingTask,
-      ...dto,
-    });
-
-    return this.taskRepository.update(id, taskEntity);
+    return this.taskRepository.update(id, dto);
   }
 }

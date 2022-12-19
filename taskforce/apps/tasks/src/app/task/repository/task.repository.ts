@@ -75,7 +75,7 @@ export class TaskRepository
     page,
     categories,
     tags,
-    cities,
+    cities, // TODO: add city field to task!
     sort,
   }: TaskQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
@@ -151,13 +151,15 @@ export class TaskRepository
     });
   }
 
-  public async update(itemId: number, item: TaskEntity): Promise<Task> {
-    const { comments, responses, ...entityData } = item.toObject();
+  public async update(
+    itemId: number,
+    data: Omit<Partial<TaskEntity>, 'id' | 'comments' | 'responses'>
+  ): Promise<Task> {
     const prismaData = await this.prisma.task.update({
       where: {
         id: itemId,
       },
-      data: { ...entityData },
+      data,
       include: {
         category: true,
         comments: true,
