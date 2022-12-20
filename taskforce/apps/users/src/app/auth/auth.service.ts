@@ -80,15 +80,10 @@ export class AuthService {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    const userEntity = new TaskUserEntity({
-      ...existingUser,
+    return this.taskUserRepository.update(id, {
       ...dto,
-      birthDate: dto.birthDate
-        ? new Date(dto.birthDate)
-        : existingUser.birthDate,
+      birthDate: dto.birthDate && new Date(dto.birthDate),
     });
-
-    return this.taskUserRepository.update(id, userEntity);
   }
 
   async changePassword(id: string, dto: ChangePasswordDto): Promise<User> {
@@ -103,19 +98,21 @@ export class AuthService {
     if (!(await userEntity.comparePassword(oldPassword))) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
+    await userEntity.setPassword(newPassword); // TODO: no need to create user entity?
 
-    return this.taskUserRepository.update(
-      id,
-      await userEntity.setPassword(newPassword)
-    );
+    return this.taskUserRepository.update(id, {
+      passwordHash: userEntity.passwordHash,
+    });
   }
 
   async loginUser(user: User) {
     const { token, refreshToken } = await this.generateTokens(user);
 
     const userEntity = new TaskUserEntity(user);
-    await userEntity.setRefreshToken(refreshToken);
-    await this.taskUserRepository.update(user._id, userEntity);
+    await userEntity.setRefreshToken(refreshToken); // TODO: no need to create user entity?
+    await this.taskUserRepository.update(user._id, {
+      refreshTokenHash: userEntity.refreshTokenHash,
+    });
 
     return { token, refreshToken };
   }
@@ -135,8 +132,10 @@ export class AuthService {
       userEntity
     );
 
-    await userEntity.setRefreshToken(newRefreshToken);
-    await this.taskUserRepository.update(userId, userEntity);
+    await userEntity.setRefreshToken(newRefreshToken); // TODO: no need to create user entity?
+    await this.taskUserRepository.update(userId, {
+      refreshTokenHash: userEntity.refreshTokenHash,
+    });
 
     return { token, refreshToken: newRefreshToken };
   }

@@ -32,9 +32,10 @@ export class TaskUserRepository
     return this.taskUserModel.findOne({ email }).exec();
   }
 
-  public async update(id: string, item: TaskUserEntity): Promise<User> {
-    return this.taskUserModel
-      .findByIdAndUpdate(id, item.toObject(), { new: true })
-      .exec();
+  public async update(
+    id: string,
+    data: Partial<TaskUserEntity>
+  ): Promise<User> {
+    return this.taskUserModel.findByIdAndUpdate(id, data, { new: true }).exec();
   }
 }
