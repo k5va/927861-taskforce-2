@@ -8,3 +8,4 @@ export * from './lib/category.interface';
 export * from './lib/response.interface';
 export * from './lib/cities';
 export * from './lib/subscriber.interface';
+export * from './lib/command-event.ts';
