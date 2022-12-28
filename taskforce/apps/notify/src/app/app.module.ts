@@ -8,6 +8,7 @@ import {
   getMongoDbOptions,
   mailConfig,
   mongoDbConfig,
+  rabbitMqConfig,
 } from '../config';
 import envSchema from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -18,7 +19,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       cache: true,
       isGlobal: true,
       envFilePath: ENV_FILE_PATH,
-      load: [mailConfig, mongoDbConfig],
+      load: [mailConfig, mongoDbConfig, rabbitMqConfig],
       validationSchema: envSchema,
     }),
     MailerModule.forRootAsync(getMailerOptions()),
