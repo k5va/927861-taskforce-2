@@ -12,6 +12,7 @@ import {
 } from '../config';
 import envSchema from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import { EmailSubscriberModule } from './email-subscriber/email-subscriber.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     MailerModule.forRootAsync(getMailerOptions()),
     MongooseModule.forRootAsync(getMongoDbOptions()),
+    EmailSubscriberModule,
     SenderModule,
   ],
   controllers: [],
