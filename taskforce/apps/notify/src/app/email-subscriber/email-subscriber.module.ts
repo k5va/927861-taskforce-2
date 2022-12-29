@@ -7,9 +7,11 @@ import {
   EmailSubscriberModel,
   EmailSubscriberSchema,
 } from './email-subscriber.model';
+import { SenderModule } from '../sender/sender.module';
 
 @Module({
   imports: [
+    SenderModule,
     MongooseModule.forFeature([
       { name: EmailSubscriberModel.name, schema: EmailSubscriberSchema },
     ]),
