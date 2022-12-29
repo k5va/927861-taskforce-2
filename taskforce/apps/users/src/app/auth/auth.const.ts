@@ -18,3 +18,5 @@ export const USER_SKILLS_MAX_NUM = 5;
 
 export const REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 7;
 export const ACCESS_TOKEN_EXPIRE = 60;
+
+export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');

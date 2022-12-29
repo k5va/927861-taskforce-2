@@ -5,7 +5,13 @@ import { ConfigModule } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import envSchema from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { databaseConfig, getMongoConfig, jwtConfig, rtConfig } from '../config';
+import {
+  databaseConfig,
+  getMongoConfig,
+  jwtConfig,
+  rabbitMqConfig,
+  rtConfig,
+} from '../config';
 
 @Module({
   imports: [
@@ -13,7 +19,7 @@ import { databaseConfig, getMongoConfig, jwtConfig, rtConfig } from '../config';
       cache: true,
       isGlobal: true,
       envFilePath: ENV_FILE_PATH,
-      load: [databaseConfig, jwtConfig, rtConfig],
+      load: [databaseConfig, jwtConfig, rtConfig, rabbitMqConfig],
       validationSchema: envSchema,
     }),
     MongooseModule.forRootAsync(getMongoConfig()),

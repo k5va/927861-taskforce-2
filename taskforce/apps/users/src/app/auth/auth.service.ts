@@ -1,12 +1,14 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@taskforce/shared-types';
+import { ClientProxy } from '@nestjs/microservices';
+import { CommandEvent, User, Subscriber } from '@taskforce/shared-types';
 import { TaskUserRepository } from '../task-user/repository/task-user.repository';
 import { TaskUserEntity } from '../task-user/task-user.entity';
 import {
   ACCESS_TOKEN_EXPIRE,
   INVALID_REFRESH_TOKEN_ERROR,
+  RABBITMQ_SERVICE,
   REFRESH_TOKEN_EXPIRE,
   USER_EXISTS_ERROR,
   USER_NOT_FOUND_ERROR,
@@ -21,7 +23,8 @@ export class AuthService {
   constructor(
     private readonly taskUserRepository: TaskUserRepository,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
   async register(dto: CreateUserDto): Promise<User> {
@@ -44,7 +47,18 @@ export class AuthService {
     const userEntity = new TaskUserEntity(taskUser);
     await userEntity.setPassword(password);
 
-    return this.taskUserRepository.create(userEntity);
+    const newUser = await this.taskUserRepository.create(userEntity);
+
+    this.rabbitClient.emit<void, Subscriber>(
+      { cmd: CommandEvent.AddSubscriber },
+      {
+        email: newUser.email,
+        name: newUser.name,
+        userId: newUser._id.toString(),
+      }
+    );
+
+    return newUser;
   }
 
   async verifyUser(dto: LoginUserDto): Promise<User> {
