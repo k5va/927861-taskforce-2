@@ -33,7 +33,7 @@ services:
     ports:
       - 27018:27017
     volumes:
-      - ./db:/data/db
+      - ../../../data/notify/db:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/taskforce-notify --quiet
       interval: 10s
