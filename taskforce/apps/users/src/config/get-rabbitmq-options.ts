@@ -6,7 +6,8 @@ export function getRabbitMqOptions(configService: ConfigService): RmqOptions {
   const password = configService.get<string>('rmq.password');
   const host = configService.get<string>('rmq.host');
   const queue = configService.get<string>('rmq.queue');
-  const url = `amqp://${user}:${password}@${host}`;
+  const port = configService.get<number>('rmq.port');
+  const url = `amqp://${user}:${password}@${host}:${port}`;
 
   return {
     transport: Transport.RMQ,
