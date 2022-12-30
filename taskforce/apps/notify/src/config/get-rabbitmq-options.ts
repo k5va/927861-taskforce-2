@@ -2,23 +2,21 @@ import { ConfigService } from '@nestjs/config';
 import { RmqOptions, Transport } from '@nestjs/microservices';
 
 export const NotifyQueue = {
-  Tasks: 'tasks',
-  Subscribers: 'subscribers',
+  Tasks: 'rmq.tasksQueue',
+  Subscribers: 'rmq.subscribersQueue',
 } as const;
 
-type QueueType = typeof NotifyQueue[keyof typeof NotifyQueue];
+type TQueue = typeof NotifyQueue[keyof typeof NotifyQueue];
 
 export function getRabbitMqOptions(
   configService: ConfigService,
-  queueType: QueueType
+  queueType: TQueue
 ): RmqOptions {
   const user = configService.get<string>('rmq.user');
   const password = configService.get<string>('rmq.password');
   const host = configService.get<string>('rmq.host');
   const port = configService.get<number>('rmq.port');
-  const queue = configService.get<string>(
-    queueType === 'subscribers' ? 'rmq.subscribersQueue' : 'rmq.tasksQueue'
-  );
+  const queue = configService.get<string>(queueType);
   const url = `amqp://${user}:${password}@${host}:${port}`;
 
   return {
