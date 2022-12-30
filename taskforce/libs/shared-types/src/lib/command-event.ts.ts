@@ -1,4 +1,4 @@
 export const CommandEvent = {
-  AddSubscriber: 'addSubscriber',
-  AddPost: 'addPost',
+  AddSubscriber: 'AddSubscriber',
+  AddTaskNotification: 'AddTaskNotification',
 } as const;

@@ -9,3 +9,4 @@ export * from './lib/response.interface';
 export * from './lib/cities';
 export * from './lib/subscriber.interface';
 export * from './lib/command-event.ts';
+export * from './lib/task-notification.interface';
