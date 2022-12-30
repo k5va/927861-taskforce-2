@@ -1,7 +1,20 @@
 <h2>Здравствуйте, {{name}}!</h2>
 <p>Сообщаем Вам о новых задачах за прошедший период:</p>
-<ul>
+<table>
+  <tr>
+    <th>#</th>
+    <th>Заголовок</th>
+    <th>Стоимость</th>
+    <th>Срок</th>
+    <th>Адрес</th>
+  </tr>
   {{#each taskNotifications}}
-    <li>{{@index}}. {{this.title}}</li>
+    <tr>
+      <td>{{@index}}</td>
+      <td>{{this.title}}</td>
+      <td>{{this.price}}</td>
+      <td>{{this.dueDate}}</td>
+      <td>{{this.address}}</td>
+    </tr>
   {{/each}}
-</ul>
+</table>
