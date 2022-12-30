@@ -1,2 +1,7 @@
 <h2>Здравствуйте, {{name}}!</h2>
 <p>Сообщаем Вам о новых задачах за прошедший период:</p>
+<ul>
+  {{#each taskNotifications}}
+    <li>{{@index}}. {{this.title}}</li>
+  {{/each}}
+</ul>

@@ -1,10 +1,10 @@
 import { TaskNotificationService } from './task-notification.service';
 import { EventPattern } from '@nestjs/microservices';
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CommandEvent } from '@taskforce/shared-types';
 import { CreateTaskNotificationDto } from './dto/create-task-notification.dto';
 
-@Controller()
+@Controller('notify')
 export class TaskNotificationController {
   constructor(
     private readonly taskNotificationService: TaskNotificationService
@@ -13,5 +13,10 @@ export class TaskNotificationController {
   @EventPattern({ cmd: CommandEvent.AddTaskNotification })
   public async create(taskNotification: CreateTaskNotificationDto) {
     return this.taskNotificationService.addNotification(taskNotification);
+  }
+
+  @Get('/')
+  async notifyNewTasks() {
+    return this.taskNotificationService.notifyNewTasks();
   }
 }

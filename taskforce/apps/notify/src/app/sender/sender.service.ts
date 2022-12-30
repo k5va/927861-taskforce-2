@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { Subscriber } from '@taskforce/shared-types';
+import { Subscriber, TaskNotification } from '@taskforce/shared-types';
 import {
   EMAIL_ADD_SUBSCRIBER_SUBJECT,
   EMAIL_NEW_TASKS_SUBJECT,
@@ -22,13 +22,14 @@ export class SenderService {
     });
   }
 
-  public async sendNotifyNewTasks() {
+  public async sendNotifyNewTasks(taskNotifications: TaskNotification[]) {
     return await this.mailerService.sendMail({
       to: 'keks@local.me',
       subject: EMAIL_NEW_TASKS_SUBJECT,
       template: './new-tasks',
       context: {
         name: 'Keks',
+        taskNotifications,
       },
     });
   }

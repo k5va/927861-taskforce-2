@@ -28,6 +28,30 @@ export class TaskNotificationRepository
     return this.taskNotificationModel.findById(id).exec();
   }
 
+  public async findNotNotified(): Promise<TaskNotification[]> {
+    return this.taskNotificationModel
+      .find({
+        notifyDate: undefined,
+      })
+      .exec();
+  }
+
+  public async updateNotifyDate(
+    ids: string[],
+    notifyDate: Date
+  ): Promise<void> {
+    this.taskNotificationModel
+      .updateMany(
+        {
+          _id: { $in: ids },
+        },
+        {
+          notifyDate,
+        }
+      )
+      .exec();
+  }
+
   public async update(
     id: string,
     data: Partial<TaskNotificationEntity>
