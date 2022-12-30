@@ -13,6 +13,7 @@ import {
 import envSchema from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EmailSubscriberModule } from './email-subscriber/email-subscriber.module';
+import { TaskNotificationModule } from './task-notification/task-notification.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { EmailSubscriberModule } from './email-subscriber/email-subscriber.modul
     MailerModule.forRootAsync(getMailerOptions()),
     MongooseModule.forRootAsync(getMongoDbOptions()),
     EmailSubscriberModule,
+    TaskNotificationModule,
     SenderModule,
   ],
   controllers: [],
