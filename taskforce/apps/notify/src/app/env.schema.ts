@@ -15,5 +15,6 @@ export default Joi.object({
   RABBIT_PASSWORD: Joi.string().required(),
   RABBIT_HOST: Joi.string().hostname().required(),
   RABBIT_PORT: Joi.number().port().required(),
-  RABBIT_NOTIFY_SERVICE_QUEUE: Joi.string().required(),
+  RABBIT_NOTIFY_SERVICE_SUBSCRIBERS_QUEUE: Joi.string().required(),
+  RABBIT_NOTIFY_SERVICE_TASKS_QUEUE: Joi.string().required(),
 });

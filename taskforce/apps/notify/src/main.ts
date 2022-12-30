@@ -8,13 +8,16 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import { getRabbitMqOptions } from './config';
+import { getRabbitMqOptions, NotifyQueue } from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get<ConfigService>(ConfigService);
-  app.connectMicroservice(getRabbitMqOptions(configService));
+  app.connectMicroservice(
+    getRabbitMqOptions(configService, NotifyQueue.Subscribers)
+  );
+  app.connectMicroservice(getRabbitMqOptions(configService, NotifyQueue.Tasks));
 
   await app.startAllMicroservices();
   Logger.log(`🚀 Notify service is running on`);
@@ -25,7 +28,9 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3333;
   await app.listen(port);
-  Logger.log(`🚀 REST is running on: http://localhost:${port}/${globalPrefix}`);
+  Logger.log(
+    `🚀 Notify is running on: http://localhost:${port}/${globalPrefix}`
+  );
 }
 
 bootstrap();

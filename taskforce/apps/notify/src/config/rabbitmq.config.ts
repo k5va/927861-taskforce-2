@@ -5,5 +5,6 @@ export const rabbitMqConfig = registerAs('rmq', () => ({
   password: process.env.RABBIT_PASSWORD,
   host: process.env.RABBIT_HOST,
   port: process.env.RABBIT_PORT,
-  queue: process.env.RABBIT_NOTIFY_SERVICE_QUEUE,
+  subscribersQueue: process.env.RABBIT_NOTIFY_SERVICE_SUBSCRIBERS_QUEUE,
+  tasksQueue: process.env.RABBIT_NOTIFY_SERVICE_TASKS_QUEUE,
 }));
