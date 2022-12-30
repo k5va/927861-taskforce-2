@@ -8,6 +8,7 @@ export const TASK_ADDRESS_MAX_LENGTH = 255;
 export const TASK_PRICE_MIN_VALUE = 0;
 export const TASK_TAGS_MAX_NUM = 5;
 export const DEFAULT_TASKS_LIMIT = 25;
+
 export const TASK_SORT_TYPES = ['created', 'popular', 'discussed'] as const;
 export const DEFAULT_TASK_SORT_TYPE = 'created';
 export const TASK_SORT: Record<typeof TASK_SORT_TYPES[number], unknown> = {
@@ -23,3 +24,5 @@ export const TASK_SORT: Record<typeof TASK_SORT_TYPES[number], unknown> = {
     },
   },
 };
+
+export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');

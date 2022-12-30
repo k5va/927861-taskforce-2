@@ -1,19 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { Task, TaskStatus } from '@taskforce/shared-types';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import {
+  CommandEvent,
+  Task,
+  TaskNotification,
+  TaskStatus,
+} from '@taskforce/shared-types';
 import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
-import { TASK_NOT_FOUND_ERROR } from './task.const';
+import { RABBITMQ_SERVICE, TASK_NOT_FOUND_ERROR } from './task.const';
 import { TaskEntity } from './task.entity';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
-    private readonly commentService: CommentService
+    private readonly commentService: CommentService,
+    @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
   async create(customerId: string, dto: CreateTaskDto): Promise<Task> {
@@ -26,7 +33,20 @@ export class TaskService {
       responses: [],
     });
 
-    return this.taskRepository.create(taskEntity);
+    const newTask = await this.taskRepository.create(taskEntity);
+
+    this.rabbitClient.emit<void, TaskNotification>(
+      { cmd: CommandEvent.AddTaskNotification },
+      {
+        title: newTask.title,
+        price: newTask.price,
+        dueDate: newTask.dueDate,
+        address: newTask.address,
+        taskId: newTask.id,
+      }
+    );
+
+    return newTask;
   }
 
   async getTask(id: number): Promise<Task> {
