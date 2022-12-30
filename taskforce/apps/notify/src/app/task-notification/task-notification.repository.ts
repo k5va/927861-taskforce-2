@@ -33,6 +33,7 @@ export class TaskNotificationRepository
       .find({
         notifyDate: undefined,
       })
+      .lean()
       .exec();
   }
 

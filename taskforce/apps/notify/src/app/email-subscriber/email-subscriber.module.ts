@@ -18,5 +18,6 @@ import { SenderModule } from '../sender/sender.module';
   ],
   controllers: [EmailSubscriberController],
   providers: [EmailSubscriberService, EmailSubscriberRepository],
+  exports: [EmailSubscriberService],
 })
 export class EmailSubscriberModule {}

@@ -8,10 +8,12 @@ import {
 } from './task-notification.model';
 import { SenderModule } from '../sender/sender.module';
 import { TaskNotificationRepository } from './task-notification.repository';
+import { EmailSubscriberModule } from '../email-subscriber/email-subscriber.module';
 
 @Module({
   imports: [
     SenderModule,
+    EmailSubscriberModule,
     MongooseModule.forFeature([
       { name: TaskNotificationModel.name, schema: TaskNotificationSchema },
     ]),

@@ -5,7 +5,7 @@ export class TaskNotificationEntity
   extends AbstractEntity
   implements TaskNotification
 {
-  public id?: string;
+  public _id?: string;
   public title: string;
   public address?: string;
   public price?: number;
@@ -16,7 +16,7 @@ export class TaskNotificationEntity
   constructor(data: TaskNotification) {
     super();
 
-    this.id = data.id;
+    this._id = data._id;
     this.title = data.title;
     this.address = data.address;
     this.price = data.price;

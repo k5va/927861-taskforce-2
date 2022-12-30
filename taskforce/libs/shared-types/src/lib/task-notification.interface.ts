@@ -1,5 +1,5 @@
 export interface TaskNotification {
-  id?: string;
+  _id?: string;
   title: string;
   price?: number;
   dueDate?: Date;

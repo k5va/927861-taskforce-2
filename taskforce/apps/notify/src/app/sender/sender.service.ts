@@ -10,27 +10,32 @@ import {
 export class SenderService {
   constructor(private readonly mailerService: MailerService) {}
 
-  public async sendNotifyNewSubscriber(subscriber: Subscriber) {
+  public async sendNotifyNewSubscriber({ email, name }: Subscriber) {
     return await this.mailerService.sendMail({
-      to: subscriber.email,
+      to: email,
       subject: EMAIL_ADD_SUBSCRIBER_SUBJECT,
       template: './add-subscriber',
       context: {
-        name: subscriber.name,
-        email: subscriber.email,
+        name,
+        email,
       },
     });
   }
 
-  public async sendNotifyNewTasks(taskNotifications: TaskNotification[]) {
-    return await this.mailerService.sendMail({
-      to: 'keks@local.me',
-      subject: EMAIL_NEW_TASKS_SUBJECT,
-      template: './new-tasks',
-      context: {
-        name: 'Keks',
-        taskNotifications,
-      },
-    });
+  public async sendNotifyNewTasks(
+    subscribers: Subscriber[],
+    taskNotifications: TaskNotification[]
+  ) {
+    for (const { email, name } of subscribers) {
+      this.mailerService.sendMail({
+        to: email,
+        subject: EMAIL_NEW_TASKS_SUBJECT,
+        template: './new-tasks',
+        context: {
+          name,
+          taskNotifications,
+        },
+      });
+    }
   }
 }

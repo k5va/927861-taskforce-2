@@ -1,6 +1,6 @@
 import { CRUDRepository } from '@taskforce/core';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
-import { Subscriber } from '@taskforce/shared-types';
+import { Subscriber, UserRole } from '@taskforce/shared-types';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -30,6 +30,14 @@ export class EmailSubscriberRepository
 
   public async findByEmail(email: string): Promise<Subscriber | null> {
     return this.emailSubscriberModel.findOne({ email }).exec();
+  }
+
+  public async findAllContractors(): Promise<Subscriber[]> {
+    return this.emailSubscriberModel
+      .find({
+        role: UserRole.Contractor,
+      })
+      .exec();
   }
 
   public async update(
