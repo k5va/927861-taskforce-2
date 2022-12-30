@@ -1,5 +1,5 @@
 import { AbstractEntity } from '@taskforce/core';
-import { Subscriber } from '@taskforce/shared-types';
+import { Subscriber, UserRole } from '@taskforce/shared-types';
 
 export class EmailSubscriberEntity
   extends AbstractEntity
@@ -8,6 +8,7 @@ export class EmailSubscriberEntity
   public id?: string;
   public email: string;
   public name: string;
+  public role: UserRole;
   public userId: string;
 
   constructor(data: Subscriber) {
@@ -16,6 +17,7 @@ export class EmailSubscriberEntity
     this.id = data.id;
     this.email = data.email;
     this.name = data.name;
+    this.role = data.role;
     this.userId = data.userId;
   }
 }
