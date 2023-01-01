@@ -1,5 +1,9 @@
 export interface Review {
+  id?: number;
   text: string;
-  task: string;
+  customer: string;
+  contractor: string;
   rating: number;
+  taskId: number;
+  registerDate?: Date;
 }
