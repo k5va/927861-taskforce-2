@@ -6,7 +6,7 @@ export class TaskRdo {
   @ApiProperty({
     description: 'Task Id',
     required: true,
-    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+    example: 0,
   })
   @Expose()
   id: number;
