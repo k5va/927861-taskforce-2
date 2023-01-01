@@ -10,10 +10,10 @@
   </tr>
   {{#each taskNotifications}}
     <tr>
-      <td>{{@index}}</td>
+      <td>{{increment @index}}</td>
       <td>{{this.title}}</td>
       <td>{{this.price}}</td>
-      <td>{{this.dueDate}}</td>
+      <td>{{formatDate this.dueDate}}</td>
       <td>{{this.address}}</td>
     </tr>
   {{/each}}
