@@ -28,6 +28,7 @@ model Task {
   contractor     String?
   comments       Comment[]
   responses      Response[]
+  review         Review?
 }
 
 model Category {
@@ -42,7 +43,7 @@ model Comment {
   task            Task @relation(fields: [taskId], references: [id])
   taskId          Int
   author          String
-  registerDate   DateTime @default(now())
+  registerDate    DateTime @default(now())
 }
 
 model Response {
@@ -50,4 +51,15 @@ model Response {
   contractor      String
   task            Task @relation(fields: [taskId], references: [id])
   taskId          Int
+}
+
+model Review {
+  id              Int @id @default(autoincrement())
+  contractor      String
+  customer        String
+  task            Task @relation(fields: [taskId], references: [id])
+  taskId          Int @unique
+  text            String
+  rating          Float
+  registerDate    DateTime @default(now())
 }
