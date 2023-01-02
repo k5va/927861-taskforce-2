@@ -47,11 +47,12 @@ GET http://localhost:3335/api/tasks/new?tags=cleaning HTTP/1.1
 ###
 
 # Change task's status
-PATCH http://localhost:3335/api/tasks/task/5/status HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/43/status HTTP/1.1
 Content-Type: application/json
 
 {
-  "status": "canceled"
+  "status": "inProgress",
+  "contractor": "63b325e47cd9f2573b2cf15d"
 }
 
 ###
@@ -93,5 +94,23 @@ POST http://localhost:3335/api/tasks/task/5/response HTTP/1.1
 
 # Get all responses by task
 GET http://localhost:3335/api/tasks/task/5/response HTTP/1.1
+
+###
+
+# Add review to task
+POST http://localhost:3335/api/tasks/review HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "Nice doooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooone!",
+  "contractor": "63b325e47cd9f2573b2cf15d",
+  "rating": 5,
+  "taskId": 43
+}
+
+###
+
+# Get task contractor rating
+GET http://localhost:3335/api/tasks/contractor/63b325e47cd9f2573b2cf15d/rating HTTP/1.1
 
 ###

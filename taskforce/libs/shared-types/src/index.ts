@@ -10,3 +10,4 @@ export * from './lib/cities';
 export * from './lib/subscriber.interface';
 export * from './lib/command-event.ts';
 export * from './lib/task-notification.interface';
+export * from './lib/task-contractor.interface';

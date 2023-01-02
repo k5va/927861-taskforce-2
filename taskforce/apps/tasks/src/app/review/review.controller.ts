@@ -6,16 +6,16 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRdo } from './rdo/review.rdo';
 
 @ApiTags('tasks')
-@Controller('review')
+@Controller('tasks')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Post()
+  @Post('review')
   @ApiResponse({
     type: ReviewRdo,
     status: HttpStatus.CREATED,
     description: 'Review was successfully created',
-  })
+  }) // TODO: move taskId to param?
   async create(@Body() dto: CreateReviewDto) {
     const customerId = '123'; //TODO: temporary
     const newReview = await this.reviewService.create(dto, customerId);

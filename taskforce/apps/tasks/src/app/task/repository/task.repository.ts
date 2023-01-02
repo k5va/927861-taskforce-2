@@ -6,6 +6,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { TaskQuery } from '../query/task.query';
 import { TASK_SORT } from '../task.const';
 import { PersonalTaskQuery } from '../query';
+import { calculateRating } from '../../app.utils';
 
 @Injectable()
 export class TaskRepository
@@ -155,18 +156,58 @@ export class TaskRepository
     itemId: number,
     data: Omit<Partial<TaskEntity>, 'id' | 'comments' | 'responses'>
   ): Promise<Task> {
-    const prismaData = await this.prisma.task.update({
-      where: {
-        id: itemId,
-      },
-      data,
-      include: {
-        category: true,
-        comments: true,
-        responses: true,
-      },
-    });
+    return this.prisma.$transaction(async (tx) => {
+      // update task data
+      const updatedTask = await tx.task.update({
+        where: {
+          id: itemId,
+        },
+        data,
+        include: {
+          category: true,
+          comments: true,
+          responses: true,
+        },
+      });
 
-    return prismaData;
+      if (data.status === TaskStatus.InProgress && data.contractor) {
+        // create task contractor if not exists
+        await tx.taskContractor.upsert({
+          where: {
+            contractor: data.contractor,
+          },
+          update: {},
+          create: {
+            contractor: data.contractor,
+          },
+        });
+      }
+
+      if (data.status === TaskStatus.Failed) {
+        // update task contractor failed tasks count
+        const taskContractor = await tx.taskContractor.update({
+          where: {
+            contractor: updatedTask.contractor,
+          },
+          data: {
+            failedTasksCount: {
+              increment: 1,
+            },
+          },
+        });
+
+        // update rating
+        await tx.taskContractor.update({
+          where: {
+            contractor: updatedTask.contractor,
+          },
+          data: {
+            rating: calculateRating(taskContractor),
+          },
+        });
+      }
+
+      return updatedTask;
+    });
   }
 }

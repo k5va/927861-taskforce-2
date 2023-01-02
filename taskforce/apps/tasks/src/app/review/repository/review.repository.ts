@@ -3,6 +3,7 @@ import { Review } from '@taskforce/shared-types';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { ReviewEntity } from '../review.entity';
+import { calculateRating } from '../../app.utils';
 
 @Injectable()
 export class ReviewRepository
@@ -11,10 +12,46 @@ export class ReviewRepository
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: ReviewEntity): Promise<Review> {
-    return this.prisma.review.create({
-      data: {
-        ...item.toObject(),
-      },
+    // return this.prisma.review.create({
+    //   data: {
+    //     ...item.toObject(),
+    //   },
+    // });
+
+    return this.prisma.$transaction(async (tx) => {
+      // create new Review
+      const newReview = await tx.review.create({
+        data: {
+          ...item.toObject(),
+        },
+      });
+
+      // update task contractor ratingSum and reviewsCount
+      const taskContractor = await tx.taskContractor.update({
+        where: {
+          contractor: item.contractor,
+        },
+        data: {
+          reviewsCount: {
+            increment: 1,
+          },
+          ratingSum: {
+            increment: item.rating,
+          },
+        },
+      });
+
+      // update rating
+      await tx.taskContractor.update({
+        where: {
+          contractor: item.contractor,
+        },
+        data: {
+          rating: calculateRating(taskContractor),
+        },
+      });
+
+      return newReview;
     });
   }
 

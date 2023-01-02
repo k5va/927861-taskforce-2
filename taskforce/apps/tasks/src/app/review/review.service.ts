@@ -10,7 +10,7 @@ export class ReviewService {
   constructor(private readonly reviewRepository: ReviewRepository) {}
 
   public async create(dto: CreateReviewDto, customer: string): Promise<Review> {
-    // TODO: check customer === task.customer and contractor === task.contractor
+    // TODO: check customer === task.customer and contractor === task.contractor and task.status === completed
     const existingReview = await this.reviewRepository.findByCustomerAndTask(
       customer,
       dto.taskId
@@ -19,15 +19,13 @@ export class ReviewService {
       throw new Error(REVIEW_ALREADY_EXISTS);
     }
 
-    const reviewEntity = new ReviewEntity({
-      ...dto,
-      customer,
-    });
+    const newReview = await this.reviewRepository.create(
+      new ReviewEntity({
+        ...dto,
+        customer,
+      })
+    );
 
-    return this.reviewRepository.create(reviewEntity);
-  }
-
-  public async findbyContractor(constractor: string): Promise<Review[]> {
-    return this.reviewRepository.findByContractor(constractor);
+    return newReview;
   }
 }

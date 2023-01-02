@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TaskStatus } from '@taskforce/shared-types';
-import { IsIn, IsString } from 'class-validator';
+import { IsIn, IsOptional, IsString } from 'class-validator';
 
 export class ChangeTaskStatusDto {
   @ApiProperty({
@@ -17,5 +17,6 @@ export class ChangeTaskStatusDto {
     example: '1282499d-5b42-4007-b103-a8b7f8f51835',
   })
   @IsString()
+  @IsOptional()
   public contractor?: string;
 }

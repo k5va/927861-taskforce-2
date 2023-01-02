@@ -7,6 +7,8 @@ import { CommentModule } from './comment/comment.module';
 import { envSchema } from './env.schema';
 import { PrismaModule } from './prisma/prisma.module';
 import { ResponseModule } from './response/response.module';
+import { ReviewModule } from './review/review.module';
+import { TaskContractorModule } from './task-contractor/task-contractor.module';
 import { TaskModule } from './task/task.module';
 
 @Module({
@@ -22,6 +24,8 @@ import { TaskModule } from './task/task.module';
     CommentModule,
     CategoryModule,
     ResponseModule,
+    ReviewModule,
+    TaskContractorModule,
     PrismaModule,
   ],
   controllers: [],

@@ -35,6 +35,7 @@ export class TaskService {
 
     const newTask = await this.taskRepository.create(taskEntity);
 
+    // send task notification event
     this.rabbitClient.emit<void, TaskNotification>(
       { cmd: CommandEvent.AddTaskNotification },
       {
@@ -97,6 +98,7 @@ export class TaskService {
     return this.taskRepository.findByContractor(id, query);
   }
 
+  // TODO: Add status validation
   async changeTaskStatus(id: number, dto: ChangeTaskStatusDto): Promise<Task> {
     const existingTask = await this.taskRepository.findById(id);
 
