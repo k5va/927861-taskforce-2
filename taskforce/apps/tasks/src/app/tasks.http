@@ -7,7 +7,8 @@ Content-Type: application/json
   "description": "Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
   "categoryId": 1,
   "price": 100,
-  "dueDate": "2023-02-22"
+  "dueDate": "2023-02-22",
+  "city": "Санкт-Петербург"
 }
 
 ###
