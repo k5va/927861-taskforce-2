@@ -10,6 +10,7 @@ export interface Task {
   dueDate?: Date;
   image?: string;
   address?: string;
+  city: string;
   tags?: string[];
   customer: string;
   registerDate?: Date;
