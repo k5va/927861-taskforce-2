@@ -106,4 +106,12 @@ export class TaskRdo {
   })
   @Expose()
   customer: string;
+
+  @ApiProperty({
+    description: 'Task contractor id',
+    required: false,
+    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+  })
+  @Expose()
+  contractor: string;
 }

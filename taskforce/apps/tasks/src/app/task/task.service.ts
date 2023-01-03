@@ -12,8 +12,13 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
-import { RABBITMQ_SERVICE, TASK_NOT_FOUND_ERROR } from './task.const';
+import {
+  INVALID_COMMAND_ERROR,
+  RABBITMQ_SERVICE,
+  TASK_NOT_FOUND_ERROR,
+} from './task.const';
 import { TaskEntity } from './task.entity';
+import { createTaskStateMachine } from './task.utils';
 
 @Injectable()
 export class TaskService {
@@ -98,7 +103,6 @@ export class TaskService {
     return this.taskRepository.findByContractor(id, query);
   }
 
-  // TODO: Add status validation
   async changeTaskStatus(id: number, dto: ChangeTaskStatusDto): Promise<Task> {
     const existingTask = await this.taskRepository.findById(id);
 
@@ -106,6 +110,24 @@ export class TaskService {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    return this.taskRepository.update(id, dto);
+    // create task state machine to validate changing task status
+    const taskStateMachine = createTaskStateMachine(existingTask.status);
+    if (!taskStateMachine.initialState.can(dto.command)) {
+      // can't make state transition with recieved command
+      throw new Error(INVALID_COMMAND_ERROR);
+    }
+
+    // make state transition to get a new state
+    const nextState = taskStateMachine.transition(
+      taskStateMachine.initialState,
+      {
+        type: dto.command,
+      }
+    );
+
+    return this.taskRepository.update(id, {
+      status: nextState.value.toString(),
+      contractor: dto.contractor,
+    });
   }
 }
