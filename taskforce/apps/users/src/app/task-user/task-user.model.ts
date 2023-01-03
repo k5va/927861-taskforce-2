@@ -4,6 +4,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
   collection: 'users',
+  timestamps: true,
 })
 export class TaskUserModel extends Document implements User {
   @Prop({
@@ -41,9 +42,6 @@ export class TaskUserModel extends Document implements User {
     required: true,
   })
   public birthDate: Date;
-
-  @Prop()
-  public registerDate: Date;
 
   @Prop()
   public description: string;

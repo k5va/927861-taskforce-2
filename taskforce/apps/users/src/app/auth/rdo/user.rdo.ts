@@ -34,7 +34,7 @@ export class UserRdo {
     required: true,
     example: '2022-11-29',
   })
-  @Expose()
+  @Expose({ name: 'createdAt' })
   registerDate: string;
 
   @ApiProperty({
