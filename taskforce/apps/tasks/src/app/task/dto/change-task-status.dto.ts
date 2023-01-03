@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TaskStatus } from '@taskforce/shared-types';
+import { TaskStatus, TaskStatuses } from '@taskforce/shared-types';
 import { IsIn, IsOptional, IsString } from 'class-validator';
 
 export class ChangeTaskStatusDto {
@@ -8,7 +8,7 @@ export class ChangeTaskStatusDto {
     required: true,
     example: 'cancelled',
   })
-  @IsIn(Object.values(TaskStatus))
+  @IsIn(Object.values(TaskStatuses))
   public status: TaskStatus;
 
   @ApiProperty({

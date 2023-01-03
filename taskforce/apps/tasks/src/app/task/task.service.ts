@@ -4,7 +4,7 @@ import {
   CommandEvent,
   Task,
   TaskNotification,
-  TaskStatus,
+  TaskStatuses,
 } from '@taskforce/shared-types';
 import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
@@ -26,7 +26,7 @@ export class TaskService {
   async create(customerId: string, dto: CreateTaskDto): Promise<Task> {
     const taskEntity = new TaskEntity({
       ...dto,
-      status: TaskStatus.New,
+      status: TaskStatuses.New,
       customer: customerId,
       dueDate: dto.dueDate ? new Date(dto.dueDate) : undefined,
       comments: [],

@@ -1,5 +1,5 @@
 import { CRUDRepository } from '@taskforce/core';
-import { Task, TaskStatus } from '@taskforce/shared-types';
+import { Task, TaskStatuses } from '@taskforce/shared-types';
 import { TaskEntity } from '../task.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -90,7 +90,7 @@ export class TaskRepository
             }
           : undefined,
         status: {
-          equals: TaskStatus.New,
+          equals: TaskStatuses.New,
         },
       },
       take: limit,
@@ -170,7 +170,7 @@ export class TaskRepository
         },
       });
 
-      if (data.status === TaskStatus.InProgress && data.contractor) {
+      if (data.status === TaskStatuses.InProgress && data.contractor) {
         // create task contractor if not exists
         await tx.taskContractor.upsert({
           where: {
@@ -183,7 +183,7 @@ export class TaskRepository
         });
       }
 
-      if (data.status === TaskStatus.Failed) {
+      if (data.status === TaskStatuses.Failed) {
         // update task contractor failed tasks count
         const taskContractor = await tx.taskContractor.update({
           where: {
