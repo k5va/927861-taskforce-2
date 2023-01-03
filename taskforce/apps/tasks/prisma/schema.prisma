@@ -21,6 +21,7 @@ model Task {
   dueDate        DateTime?
   image          String?
   address        String?
+  city           String
   tags           String[]
   customer       String
   registerDate   DateTime @default(now())

@@ -15,12 +15,14 @@ async function fillDb() {
             description: 'Three rooms + kitchen',
             customer: '11',
             status: 'new',
+            city: 'Москва',
           },
           {
             title: 'Need to clean my studio',
             description: 'One rooms only',
             customer: '22',
             status: 'new',
+            city: 'Владивосток',
             tags: ['cleaning', 'studio'],
             comments: {
               create: [
@@ -48,6 +50,7 @@ async function fillDb() {
             customer: '33',
             status: 'new',
             address: 'Somewhere in Tashkent',
+            city: 'Владивосток',
             responses: {
               create: [
                 {

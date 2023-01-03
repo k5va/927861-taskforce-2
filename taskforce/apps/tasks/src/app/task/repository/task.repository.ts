@@ -76,7 +76,7 @@ export class TaskRepository
     page,
     categories,
     tags,
-    cities, // TODO: add city field to task!
+    cities,
     sort,
   }: TaskQuery): Promise<Task[]> {
     return this.prisma.task.findMany({
@@ -89,6 +89,9 @@ export class TaskRepository
               hasEvery: tags,
             }
           : undefined,
+        city: {
+          in: cities,
+        },
         status: {
           equals: TaskStatuses.New,
         },

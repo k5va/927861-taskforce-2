@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { CITIES } from '@taskforce/shared-types';
 import {
   ArrayMaxSize,
+  IsIn,
   IsISO8601,
   IsNumber,
   IsOptional,
@@ -81,6 +83,10 @@ export class CreateTaskDto {
   @Length(TASK_ADDRESS_MIN_LENGTH, TASK_ADDRESS_MAX_LENGTH)
   @IsOptional()
   public address?: string;
+
+  @IsString()
+  @IsIn(CITIES)
+  public city: string;
 
   @ApiProperty({
     description: 'tags',

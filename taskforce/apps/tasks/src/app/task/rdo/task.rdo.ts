@@ -84,6 +84,14 @@ export class TaskRdo {
   address: string;
 
   @ApiProperty({
+    description: 'Task city',
+    required: false,
+    example: 'Москва',
+  })
+  @Expose()
+  city: string;
+
+  @ApiProperty({
     description: 'Task tags',
     required: false,
     example: ['tag1', 'tag2'],
