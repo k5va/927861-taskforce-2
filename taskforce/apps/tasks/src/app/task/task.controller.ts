@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
-import { UserRole } from '@taskforce/shared-types';
+import { UserRoles } from '@taskforce/shared-types';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -96,9 +96,9 @@ export class TaskController {
   })
   async showPersonal(@Query() query: PersonalTaskQuery) {
     const userId = '123'; // TODO: temporary
-    const userRole = UserRole.Customer;
+    const userRole = UserRoles.Customer;
 
-    return userRole === UserRole.Customer
+    return userRole === UserRoles.Customer
       ? fillObject(TaskRdo, this.taskService.findByCustomer(userId, query))
       : fillObject(TaskRdo, this.taskService.findByContractor(userId, query));
   }

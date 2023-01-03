@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
-import { UserRole } from '@taskforce/shared-types';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -25,6 +24,7 @@ import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 import { JwtAuthGuard, RtAuthGuard } from './guards';
 import { GetUser } from './decorators';
+import { UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -74,7 +74,7 @@ export class AuthController {
   })
   async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existingUser = await this.authService.getUser(id);
-    return existingUser.role === UserRole.Customer
+    return existingUser.role === UserRoles.Customer
       ? fillObject(CustomerRdo, existingUser)
       : fillObject(ContractorRdo, existingUser);
   }

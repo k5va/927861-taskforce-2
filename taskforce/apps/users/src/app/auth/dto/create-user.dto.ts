@@ -1,4 +1,4 @@
-import { CITIES, UserRole } from '@taskforce/shared-types';
+import { CITIES, UserRoles, UserRole } from '@taskforce/shared-types';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsIn, IsISO8601, IsString, Length } from 'class-validator';
 import {
@@ -56,7 +56,7 @@ export class CreateUserDto {
     required: true,
     example: 'Customer',
   })
-  @IsIn(Object.values(UserRole), { message: ROLE_NOT_VALID_ERROR })
+  @IsIn(Object.values(UserRoles), { message: ROLE_NOT_VALID_ERROR })
   public role: UserRole;
 
   @ApiProperty({

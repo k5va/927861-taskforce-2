@@ -1,5 +1,5 @@
 import { Document } from 'mongoose';
-import { Subscriber, UserRole } from '@taskforce/shared-types';
+import { Subscriber, UserRole, UserRoles } from '@taskforce/shared-types';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { SUBSCRIBERS_COLLECTION_NAME } from './email-subscriber.const';
 
@@ -22,7 +22,7 @@ export class EmailSubscriberModel extends Document implements Subscriber {
   @Prop({
     required: true,
     type: String,
-    enum: UserRole,
+    enum: Object.values(UserRoles),
   })
   public role: UserRole;
 

@@ -1,4 +1,4 @@
-import { UserRole } from '@taskforce/shared-types';
+import { UserRole, UserRoles } from '@taskforce/shared-types';
 import { IsEmail, IsIn, IsNotEmpty } from 'class-validator';
 import {
   EMAIL_NOT_VALID,
@@ -14,7 +14,7 @@ export class CreateSubscriberDto {
   @IsNotEmpty({ message: NAME_IS_EMPTY })
   name: string;
 
-  @IsIn(Object.values(UserRole), { message: ROLE_NOT_VALID })
+  @IsIn(Object.values(UserRoles), { message: ROLE_NOT_VALID })
   role: UserRole;
 
   @IsNotEmpty({ message: USER_ID_IS_EMPTY })
