@@ -3,18 +3,17 @@ import { AuthModule } from './auth/auth.module';
 import { TaskUserModule } from './task-user/task-user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
-import envSchema from './env.schema';
+import { envSchema } from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import {
   databaseConfig,
   getMongoConfig,
   jwtConfig,
-  staticConfig,
   rabbitMqConfig,
   rtConfig,
-  getServeStaticOptions,
 } from '../config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { getServeStaticOptions, staticConfig } from '@taskforce/config';
 
 @Module({
   imports: [

@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 import { DEFAULT_MONGO_DB_PORT } from './app.const';
 
-export default Joi.object({
+export const envSchema = Joi.object({
   MONGO_DB: Joi.string().required(),
   MONGO_HOST: Joi.string().hostname().required(),
   MONGO_PORT: Joi.number().port().default(DEFAULT_MONGO_DB_PORT).required(),

@@ -62,7 +62,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhM
 # Upload avatar
 POST http://localhost:3334/api/auth/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzI4Mzg4NTYsImV4cCI6MTY3MjgzODkxNn0.qNvi18Az3OV4qeMGgkQAW7BZQMQ8VTKCD6zAHufQEtI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzI4NDAxODEsImV4cCI6MTY3Mjg0MDI0MX0.GQh_EMEaaCKUF_QtlWlvdD3Hip6SIYEjp73mcD2wUaA
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
@@ -74,6 +74,6 @@ Content-Type: image/jpeg
 ###
 
 # download avatar
-GET http://localhost:3334/static/CbmgTh5PWFwN-09-muAO5.jpeg HTTP/1.1
+GET http://localhost:3334/static/D_VLTjkQxfo4VIUzjCvYx.jpeg HTTP/1.1
 
 ###
