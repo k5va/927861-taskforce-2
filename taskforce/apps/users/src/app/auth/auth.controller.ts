@@ -1,14 +1,19 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Put,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -25,6 +30,9 @@ import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 import { JwtAuthGuard, RtAuthGuard } from './guards';
 import { GetUser } from './decorators';
 import { UserRoles } from '@taskforce/shared-types';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Multer } from 'multer';
+import { AVATAR_FILE_TYPE, MAX_AVATAR_SIZE } from './auth.const';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -106,6 +114,30 @@ export class AuthController {
     @Body() dto: ChangePasswordDto
   ) {
     const updatedUser = await this.authService.changePassword(id, dto);
+    return fillObject(UserRdo, updatedUser);
+  }
+
+  @Post('avatar')
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'Avatar was sussessfully uploaded',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  async uploadAvatar(
+    @GetUser('id') userId: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
+          new FileTypeValidator({ fileType: AVATAR_FILE_TYPE }),
+        ],
+      })
+    )
+    file: Express.Multer.File
+  ) {
+    const updatedUser = await this.authService.setAvatar(userId, file.filename);
     return fillObject(UserRdo, updatedUser);
   }
 

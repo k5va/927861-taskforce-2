@@ -4,3 +4,6 @@ export * from './jwt.config';
 export * from './rt.config';
 export * from './rabbitmq.config';
 export * from './get-rabbitmq-options';
+export * from './get-multer-options';
+export * from './static.config';
+export * from './get-serve-static-options';

@@ -3,7 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
-import { getRabbitMqOptions } from '../../config';
+import { MulterModule } from '@nestjs/platform-express';
+import { getMulterOptions, getRabbitMqOptions } from '../../config';
 import { TaskUserModule } from '../task-user/task-user.module';
 import { RABBITMQ_SERVICE } from './auth.const';
 import { AuthController } from './auth.controller';
@@ -22,6 +23,10 @@ import { JwtStrategy, RtStrategy } from './strategies';
         inject: [ConfigService],
       },
     ]),
+    MulterModule.registerAsync({
+      useFactory: getMulterOptions,
+      inject: [ConfigService],
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, RtStrategy, ConfigService],

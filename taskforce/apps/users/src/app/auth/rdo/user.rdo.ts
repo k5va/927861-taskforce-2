@@ -52,4 +52,11 @@ export class UserRdo {
   })
   @Expose()
   role: string;
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: '7pDY9SzWb_rIH_6sHcRbb.jpeg',
+  })
+  @Expose()
+  avatar: string;
 }

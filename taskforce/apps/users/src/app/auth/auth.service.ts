@@ -101,6 +101,18 @@ export class AuthService {
     });
   }
 
+  async setAvatar(id: string, fileName: string): Promise<User> {
+    const existingUser = await this.taskUserRepository.findById(id);
+
+    if (!existingUser) {
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+    }
+
+    return this.taskUserRepository.update(id, {
+      avatar: fileName,
+    });
+  }
+
   async changePassword(id: string, dto: ChangePasswordDto): Promise<User> {
     const { newPassword, oldPassword } = dto;
     const existingUser = await this.taskUserRepository.findById(id);

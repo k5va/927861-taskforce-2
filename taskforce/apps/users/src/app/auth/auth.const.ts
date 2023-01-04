@@ -20,3 +20,6 @@ export const REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 7;
 export const ACCESS_TOKEN_EXPIRE = 60;
 
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
+
+export const MAX_AVATAR_SIZE = 500 * 1024;
+export const AVATAR_FILE_TYPE = /image\/(jpeg|png)$/;
