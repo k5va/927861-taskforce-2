@@ -7,6 +7,8 @@ import { ClientsModule } from '@nestjs/microservices';
 import { RABBITMQ_SERVICE } from './task.const';
 import { ConfigService } from '@nestjs/config';
 import { getRabbitMqOptions } from '../../config/get-rabbitmq-options';
+import { MulterModule } from '@nestjs/platform-express';
+import { getMulterOptions } from '@taskforce/config';
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { getRabbitMqOptions } from '../../config/get-rabbitmq-options';
         inject: [ConfigService],
       },
     ]),
+    MulterModule.registerAsync({
+      useFactory: getMulterOptions,
+      inject: [ConfigService],
+    }),
   ],
   controllers: [TaskController],
   providers: [TaskRepository, TaskService, ConfigService],

@@ -78,6 +78,18 @@ export class TaskService {
     });
   }
 
+  async setImage(id: number, fileName: string): Promise<Task> {
+    const existingTask = await this.taskRepository.findById(id);
+
+    if (!existingTask) {
+      throw new Error(TASK_NOT_FOUND_ERROR);
+    }
+
+    return this.taskRepository.update(id, {
+      image: fileName,
+    });
+  }
+
   async deleteTask(id: number): Promise<void> {
     const existingTask = await this.taskRepository.findById(id);
 

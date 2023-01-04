@@ -28,3 +28,5 @@ export const TASK_SORT: Record<typeof TASK_SORT_TYPES[number], unknown> = {
 };
 
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
+export const MAX_TASK_IMAGE_SIZE = 1024 * 1024;
+export const TASK_IMAGE_FILE_TYPE = /image\/(jpeg|png)$/;

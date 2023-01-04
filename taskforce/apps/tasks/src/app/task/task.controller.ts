@@ -3,12 +3,17 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { UserRoles } from '@taskforce/shared-types';
@@ -18,6 +23,8 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskRdo } from './rdo/task.rdo';
 import { TaskService } from './task.service';
 import { PersonalTaskQuery, TaskQuery } from './query';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { MAX_TASK_IMAGE_SIZE, TASK_IMAGE_FILE_TYPE } from './task.const';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -118,6 +125,29 @@ export class TaskController {
     @Body() dto: ChangeTaskStatusDto
   ) {
     const updatedTask = await this.taskService.changeTaskStatus(id, dto);
+    return fillObject(TaskRdo, updatedTask);
+  }
+
+  @Post('task/:id/image')
+  @ApiResponse({
+    type: TaskRdo,
+    status: HttpStatus.OK,
+    description: 'Task image was sussessfully uploaded',
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @Param('id') taskId: number,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: MAX_TASK_IMAGE_SIZE }),
+          new FileTypeValidator({ fileType: TASK_IMAGE_FILE_TYPE }),
+        ],
+      })
+    )
+    file: Express.Multer.File
+  ) {
+    const updatedTask = await this.taskService.setImage(taskId, file.filename);
     return fillObject(TaskRdo, updatedTask);
   }
 }

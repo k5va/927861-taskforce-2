@@ -68,9 +68,9 @@ export class TaskRdo {
   dueDate: Date;
 
   @ApiProperty({
-    description: 'Task image link',
+    description: 'Task image',
     required: false,
-    example: '...',
+    example: 'MRV11zknpPKDulCtVIUez.jpeg',
   })
   @Expose()
   image: string;
