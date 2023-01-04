@@ -31,7 +31,6 @@ import { JwtAuthGuard, RtAuthGuard } from './guards';
 import { GetUser } from './decorators';
 import { UserRoles } from '@taskforce/shared-types';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Multer } from 'multer';
 import { AVATAR_FILE_TYPE, MAX_AVATAR_SIZE } from './auth.const';
 
 @ApiTags('auth')
