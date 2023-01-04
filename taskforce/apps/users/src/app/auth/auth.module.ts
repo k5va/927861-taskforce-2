@@ -4,7 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule } from '@nestjs/microservices';
 import { PassportModule } from '@nestjs/passport';
 import { MulterModule } from '@nestjs/platform-express';
-import { getRabbitMqOptions } from '../../config';
+import { getRabbitMqOptions } from '@taskforce/config';
 import { TaskUserModule } from '../task-user/task-user.module';
 import { RABBITMQ_SERVICE } from './auth.const';
 import { AuthController } from './auth.controller';

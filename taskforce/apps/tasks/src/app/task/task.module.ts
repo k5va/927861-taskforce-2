@@ -6,7 +6,7 @@ import { TaskService } from './task.service';
 import { ClientsModule } from '@nestjs/microservices';
 import { RABBITMQ_SERVICE } from './task.const';
 import { ConfigService } from '@nestjs/config';
-import { getRabbitMqOptions } from '../../config/get-rabbitmq-options';
+import { getRabbitMqOptions } from '@taskforce/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { getMulterOptions } from '@taskforce/config';
 

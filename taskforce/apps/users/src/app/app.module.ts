@@ -5,15 +5,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import { envSchema } from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import {
-  databaseConfig,
-  getMongoConfig,
-  jwtConfig,
-  rabbitMqConfig,
-  rtConfig,
-} from '../config';
+import { jwtConfig, rtConfig } from '../config';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { getServeStaticOptions, staticConfig } from '@taskforce/config';
+import {
+  getServeStaticOptions,
+  staticConfig,
+  rabbitMqConfig,
+  mongoDbConfig,
+  getMongoDbOptions,
+} from '@taskforce/config';
 
 @Module({
   imports: [
@@ -21,10 +21,10 @@ import { getServeStaticOptions, staticConfig } from '@taskforce/config';
       cache: true,
       isGlobal: true,
       envFilePath: ENV_FILE_PATH,
-      load: [databaseConfig, jwtConfig, rtConfig, rabbitMqConfig, staticConfig],
+      load: [mongoDbConfig, jwtConfig, rtConfig, rabbitMqConfig, staticConfig],
       validationSchema: envSchema,
     }),
-    MongooseModule.forRootAsync(getMongoConfig()),
+    MongooseModule.forRootAsync(getMongoDbOptions()),
     AuthModule,
     TaskUserModule,
     ServeStaticModule.forRootAsync({
