@@ -14,8 +14,6 @@ export class CustomerRdo {
   @ApiProperty({
     description: 'User name',
     required: true,
-    minLength: 3,
-    maxLength: 50,
     example: 'Keks Ivanov',
   })
   @Expose()

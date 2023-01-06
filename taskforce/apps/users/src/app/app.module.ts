@@ -5,7 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import { envSchema } from './env.schema';
 import { MongooseModule } from '@nestjs/mongoose';
-import { jwtConfig, rtConfig } from '../config';
+import { rtConfig } from '../config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import {
   getServeStaticOptions,
@@ -13,6 +13,7 @@ import {
   rabbitMqConfig,
   mongoDbConfig,
   getMongoDbOptions,
+  jwtConfig,
 } from '@taskforce/config';
 
 @Module({

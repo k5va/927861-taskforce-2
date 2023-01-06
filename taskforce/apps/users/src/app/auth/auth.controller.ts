@@ -15,7 +15,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { fillObject } from '@taskforce/core';
+import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -27,8 +27,7 @@ import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
-import { JwtAuthGuard, RtAuthGuard } from './guards';
-import { GetUser } from './decorators';
+import { RtAuthGuard } from './guards';
 import { UserRoles } from '@taskforce/shared-types';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AVATAR_FILE_TYPE, MAX_AVATAR_SIZE } from './auth.const';

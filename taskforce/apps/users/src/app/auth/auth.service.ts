@@ -7,6 +7,7 @@ import { TaskUserRepository } from '../task-user/repository/task-user.repository
 import { TaskUserEntity } from '../task-user/task-user.entity';
 import {
   ACCESS_TOKEN_EXPIRE,
+  DIFFERENT_USER_ERROR,
   INVALID_REFRESH_TOKEN_ERROR,
   RABBITMQ_SERVICE,
   REFRESH_TOKEN_EXPIRE,
@@ -88,37 +89,49 @@ export class AuthService {
     return existingUser;
   }
 
-  async updateUser(id: string, dto: UpdateUserDto): Promise<User> {
-    const existingUser = await this.taskUserRepository.findById(id);
+  async updateUser(userId: string, dto: UpdateUserDto): Promise<User> {
+    const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    return this.taskUserRepository.update(id, {
+    if (existingUser._id !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+    }
+
+    return this.taskUserRepository.update(userId, {
       ...dto,
       birthDate: dto.birthDate && new Date(dto.birthDate),
     });
   }
 
-  async setAvatar(id: string, fileName: string): Promise<User> {
-    const existingUser = await this.taskUserRepository.findById(id);
+  async setAvatar(userId: string, fileName: string): Promise<User> {
+    const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    return this.taskUserRepository.update(id, {
+    if (existingUser._id !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+    }
+
+    return this.taskUserRepository.update(userId, {
       avatar: fileName,
     });
   }
 
-  async changePassword(id: string, dto: ChangePasswordDto): Promise<User> {
+  async changePassword(userId: string, dto: ChangePasswordDto): Promise<User> {
     const { newPassword, oldPassword } = dto;
-    const existingUser = await this.taskUserRepository.findById(id);
+    const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+    }
+
+    if (existingUser._id !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
@@ -127,7 +140,7 @@ export class AuthService {
     }
     await userEntity.setPassword(newPassword); // TODO: no need to create user entity?
 
-    return this.taskUserRepository.update(id, {
+    return this.taskUserRepository.update(userId, {
       passwordHash: userEntity.passwordHash,
     });
   }
