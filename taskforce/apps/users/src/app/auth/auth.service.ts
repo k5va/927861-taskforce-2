@@ -138,7 +138,7 @@ export class AuthService {
     if (!(await userEntity.comparePassword(oldPassword))) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
-    await userEntity.setPassword(newPassword); // TODO: no need to create user entity?
+    await userEntity.setPassword(newPassword);
 
     return this.taskUserRepository.update(userId, {
       passwordHash: userEntity.passwordHash,
@@ -149,7 +149,7 @@ export class AuthService {
     const { token, refreshToken } = await this.generateTokens(user);
 
     const userEntity = new TaskUserEntity(user);
-    await userEntity.setRefreshToken(refreshToken); // TODO: no need to create user entity?
+    await userEntity.setRefreshToken(refreshToken);
     await this.taskUserRepository.update(user._id, {
       refreshTokenHash: userEntity.refreshTokenHash,
     });
@@ -172,7 +172,7 @@ export class AuthService {
       userEntity
     );
 
-    await userEntity.setRefreshToken(newRefreshToken); // TODO: no need to create user entity?
+    await userEntity.setRefreshToken(newRefreshToken);
     await this.taskUserRepository.update(userId, {
       refreshTokenHash: userEntity.refreshTokenHash,
     });
