@@ -28,4 +28,11 @@ export class ResponseService {
   public async findAllByTask(taskId: number): Promise<Response[]> {
     return this.responseRepository.findByTask(taskId);
   }
+
+  public async findAllByTaskAndContractor(
+    taskId: number,
+    contractor: string
+  ): Promise<Response[]> {
+    return this.responseRepository.findByTaskAndContractor(taskId, contractor);
+  }
 }

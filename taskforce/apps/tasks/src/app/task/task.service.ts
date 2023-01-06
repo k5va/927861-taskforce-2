@@ -9,6 +9,7 @@ import {
   UserRoles,
 } from '@taskforce/shared-types';
 import { CommentService } from '../comment/comment.service';
+import { ResponseService } from '../response/response.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -16,6 +17,7 @@ import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
 import {
   INVALID_COMMAND_ERROR,
+  NO_RESPONSE_CONTRACTOR_ERROR,
   RABBITMQ_SERVICE,
   TASK_NOT_FOUND_ERROR,
 } from './task.const';
@@ -27,6 +29,7 @@ export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly commentService: CommentService,
+    private readonly reponseService: ResponseService,
     @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
@@ -72,15 +75,9 @@ export class TaskService {
     taskId: number,
     dto: UpdateTaskDto
   ): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(taskId);
+    const existingTask = await this.getTask(taskId);
 
-    if (!existingTask) {
-      throw new Error(TASK_NOT_FOUND_ERROR);
-    }
-
-    if (existingTask.customer !== userId) {
-      throw new UnauthorizedException();
-    }
+    this.validateTaskOwner(existingTask, userId);
 
     return this.taskRepository.update(taskId, {
       ...dto,
@@ -93,15 +90,9 @@ export class TaskService {
     taskId: number,
     fileName: string
   ): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(taskId);
+    const existingTask = await this.getTask(taskId);
 
-    if (!existingTask) {
-      throw new Error(TASK_NOT_FOUND_ERROR);
-    }
-
-    if (existingTask.customer !== userId) {
-      throw new UnauthorizedException();
-    }
+    this.validateTaskOwner(existingTask, userId);
 
     return this.taskRepository.update(taskId, {
       image: fileName,
@@ -109,16 +100,9 @@ export class TaskService {
   }
 
   async deleteTask(userId: string, taskId: number): Promise<void> {
-    const existingTask = await this.taskRepository.findById(taskId);
+    const existingTask = await this.getTask(taskId);
 
-    if (!existingTask) {
-      throw new Error(TASK_NOT_FOUND_ERROR);
-    }
-
-    if (existingTask.customer !== userId) {
-      // TODO: move check to method?
-      throw new UnauthorizedException();
-    }
+    this.validateTaskOwner(existingTask, userId);
 
     await this.commentService.deleteAll(taskId); // TODO: delete comments in transaction
     return this.taskRepository.destroy(taskId);
@@ -145,11 +129,7 @@ export class TaskService {
     taskId: number,
     dto: ChangeTaskStatusDto
   ): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(taskId);
-
-    if (!existingTask) {
-      throw new Error(TASK_NOT_FOUND_ERROR);
-    }
+    const existingTask = await this.getTask(taskId);
 
     // create task state machine to validate changing task status
     const taskStateMachine = createTaskStateMachine(existingTask.status);
@@ -180,8 +160,17 @@ export class TaskService {
     }
 
     if (userRole === UserRoles.Customer) {
-      if (existingTask.customer !== userId) {
-        throw new UnauthorizedException();
+      this.validateTaskOwner(existingTask, userId);
+
+      if (newStatus === TaskStatuses.InProgress) {
+        //check if contractor responded to task
+        const responses = await this.reponseService.findAllByTaskAndContractor(
+          taskId,
+          dto.contractor
+        );
+        if (responses.length === 0) {
+          throw new Error(NO_RESPONSE_CONTRACTOR_ERROR);
+        }
       }
     }
 
@@ -189,5 +178,11 @@ export class TaskService {
       status: newStatus,
       contractor: dto.contractor,
     });
+  }
+
+  private validateTaskOwner(task: Task, customer: string) {
+    if (task.customer !== customer) {
+      throw new UnauthorizedException();
+    }
   }
 }

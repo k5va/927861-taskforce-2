@@ -9,10 +9,12 @@ import { ConfigService } from '@nestjs/config';
 import { getRabbitMqOptions } from '@taskforce/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { getMulterOptions } from '@taskforce/config';
+import { ResponseModule } from '../response/response.module';
 
 @Module({
   imports: [
     CommentModule,
+    ResponseModule,
     ClientsModule.registerAsync([
       {
         name: RABBITMQ_SERVICE,

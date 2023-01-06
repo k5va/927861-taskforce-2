@@ -1,6 +1,9 @@
 export const TASK_NOT_FOUND_ERROR = 'task not found';
 export const INVALID_COMMAND_ERROR =
   'command cannot be applied to current task status';
+export const NO_RESPONSE_CONTRACTOR_ERROR =
+  'Contractor has not responded to task';
+
 export const TASK_TITLE_MIN_LENGTH = 20;
 export const TASK_TITLE_MAX_LENGTH = 50;
 export const TASK_DESCRIPTION_MIN_LENGTH = 100;

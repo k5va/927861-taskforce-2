@@ -59,6 +59,15 @@ export class ResponseRepository
     });
   }
 
+  public findByTaskAndContractor(
+    taskId: number,
+    contractor: string
+  ): Promise<Response[]> {
+    return this.prisma.response.findMany({
+      where: { taskId, contractor },
+    });
+  }
+
   public update(id: number, item: ResponseEntity): Promise<Response> {
     return this.prisma.response.update({
       where: {
