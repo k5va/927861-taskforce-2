@@ -16,6 +16,7 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
 import {
+  CONTRACTOR_NOT_FREE_ERROR,
   INVALID_COMMAND_ERROR,
   NO_RESPONSE_CONTRACTOR_ERROR,
   RABBITMQ_SERVICE,
@@ -170,6 +171,15 @@ export class TaskService {
         );
         if (responses.length === 0) {
           throw new Error(NO_RESPONSE_CONTRACTOR_ERROR);
+        }
+
+        // check if contractor has no other tasks in work
+        const contractorTasks = await this.taskRepository.findByContractor(
+          dto.contractor,
+          { statuses: [TaskStatuses.InProgress] }
+        );
+        if (contractorTasks.length !== 0) {
+          throw new Error(CONTRACTOR_NOT_FREE_ERROR);
         }
       }
     }
