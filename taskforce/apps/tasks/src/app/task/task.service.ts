@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CommandEvent,
@@ -51,7 +56,7 @@ export class TaskService {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {
-      throw new Error(TASK_NOT_FOUND_ERROR);
+      throw new NotFoundException(TASK_NOT_FOUND_ERROR);
     }
 
     return existingTask;

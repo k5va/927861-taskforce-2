@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { Response, TaskStatuses } from '@taskforce/shared-types';
 import { TaskService } from '../task/task.service';
 import { ResponseRepository } from './repository/response.repository';
@@ -16,14 +20,14 @@ export class ResponseService {
     // check task status === new
     const task = await this.taskService.getTask(taskId);
     if (task.status !== TaskStatuses.New) {
-      throw new Error(NOT_NEW_TASK);
+      throw new BadRequestException(NOT_NEW_TASK);
     }
 
     // check response already exists
     const existingResponses =
       await this.responseRepository.findByContractorAndTask(userId, taskId);
     if (existingResponses.length > 0) {
-      throw new Error(RESPONSE_ALREADY_EXISTS);
+      throw new ConflictException(RESPONSE_ALREADY_EXISTS);
     }
 
     const responseEntity = new ResponseEntity({

@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Category, UserRole, UserRoles } from '@taskforce/shared-types';
+import { ConflictException, Injectable } from '@nestjs/common';
+import { Category } from '@taskforce/shared-types';
 import { CATEGORY_ALREADY_EXISTS } from './category.const';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -12,7 +12,7 @@ export class CategoryService {
   public async create(dto: CreateCategoryDto): Promise<Category> {
     const existingCategory = await this.categoryRepository.findByName(dto.name);
     if (existingCategory) {
-      throw new Error(CATEGORY_ALREADY_EXISTS);
+      throw new ConflictException(CATEGORY_ALREADY_EXISTS);
     }
 
     const categoryEntity = new CategoryEntity({

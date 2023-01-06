@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import {
   Task,
   TaskStatuses,
@@ -36,7 +40,7 @@ export class TaskStatusService {
     const taskStateMachine = createTaskStateMachine(existingTask.status);
     if (!taskStateMachine.initialState.can(dto.command)) {
       // can't make state transition with recieved command
-      throw new Error(INVALID_COMMAND_ERROR);
+      throw new BadRequestException(INVALID_COMMAND_ERROR);
     }
 
     // make state transition to get a new state
@@ -70,7 +74,7 @@ export class TaskStatusService {
           dto.contractor
         );
         if (responses.length === 0) {
-          throw new Error(NO_RESPONSE_CONTRACTOR_ERROR);
+          throw new BadRequestException(NO_RESPONSE_CONTRACTOR_ERROR);
         }
 
         // check if contractor has no other tasks in work
@@ -79,7 +83,7 @@ export class TaskStatusService {
           { statuses: [TaskStatuses.InProgress] }
         );
         if (contractorTasks.length !== 0) {
-          throw new Error(CONTRACTOR_NOT_FREE_ERROR);
+          throw new BadRequestException(CONTRACTOR_NOT_FREE_ERROR);
         }
       }
     }

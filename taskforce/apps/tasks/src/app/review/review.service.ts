@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Review, TaskStatuses } from '@taskforce/shared-types';
 import { TaskService } from '../task/task.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -34,7 +38,7 @@ export class ReviewService {
       taskId
     );
     if (existingReview.length > 0) {
-      throw new Error(REVIEW_ALREADY_EXISTS);
+      throw new ConflictException(REVIEW_ALREADY_EXISTS);
     }
 
     const newReview = await this.reviewRepository.create(
