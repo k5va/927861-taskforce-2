@@ -36,10 +36,20 @@ export class TaskRepository
   }
 
   public async destroy(id: number): Promise<void> {
-    await this.prisma.task.delete({
-      where: {
-        id,
-      },
+    await this.prisma.$transaction(async (tx) => {
+      // delete all task comments
+      await tx.comment.deleteMany({
+        where: {
+          taskId: id,
+        },
+      });
+
+      // delete task
+      await tx.task.delete({
+        where: {
+          id,
+        },
+      });
     });
   }
 

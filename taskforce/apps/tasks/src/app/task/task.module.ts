@@ -12,7 +12,6 @@ import { getMulterOptions } from '@taskforce/config';
 
 @Module({
   imports: [
-    CommentModule,
     ClientsModule.registerAsync([
       {
         name: RABBITMQ_SERVICE,

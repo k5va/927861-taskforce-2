@@ -6,7 +6,6 @@ import {
   TaskNotification,
   TaskStatuses,
 } from '@taskforce/shared-types';
-import { CommentService } from '../comment/comment.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskQuery, PersonalTaskQuery } from './query';
@@ -18,7 +17,6 @@ import { TaskEntity } from './task.entity';
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
-    private readonly commentService: CommentService,
     @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
@@ -90,10 +88,8 @@ export class TaskService {
 
   async deleteTask(userId: string, taskId: number): Promise<void> {
     const existingTask = await this.getTask(taskId);
-
     this.validateTaskOwner(existingTask, userId);
 
-    await this.commentService.deleteAll(taskId); // TODO: delete comments in transaction
     return this.taskRepository.destroy(taskId);
   }
 
