@@ -12,12 +12,6 @@ export class ReviewRepository
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: ReviewEntity): Promise<Review> {
-    // return this.prisma.review.create({
-    //   data: {
-    //     ...item.toObject(),
-    //   },
-    // });
-
     return this.prisma.$transaction(async (tx) => {
       // create new Review
       const newReview = await tx.review.create({
