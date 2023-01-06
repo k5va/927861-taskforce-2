@@ -9,6 +9,8 @@ export const TASK_ADDRESS_MIN_LENGTH = 10;
 export const TASK_ADDRESS_MAX_LENGTH = 255;
 export const TASK_PRICE_MIN_VALUE = 0;
 export const TASK_TAGS_MAX_NUM = 5;
+export const TAG_MIN_LENGTH = 3;
+export const TAG_MAX_LENGTH = 10;
 export const DEFAULT_TASKS_LIMIT = 25;
 
 export const TASK_SORT_TYPES = ['created', 'popular', 'discussed'] as const;

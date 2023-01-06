@@ -19,6 +19,8 @@ export class ReviewService {
       throw new Error(REVIEW_ALREADY_EXISTS);
     }
 
+    // TODO: check task exists
+
     const newReview = await this.reviewRepository.create(
       new ReviewEntity({
         ...dto,

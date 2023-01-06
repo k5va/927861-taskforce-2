@@ -1,8 +1,22 @@
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Controller, Get, HttpStatus, Param, Post } from '@nestjs/common';
-import { fillObject } from '@taskforce/core';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  fillObject,
+  GetUser,
+  JwtAuthGuard,
+  Roles,
+  RolesGuard,
+} from '@taskforce/core';
 import { ResponseService } from './response.service';
 import { ResponseRdo } from './rdo/response.rdo';
+import { UserRole, UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -15,18 +29,20 @@ export class ResponseController {
     status: HttpStatus.CREATED,
     description: 'Response was successfully created',
   })
-  async create(@Param('id') id: number) {
-    const userId = '123'; //TODO: temporary
-    const newResponse = await this.responseService.create(userId, id);
+  @Roles(UserRoles.Contractor)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async create(@GetUser('id') userId: string, @Param('id') taskId: number) {
+    const newResponse = await this.responseService.create(userId, taskId);
     return fillObject(ResponseRdo, newResponse);
   }
 
+  @Get('task/:id/response')
   @ApiResponse({
     type: ResponseRdo,
     isArray: true,
     status: HttpStatus.OK,
   })
-  @Get('task/:id/response')
   async showAll(@Param('id') taskId: number) {
     return fillObject(
       ResponseRdo,

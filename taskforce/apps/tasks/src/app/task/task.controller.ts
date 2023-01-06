@@ -13,10 +13,17 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { fillObject } from '@taskforce/core';
-import { UserRoles } from '@taskforce/shared-types';
+import {
+  fillObject,
+  GetUser,
+  JwtAuthGuard,
+  Roles,
+  RolesGuard,
+} from '@taskforce/core';
+import { UserRole, UserRoles } from '@taskforce/shared-types';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
@@ -37,9 +44,11 @@ export class TaskController {
     status: HttpStatus.CREATED,
     description: 'Task was successfully created',
   })
-  async create(@Body() dto: CreateTaskDto) {
-    const customerId = '123'; //TODO: temporary
-    const newTask = await this.taskService.create(customerId, dto);
+  @Roles(UserRoles.Customer)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async create(@GetUser('id') userId: string, @Body() dto: CreateTaskDto) {
+    const newTask = await this.taskService.create(userId, dto);
     return fillObject(TaskRdo, newTask);
   }
 
@@ -67,8 +76,15 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
-  async update(@Param('id') id: number, @Body() dto: UpdateTaskDto) {
-    const updatedTask = await this.taskService.updateTask(id, dto);
+  @Roles(UserRoles.Customer)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @GetUser('id') userId: string,
+    @Param('id') taskId: number,
+    @Body() dto: UpdateTaskDto
+  ) {
+    const updatedTask = await this.taskService.updateTask(userId, taskId, dto);
     return fillObject(TaskRdo, updatedTask);
   }
 
@@ -81,8 +97,11 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
-  async deleteTask(@Param('id') id: number) {
-    return this.taskService.deleteTask(id);
+  @Roles(UserRoles.Customer)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
+  async deleteTask(@GetUser('id') userId: string, @Param('id') taskId: number) {
+    return this.taskService.deleteTask(userId, taskId);
   }
 
   @Get('new')
@@ -91,8 +110,11 @@ export class TaskController {
     isArray: true,
     status: HttpStatus.OK,
   })
+  @Roles(UserRoles.Contractor)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   async showNew(@Query() query: TaskQuery) {
-    return fillObject(TaskRdo, this.taskService.findNew(query));
+    return fillObject(TaskRdo, await this.taskService.findNew(query));
   }
 
   @Get('personal')
@@ -101,13 +123,21 @@ export class TaskController {
     isArray: true,
     status: HttpStatus.OK,
   })
-  async showPersonal(@Query() query: PersonalTaskQuery) {
-    const userId = '123'; // TODO: temporary
-    const userRole = UserRoles.Customer;
-
+  @UseGuards(JwtAuthGuard)
+  async showPersonal(
+    @GetUser('id') userId: string,
+    @GetUser('role') userRole: UserRole,
+    @Query() query: PersonalTaskQuery
+  ) {
     return userRole === UserRoles.Customer
-      ? fillObject(TaskRdo, this.taskService.findByCustomer(userId, query))
-      : fillObject(TaskRdo, this.taskService.findByContractor(userId, query));
+      ? fillObject(
+          TaskRdo,
+          await this.taskService.findByCustomer(userId, query)
+        )
+      : fillObject(
+          TaskRdo,
+          await this.taskService.findByContractor(userId, query)
+        );
   }
 
   @Patch('task/:id/status')
@@ -120,11 +150,19 @@ export class TaskController {
     status: HttpStatus.NOT_FOUND,
     description: 'Task with give id not found',
   })
+  @UseGuards(JwtAuthGuard)
   async changeTaskStatus(
-    @Param('id') id: number,
+    @GetUser('id') userId: string,
+    @GetUser('role') userRole: UserRole,
+    @Param('id') taskId: number,
     @Body() dto: ChangeTaskStatusDto
   ) {
-    const updatedTask = await this.taskService.changeTaskStatus(id, dto);
+    const updatedTask = await this.taskService.changeTaskStatus(
+      userId,
+      userRole,
+      taskId,
+      dto
+    );
     return fillObject(TaskRdo, updatedTask);
   }
 
@@ -135,7 +173,11 @@ export class TaskController {
     description: 'Task image was sussessfully uploaded',
   })
   @UseInterceptors(FileInterceptor('image'))
+  @Roles(UserRoles.Customer)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   async uploadImage(
+    @GetUser('id') userId: string,
     @Param('id') taskId: number,
     @UploadedFile(
       new ParseFilePipe({
@@ -147,7 +189,11 @@ export class TaskController {
     )
     file: Express.Multer.File
   ) {
-    const updatedTask = await this.taskService.setImage(taskId, file.filename);
+    const updatedTask = await this.taskService.setImage(
+      userId,
+      taskId,
+      file.filename
+    );
     return fillObject(TaskRdo, updatedTask);
   }
 }

@@ -13,8 +13,13 @@ import {
   getServeStaticOptions,
   staticConfig,
   rabbitMqConfig,
+  getJwtOptions,
+  jwtConfig,
 } from '@taskforce/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '@taskforce/core';
 
 @Module({
   imports: [
@@ -22,11 +27,16 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       cache: true,
       isGlobal: true,
       envFilePath: ENV_FILE_PATH,
-      load: [rabbitMqConfig, staticConfig],
+      load: [rabbitMqConfig, staticConfig, jwtConfig],
       validationSchema: envSchema,
     }),
     ServeStaticModule.forRootAsync({
       useFactory: getServeStaticOptions,
+      inject: [ConfigService],
+    }),
+    PassportModule,
+    JwtModule.registerAsync({
+      useFactory: getJwtOptions,
       inject: [ConfigService],
     }),
     TaskModule,
@@ -38,6 +48,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     PrismaModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [JwtStrategy],
 })
 export class AppModule {}

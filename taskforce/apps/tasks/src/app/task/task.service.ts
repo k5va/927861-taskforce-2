@@ -1,10 +1,12 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import {
   CommandEvent,
   Task,
   TaskNotification,
   TaskStatuses,
+  UserRole,
+  UserRoles,
 } from '@taskforce/shared-types';
 import { CommentService } from '../comment/comment.service';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
@@ -65,39 +67,61 @@ export class TaskService {
     return existingTask;
   }
 
-  async updateTask(id: number, dto: UpdateTaskDto): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(id);
+  async updateTask(
+    userId: string,
+    taskId: number,
+    dto: UpdateTaskDto
+  ): Promise<Task> {
+    const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    return this.taskRepository.update(id, {
+    if (existingTask.customer !== userId) {
+      throw new UnauthorizedException();
+    }
+
+    return this.taskRepository.update(taskId, {
       ...dto,
       dueDate: dto.dueDate && new Date(dto.dueDate),
     });
   }
 
-  async setImage(id: number, fileName: string): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(id);
+  async setImage(
+    userId: string,
+    taskId: number,
+    fileName: string
+  ): Promise<Task> {
+    const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
 
-    return this.taskRepository.update(id, {
+    if (existingTask.customer !== userId) {
+      throw new UnauthorizedException();
+    }
+
+    return this.taskRepository.update(taskId, {
       image: fileName,
     });
   }
 
-  async deleteTask(id: number): Promise<void> {
-    const existingTask = await this.taskRepository.findById(id);
+  async deleteTask(userId: string, taskId: number): Promise<void> {
+    const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
     }
-    await this.commentService.deleteAll(id);
-    return this.taskRepository.destroy(id);
+
+    if (existingTask.customer !== userId) {
+      // TODO: move check to method?
+      throw new UnauthorizedException();
+    }
+
+    await this.commentService.deleteAll(taskId); // TODO: delete comments in transaction
+    return this.taskRepository.destroy(taskId);
   }
 
   async findNew(query: TaskQuery): Promise<Task[]> {
@@ -115,8 +139,13 @@ export class TaskService {
     return this.taskRepository.findByContractor(id, query);
   }
 
-  async changeTaskStatus(id: number, dto: ChangeTaskStatusDto): Promise<Task> {
-    const existingTask = await this.taskRepository.findById(id);
+  async changeTaskStatus(
+    userId: string,
+    userRole: UserRole,
+    taskId: number,
+    dto: ChangeTaskStatusDto
+  ): Promise<Task> {
+    const existingTask = await this.taskRepository.findById(taskId);
 
     if (!existingTask) {
       throw new Error(TASK_NOT_FOUND_ERROR);
@@ -137,8 +166,27 @@ export class TaskService {
       }
     );
 
-    return this.taskRepository.update(id, {
-      status: nextState.value.toString(),
+    const newStatus = nextState.value.toString();
+
+    if (userRole === UserRoles.Contractor) {
+      if (newStatus !== TaskStatuses.Failed) {
+        // only contractor can fail task
+        throw new UnauthorizedException();
+      }
+
+      if (existingTask.contractor !== userId) {
+        throw new UnauthorizedException();
+      }
+    }
+
+    if (userRole === UserRoles.Customer) {
+      if (existingTask.customer !== userId) {
+        throw new UnauthorizedException();
+      }
+    }
+
+    return this.taskRepository.update(taskId, {
+      status: newStatus,
       contractor: dto.contractor,
     });
   }

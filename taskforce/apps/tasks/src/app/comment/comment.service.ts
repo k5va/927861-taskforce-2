@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { Comment } from '@taskforce/shared-types';
 import { COMMENT_NOT_FOUND_ERROR } from './comment.const';
 import { CommentEntity } from './comment.entity';
@@ -22,13 +22,17 @@ export class CommentService {
     return this.commentRepository.create(commentEntity);
   }
 
-  public async deleteComment(id: number): Promise<void> {
-    const existingComment = this.commentRepository.findById(id);
+  public async deleteComment(userId: string, commentId: number): Promise<void> {
+    const existingComment = await this.commentRepository.findById(commentId);
     if (!existingComment) {
       throw new Error(COMMENT_NOT_FOUND_ERROR);
     }
 
-    return this.commentRepository.destroy(id);
+    if (existingComment.author !== userId) {
+      throw new UnauthorizedException();
+    }
+
+    return this.commentRepository.destroy(commentId);
   }
 
   public async deleteAll(taskId: number) {

@@ -6,8 +6,9 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { fillObject } from '@taskforce/core';
+import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
@@ -23,18 +24,26 @@ export class CommentController {
     status: HttpStatus.CREATED,
     description: 'Comment was successfully created',
   })
-  async create(@Param('id') taskId: number, @Body() dto: CreateCommentDto) {
-    const userId = '123'; // TODO: temporary
+  @UseGuards(JwtAuthGuard)
+  async create(
+    @GetUser('id') userId: string,
+    @Param('id') taskId: number,
+    @Body() dto: CreateCommentDto
+  ) {
     const newComment = await this.commentService.create(userId, taskId, dto);
     return fillObject(CommentRdo, newComment);
   }
 
+  @Delete('task/:taskId/comment/:commentId')
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'Comment was successfully deleted',
   })
-  @Delete('task/:taskId/comment/:commentId')
-  async deleteComment(@Param('commentId') commentId: number) {
-    return this.commentService.deleteComment(commentId);
+  @UseGuards(JwtAuthGuard)
+  async deleteComment(
+    @GetUser('id') userId: string,
+    @Param('commentId') commentId: number
+  ) {
+    return this.commentService.deleteComment(userId, commentId);
   }
 }

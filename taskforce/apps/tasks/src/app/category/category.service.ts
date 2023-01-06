@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Category } from '@taskforce/shared-types';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Category, UserRole, UserRoles } from '@taskforce/shared-types';
 import { CATEGORY_ALREADY_EXISTS } from './category.const';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';

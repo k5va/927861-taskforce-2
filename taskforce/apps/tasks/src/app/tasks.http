@@ -1,6 +1,7 @@
 # Create a new task
 POST http://localhost:3335/api/tasks/task HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "title": "Task's title veeeeeeeeeeeeeery long",
@@ -14,8 +15,9 @@ Content-Type: application/json
 ###
 
 # Update task data
-PATCH http://localhost:3335/api/tasks/task/5 HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/7 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "title": "Not Task's title veeeeeeeeeeeeeery long",
@@ -25,35 +27,44 @@ Content-Type: application/json
 ###
 
 # Get task by ID
-GET http://localhost:3335/api/tasks/task/5 HTTP/1.1
+GET http://localhost:3335/api/tasks/task/7 HTTP/1.1
 
 ###
 
 # Delete task by Id
-DELETE http://localhost:3335/api/tasks/task/5 HTTP/1.1
+DELETE http://localhost:3335/api/tasks/task/7 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 ###
 
 # Get new tasks
 GET http://localhost:3335/api/tasks/new HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
+
 ###
 
 # Get new tasks (filtered by categories, sorted and with pagination)
-GET http://localhost:3335/api/tasks/new?cities=Москва,Владивосток&categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+GET http://localhost:3335/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
+
 ###
 
 # Get new tasks (filtered by cities)
 GET http://localhost:3335/api/tasks/new?cities=Москва HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
+
 ###
 
 # Get new tasks (filtered by tags)
 GET http://localhost:3335/api/tasks/new?tags=cleaning HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
 
 ###
 
 # Change task's status
-PATCH http://localhost:3335/api/tasks/task/5/status HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/8/status HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "command": "start",
@@ -63,8 +74,9 @@ Content-Type: application/json
 ###
 
 # Add comment to task
-POST http://localhost:3335/api/tasks/task/5/comment HTTP/1.1
+POST http://localhost:3335/api/tasks/task/8/comment HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "text": "Nice comment text!"
@@ -73,13 +85,15 @@ Content-Type: application/json
 ###
 
 # Delete comment
-DELETE http://localhost:3335/api/tasks/task/5/comment/5 HTTP/1.1
+DELETE http://localhost:3335/api/tasks/task/8/comment/4 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 ###
 
 # Create new category
 POST http://localhost:3335/api/tasks/category HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "name": "cleaning"
@@ -93,24 +107,26 @@ GET http://localhost:3335/api/tasks/category HTTP/1.1
 ###
 
 # Create new contractor's response
-POST http://localhost:3335/api/tasks/task/5/response HTTP/1.1
+POST http://localhost:3335/api/tasks/task/8/response HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
 
 ###
 
 # Get all responses by task
-GET http://localhost:3335/api/tasks/task/5/response HTTP/1.1
+GET http://localhost:3335/api/tasks/task/8/response HTTP/1.1
 
 ###
 
 # Add review to task
 POST http://localhost:3335/api/tasks/review HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 {
   "text": "Nice doooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooone!",
   "contractor": "63b325e47cd9f2573b2cf15d",
   "rating": 5,
-  "taskId": 43
+  "taskId": 8
 }
 
 ###
@@ -121,9 +137,9 @@ GET http://localhost:3335/api/tasks/contractor/63b325e47cd9f2573b2cf15d/rating H
 ###
 
 # Upload task image
-POST http://localhost:3335/api/tasks/task/6/image HTTP/1.1
+POST http://localhost:3335/api/tasks/task/8/image HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzI4NDAxODEsImV4cCI6MTY3Mjg0MDI0MX0.GQh_EMEaaCKUF_QtlWlvdD3Hip6SIYEjp73mcD2wUaA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="image"; filename="image.jpg"
@@ -135,6 +151,6 @@ Content-Type: image/jpeg
 ###
 
 # download task image
-GET http://localhost:3335/static/MRV11zknpPKDulCtVIUez.jpeg HTTP/1.1
+GET http://localhost:3335/static/0afv_Zn4rJhUMTCkGarP7.jpeg HTTP/1.1
 
 ###

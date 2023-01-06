@@ -9,8 +9,11 @@ import {
   IsString,
   Length,
   Min,
+  NotContains,
 } from 'class-validator';
 import {
+  TAG_MAX_LENGTH,
+  TAG_MIN_LENGTH,
   TASK_ADDRESS_MAX_LENGTH,
   TASK_ADDRESS_MIN_LENGTH,
   TASK_DESCRIPTION_MAX_LENGTH,
@@ -94,7 +97,11 @@ export class CreateTaskDto {
     example: ['tag1', 'tag2'],
   })
   @IsString({ each: true })
+  @Length(TAG_MIN_LENGTH, TAG_MAX_LENGTH, { each: true })
   @ArrayMaxSize(TASK_TAGS_MAX_NUM)
   @IsOptional()
+  @NotContains(' ', {
+    each: true,
+  })
   public tags?: string[];
 }
