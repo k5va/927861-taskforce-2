@@ -1,21 +1,30 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Response, UserRole, UserRoles } from '@taskforce/shared-types';
+import { Injectable } from '@nestjs/common';
+import { Response, TaskStatuses } from '@taskforce/shared-types';
+import { TaskService } from '../task/task.service';
 import { ResponseRepository } from './repository/response.repository';
-import { RESPONSE_ALREADY_EXISTS } from './response.const';
+import { NOT_NEW_TASK, RESPONSE_ALREADY_EXISTS } from './response.const';
 import { ResponseEntity } from './response.entity';
 
 @Injectable()
 export class ResponseService {
-  constructor(private readonly responseRepository: ResponseRepository) {}
+  constructor(
+    private readonly responseRepository: ResponseRepository,
+    private readonly taskService: TaskService
+  ) {}
 
   public async create(userId: string, taskId: number): Promise<Response> {
+    // check task status === new
+    const task = await this.taskService.getTask(taskId);
+    if (task.status !== TaskStatuses.New) {
+      throw new Error(NOT_NEW_TASK);
+    }
+
+    // check response already exists
     const existingResponses =
       await this.responseRepository.findByContractorAndTask(userId, taskId);
     if (existingResponses.length > 0) {
       throw new Error(RESPONSE_ALREADY_EXISTS);
     }
-
-    // TODO: check task status === new
 
     const responseEntity = new ResponseEntity({
       contractor: userId,

@@ -5,32 +5,20 @@ import {
   Task,
   TaskNotification,
   TaskStatuses,
-  UserRole,
-  UserRoles,
 } from '@taskforce/shared-types';
 import { CommentService } from '../comment/comment.service';
-import { ResponseService } from '../response/response.service';
-import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
-import {
-  CONTRACTOR_NOT_FREE_ERROR,
-  INVALID_COMMAND_ERROR,
-  NO_RESPONSE_CONTRACTOR_ERROR,
-  RABBITMQ_SERVICE,
-  TASK_NOT_FOUND_ERROR,
-} from './task.const';
+import { RABBITMQ_SERVICE, TASK_NOT_FOUND_ERROR } from './task.const';
 import { TaskEntity } from './task.entity';
-import { createTaskStateMachine } from './task.utils';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
     private readonly commentService: CommentService,
-    private readonly reponseService: ResponseService,
     @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
@@ -122,72 +110,6 @@ export class TaskService {
     query: PersonalTaskQuery
   ): Promise<Task[]> {
     return this.taskRepository.findByContractor(id, query);
-  }
-
-  async changeTaskStatus(
-    userId: string,
-    userRole: UserRole,
-    taskId: number,
-    dto: ChangeTaskStatusDto
-  ): Promise<Task> {
-    const existingTask = await this.getTask(taskId);
-
-    // create task state machine to validate changing task status
-    const taskStateMachine = createTaskStateMachine(existingTask.status);
-    if (!taskStateMachine.initialState.can(dto.command)) {
-      // can't make state transition with recieved command
-      throw new Error(INVALID_COMMAND_ERROR);
-    }
-
-    // make state transition to get a new state
-    const nextState = taskStateMachine.transition(
-      taskStateMachine.initialState,
-      {
-        type: dto.command,
-      }
-    );
-
-    const newStatus = nextState.value.toString();
-
-    if (userRole === UserRoles.Contractor) {
-      if (newStatus !== TaskStatuses.Failed) {
-        // only contractor can fail task
-        throw new UnauthorizedException();
-      }
-
-      if (existingTask.contractor !== userId) {
-        throw new UnauthorizedException();
-      }
-    }
-
-    if (userRole === UserRoles.Customer) {
-      this.validateTaskOwner(existingTask, userId);
-
-      if (newStatus === TaskStatuses.InProgress) {
-        //check if contractor responded to task
-        const responses = await this.reponseService.findAllByTaskAndContractor(
-          taskId,
-          dto.contractor
-        );
-        if (responses.length === 0) {
-          throw new Error(NO_RESPONSE_CONTRACTOR_ERROR);
-        }
-
-        // check if contractor has no other tasks in work
-        const contractorTasks = await this.taskRepository.findByContractor(
-          dto.contractor,
-          { statuses: [TaskStatuses.InProgress] }
-        );
-        if (contractorTasks.length !== 0) {
-          throw new Error(CONTRACTOR_NOT_FREE_ERROR);
-        }
-      }
-    }
-
-    return this.taskRepository.update(taskId, {
-      status: newStatus,
-      contractor: dto.contractor,
-    });
   }
 
   private validateTaskOwner(task: Task, customer: string) {

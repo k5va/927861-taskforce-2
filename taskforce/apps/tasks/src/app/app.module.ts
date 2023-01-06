@@ -20,6 +20,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@taskforce/core';
+import { TaskStatusModule } from './task-status/task-status.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { JwtStrategy } from '@taskforce/core';
     ResponseModule,
     ReviewModule,
     TaskContractorModule,
+    TaskStatusModule,
     PrismaModule,
   ],
   controllers: [],
