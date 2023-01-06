@@ -38,12 +38,4 @@ export class CreateReviewDto {
   @Min(RATING_MIN)
   @Max(RATING_MAX)
   public rating: number;
-
-  @ApiProperty({
-    description: 'task Id',
-    required: true,
-    example: 0,
-  })
-  @IsNumber()
-  public taskId: number;
 }

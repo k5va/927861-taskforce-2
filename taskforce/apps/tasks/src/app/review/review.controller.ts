@@ -1,5 +1,12 @@
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import {
   fillObject,
   GetUser,
@@ -17,17 +24,21 @@ import { UserRoles } from '@taskforce/shared-types';
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Post('review')
+  @Post('task/:id/review')
   @ApiResponse({
     type: ReviewRdo,
     status: HttpStatus.CREATED,
     description: 'Review was successfully created',
-  }) // TODO: move taskId to param?
+  })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
-  async create(@GetUser('id') userId: string, @Body() dto: CreateReviewDto) {
-    const newReview = await this.reviewService.create(dto, userId);
+  async create(
+    @GetUser('id') userId: string,
+    @Param('id') taskId: number,
+    @Body() dto: CreateReviewDto
+  ) {
+    const newReview = await this.reviewService.create(taskId, dto, userId);
     return fillObject(ReviewRdo, newReview);
   }
 }

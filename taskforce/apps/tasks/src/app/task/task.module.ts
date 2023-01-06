@@ -27,5 +27,6 @@ import { getMulterOptions } from '@taskforce/config';
   ],
   controllers: [TaskController],
   providers: [TaskRepository, TaskService, ConfigService],
+  exports: [TaskService],
 })
 export class TaskModule {}
