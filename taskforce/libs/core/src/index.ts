@@ -4,3 +4,8 @@ export * from './lib/abstract-memory.repository';
 export * from './lib/abstract.entity';
 export * from './lib/get-mongo-connect-string';
 export * from './lib/format-date';
+export * from './lib/jwt.strategy';
+export * from './lib/guards/jwt-auth.guard';
+export * from './lib/decorators/get-user.decorator';
+export * from './lib/decorators/roles.decorator';
+export * from './lib/guards/roles.guard';
