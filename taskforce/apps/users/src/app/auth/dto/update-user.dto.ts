@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOlderThan } from '@taskforce/core';
 import { CITIES } from '@taskforce/shared-types';
 import {
   ArrayMaxSize,
@@ -7,15 +8,19 @@ import {
   IsOptional,
   IsString,
   Length,
+  Matches,
   MaxLength,
 } from 'class-validator';
 import {
   CITY_NOT_VALID_ERROR,
+  USER_BIRTHDATE_PATTERN,
   USER_DATE_BIRTH_NOT_VALID_ERROR,
   USER_DESCRIPTON_MAX_LENGTH,
+  USER_MIN_AGE,
   USER_NAME_MAX_LENGTH,
   USER_NAME_MIN_LENGTH,
   USER_SKILLS_MAX_NUM,
+  USER_TOO_YOUNG_ERROR,
 } from '../auth.const';
 
 export class UpdateUserDto {
@@ -42,12 +47,17 @@ export class UpdateUserDto {
 
   @ApiProperty({
     description: 'Birth date',
+    format: 'YYYY-MM-DD',
     required: false,
-    example: '1900-12-01',
+    example: '1990-12-01',
   })
   @IsISO8601({
     message: USER_DATE_BIRTH_NOT_VALID_ERROR,
   })
+  @Matches(USER_BIRTHDATE_PATTERN, {
+    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+  })
+  @IsOlderThan(USER_MIN_AGE, { message: USER_TOO_YOUNG_ERROR })
   @IsOptional()
   public birthDate?: string;
 
