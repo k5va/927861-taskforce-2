@@ -7,7 +7,7 @@ import { ContractorRatingRdo } from './rdo/contractor-rating.rdo';
 @ApiTags('tasks')
 @Controller('tasks')
 export class TaskContractorController {
-  constructor(private readonly reviewService: TaskContractorService) {}
+  constructor(private readonly taskContractorService: TaskContractorService) {}
 
   @Get('contractor/:id/rating')
   @ApiResponse({
@@ -15,7 +15,9 @@ export class TaskContractorController {
     status: HttpStatus.OK,
   })
   async getRating(@Param('id') contractor: string) {
-    const { rating, place } = await this.reviewService.getRating(contractor);
-    return fillObject(ContractorRatingRdo, { rating, place, contractor });
+    return fillObject(
+      ContractorRatingRdo,
+      await this.taskContractorService.getRating(contractor)
+    );
   }
 }

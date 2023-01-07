@@ -16,12 +16,18 @@ export class TaskContractorService {
     );
 
     if (index === -1) {
-      return { rating: DEFAULT_RATING, place: DEFAULT_PLACE };
+      // contractor has no tasks
+      return {
+        rating: DEFAULT_RATING,
+        place: DEFAULT_PLACE,
+        failedTasksCount: 0,
+        doneTasksCount: 0,
+      };
     }
 
-    const rating = taskContractors[index].rating;
+    const { rating, failedTasksCount, doneTasksCount } = taskContractors[index];
     const place = index + 1;
 
-    return { rating, place };
+    return { rating, place, failedTasksCount, doneTasksCount };
   }
 }

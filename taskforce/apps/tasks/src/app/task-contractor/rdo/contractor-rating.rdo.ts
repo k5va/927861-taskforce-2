@@ -25,4 +25,20 @@ export class ContractorRatingRdo {
   })
   @Expose()
   place: number;
+
+  @ApiProperty({
+    description: 'Number of completed tasks',
+    required: true,
+    example: 2,
+  })
+  @Expose()
+  doneTasksCount: number;
+
+  @ApiProperty({
+    description: 'Number of failed tasks',
+    required: true,
+    example: 2,
+  })
+  @Expose()
+  failedTasksCount: number;
 }
