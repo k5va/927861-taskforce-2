@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOlderThan } from '@taskforce/core';
 import { CITIES } from '@taskforce/shared-types';
+import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsIn,
@@ -82,5 +83,9 @@ export class UpdateUserDto {
   @ArrayMaxSize(USER_SKILLS_MAX_NUM)
   @IsString({ each: true })
   @IsOptional()
+  @Transform(({ value, obj, key }) => {
+    obj[key] = [...new Set(value)];
+    return obj[key];
+  }) // removes dublicates
   public skills?: string[];
 }
