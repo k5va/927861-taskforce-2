@@ -1,6 +1,8 @@
 export const TASK_NOT_FOUND_ERROR = 'task not found';
 export const DUE_DATE_LESS_THAN_CURRENT_ERROR =
   'Task due date should be more than current date';
+export const TAG_FORMAT_NOT_VALID_ERROR =
+  'Tag should start with letter and not containe spaces';
 
 export const TASK_TITLE_MIN_LENGTH = 20;
 export const TASK_TITLE_MAX_LENGTH = 50;
@@ -33,3 +35,4 @@ export const TASK_SORT: Record<typeof TASK_SORT_TYPES[number], unknown> = {
 export const RABBITMQ_SERVICE = Symbol('RABBITMQ_SERVICE');
 export const MAX_TASK_IMAGE_SIZE = 1024 * 1024;
 export const TASK_IMAGE_FILE_TYPE = /image\/(jpeg|png)$/;
+export const TAG_FORMAT_PATTERN = /^[A-Za-zА-Яа-я]\S+$/;

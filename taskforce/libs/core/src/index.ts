@@ -12,3 +12,4 @@ export * from './lib/guards/roles.guard';
 export * from './lib/utils/subtract-years-from-date';
 export * from './lib/decorators/is-older-than.decorator';
 export * from './lib/decorators/is-date-greater-than.decorator';
+export * from './lib/utils/transform-tags';

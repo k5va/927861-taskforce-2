@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateGreaterThan } from '@taskforce/core';
+import { IsDateGreaterThan, transformTags } from '@taskforce/core';
 import { CITIES } from '@taskforce/shared-types';
+import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsIn,
@@ -9,11 +10,13 @@ import {
   IsOptional,
   IsString,
   Length,
+  Matches,
   Min,
-  NotContains,
 } from 'class-validator';
 import {
   DUE_DATE_LESS_THAN_CURRENT_ERROR,
+  TAG_FORMAT_NOT_VALID_ERROR,
+  TAG_FORMAT_PATTERN,
   TAG_MAX_LENGTH,
   TAG_MIN_LENGTH,
   TASK_ADDRESS_MAX_LENGTH,
@@ -99,12 +102,14 @@ export class CreateTaskDto {
     required: false,
     example: ['tag1', 'tag2'],
   })
+  @IsOptional()
   @IsString({ each: true })
   @Length(TAG_MIN_LENGTH, TAG_MAX_LENGTH, { each: true })
   @ArrayMaxSize(TASK_TAGS_MAX_NUM)
-  @IsOptional()
-  @NotContains(' ', {
+  @Matches(TAG_FORMAT_PATTERN, {
     each: true,
+    message: TAG_FORMAT_NOT_VALID_ERROR,
   })
+  @Transform(transformTags) // makes lowercase and removes dublicates
   public tags?: string[];
 }
