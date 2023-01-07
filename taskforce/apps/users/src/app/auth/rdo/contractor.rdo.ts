@@ -1,5 +1,6 @@
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { calculateAge } from '@taskforce/core';
 
 export class ContractorRdo {
   @ApiProperty({
@@ -62,17 +63,9 @@ export class ContractorRdo {
   role: string;
 
   @ApiProperty({
-    description: 'User age',
-    required: true,
-    example: '29',
-  })
-  @Expose()
-  age: number;
-
-  @ApiProperty({
     description: 'User rating',
     required: true,
-    example: '4.5',
+    example: 4.5,
   })
   @Expose()
   rating: number;
@@ -80,7 +73,7 @@ export class ContractorRdo {
   @ApiProperty({
     description: 'Place in rating',
     required: true,
-    example: '2',
+    example: 2,
   })
   @Expose()
   placeInRating: number;
@@ -88,15 +81,15 @@ export class ContractorRdo {
   @ApiProperty({
     description: 'Number of completed tasks',
     required: true,
-    example: '2',
+    example: 2,
   })
   @Expose()
-  CompletedTasks: number;
+  finishedTasks: number;
 
   @ApiProperty({
     description: 'Number of failed tasks',
     required: true,
-    example: '2',
+    example: 2,
   })
   @Expose()
   failedTasks: number;
@@ -105,9 +98,17 @@ export class ContractorRdo {
     description: 'user skills',
     required: true,
     isArray: true,
-    maxItems: 5,
     example: ['react', 'typescript', 'html', 'css'],
   })
   @Expose()
-  skills: number;
+  skills: string[];
+
+  @ApiProperty({
+    description: 'Age',
+    required: true,
+    example: 20,
+  })
+  @Expose({ name: 'birthDate' })
+  @Transform(({ value }) => calculateAge(value))
+  age: number;
 }
