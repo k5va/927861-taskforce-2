@@ -3,24 +3,24 @@ import {
   ValidationOptions,
   ValidationArguments,
 } from 'class-validator';
-import { subtractYearsFromDate } from '../utils/subtract-years-from-date';
 
-export function IsOlderThan(
-  years: number,
+export function IsDateGreaterThan(
+  compareDate = new Date(),
   validationOptions?: ValidationOptions
 ) {
   return function (object: unknown, propertyName: string) {
     registerDecorator({
-      name: 'isOlderThan',
+      name: 'IsDateGreaterThan',
       target: object.constructor,
       propertyName,
-      constraints: [years],
+      constraints: [compareDate],
       options: validationOptions,
       validator: {
         validate(value: string, args: ValidationArguments) {
-          const [years] = args.constraints;
+          const [compareDate] = args.constraints;
+          compareDate.setHours(0, 0, 0, 0);
           const date = new Date(value);
-          return date <= subtractYearsFromDate(years);
+          return date >= compareDate;
         },
       },
     });

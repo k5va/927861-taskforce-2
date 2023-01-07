@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDateGreaterThan } from '@taskforce/core';
 import { CITIES } from '@taskforce/shared-types';
 import {
   ArrayMaxSize,
@@ -12,6 +13,7 @@ import {
   NotContains,
 } from 'class-validator';
 import {
+  DUE_DATE_LESS_THAN_CURRENT_ERROR,
   TAG_MAX_LENGTH,
   TAG_MIN_LENGTH,
   TASK_ADDRESS_MAX_LENGTH,
@@ -73,6 +75,7 @@ export class CreateTaskDto {
   })
   @IsISO8601()
   @IsOptional()
+  @IsDateGreaterThan(new Date(), { message: DUE_DATE_LESS_THAN_CURRENT_ERROR })
   public dueDate?: string;
 
   @ApiProperty({

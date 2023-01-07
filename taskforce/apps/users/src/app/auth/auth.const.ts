@@ -19,6 +19,7 @@ export const PASSWORD_MIN_LENGTH = 6;
 export const PASSWORD_MAX_LENGTH = 12;
 export const USER_DESCRIPTON_MAX_LENGTH = 300;
 export const USER_SKILLS_MAX_NUM = 5;
+export const USER_SKILLS_MIN_NUM = 1;
 
 export const REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 7;
 export const ACCESS_TOKEN_EXPIRE = 60 * 60;

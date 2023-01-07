@@ -1,4 +1,6 @@
 export const TASK_NOT_FOUND_ERROR = 'task not found';
+export const DUE_DATE_LESS_THAN_CURRENT_ERROR =
+  'Task due date should be more than current date';
 
 export const TASK_TITLE_MIN_LENGTH = 20;
 export const TASK_TITLE_MAX_LENGTH = 50;
