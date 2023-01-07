@@ -3,15 +3,18 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpStatus,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { CommentRdo } from './rdo/comment.rdo';
+import { CommentQuery } from './query';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -45,5 +48,18 @@ export class CommentController {
     @Param('commentId') commentId: number
   ) {
     return this.commentService.deleteComment(userId, commentId);
+  }
+
+  @Get('task/:id/comment')
+  @ApiResponse({
+    type: CommentRdo,
+    isArray: true,
+    status: HttpStatus.OK,
+  })
+  async showByTask(@Param('id') taskId: number, @Query() query: CommentQuery) {
+    return fillObject(
+      CommentRdo,
+      await this.commentService.findByTask(taskId, query)
+    );
   }
 }

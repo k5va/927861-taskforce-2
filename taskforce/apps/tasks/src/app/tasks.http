@@ -1,45 +1,47 @@
 # Create a new task
 POST http://localhost:3335/api/tasks/task HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwMTExNTksImV4cCI6MTY3MzAxNDc1OX0.zFHZb-1S6P64BMOhMAf5BmVCqUJ2goYpX8Aww3JqYC0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwODg0MDUsImV4cCI6MTY3MzA5MjAwNX0.kv0D2iCYY4c3y7xo3IQlzOKl8slKR4aPub2IRtZlKx8
 
 {
   "title": "Task's title veeeeeeeeeeeeeery long",
   "description": "Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
   "categoryId": 1,
   "price": 100,
-  "dueDate": "2023-02-22",
-  "city": "Санкт-Петербург"
+  "dueDate": "2023-01-10",
+  "city": "Санкт-Петербург",
+  "tags": ["tag1", "TAG2", "tag2"]
 }
 
 ###
 
 # Update task data
-PATCH http://localhost:3335/api/tasks/task/7 HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/21 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwODg0MDUsImV4cCI6MTY3MzA5MjAwNX0.kv0D2iCYY4c3y7xo3IQlzOKl8slKR4aPub2IRtZlKx8
 
 {
   "title": "Not Task's title veeeeeeeeeeeeeery long",
-  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla "
+  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
+  "tags": ["tag1", "TAG2", "tag2"]
 }
 
 ###
 
 # Get task by ID
-GET http://localhost:3335/api/tasks/task/8 HTTP/1.1
+GET http://localhost:3335/api/tasks/task/14 HTTP/1.1
 
 ###
 
 # Delete task by Id
-DELETE http://localhost:3335/api/tasks/task/7 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
+DELETE http://localhost:3335/api/tasks/task/13 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwMjM0NDMsImV4cCI6MTY3MzAyNzA0M30.dhFTvv3uQCjnGxdzGpxtmryO9FihAoHCKl3mKA2Kv5w
 
 ###
 
 # Get new tasks
 GET http://localhost:3335/api/tasks/new HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I4MjA2YTkwZDRjMDA3YTNkYWI2YWIiLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3MzA3MzI5NCwiZXhwIjoxNjczMDc2ODk0fQ.8pA-kDBy2vifuqCXPb0CEXrlTlFNj8OZB6Y8DTkCAtA
 
 ###
 
@@ -57,7 +59,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhM
 
 # Get new tasks (filtered by tags)
 GET http://localhost:3335/api/tasks/new?tags=cleaning HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3Mjk4OTg5MCwiZXhwIjoxNjcyOTkzNDkwfQ.As2QjuaJCrlSP8AmnZNLbVYo_9IdHoEJZNRRc8mAFtM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I5MmUxNjhjNWM2ODNhMzkxOGFkY2QiLCJlbWFpbCI6InVzZXIxMkB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMwOTIwMzUsImV4cCI6MTY3MzA5NTYzNX0.9zeFkllvi5shP47vxRhSVKRXflT4cxOOAm0ecmtuQMg
+###
+
+# Get personal tasks
+GET http://localhost:3335/api/tasks/personal HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdhMTc3OGMzNTJhOWYyZTM2YzciLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3MzA5MjE1OSwiZXhwIjoxNjczMDk1NzU5fQ.K1k5Ryly9-dwUJqrdSUXpPxxHJrsibSyIl_C4Kf4M2E
 
 ###
 
@@ -74,9 +81,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjN
 ###
 
 # Add comment to task
-POST http://localhost:3335/api/tasks/task/8/comment HTTP/1.1
+POST http://localhost:3335/api/tasks/task/14/comment HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwNzM0ODMsImV4cCI6MTY3MzA3NzA4M30.H9gr9y_csf21f8Y3BzutnhJ9KhgrdMURRCZCa0neLUQ
 
 {
   "text": "Nice comment text!"
@@ -86,14 +93,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjN
 
 # Delete comment
 DELETE http://localhost:3335/api/tasks/task/8/comment/4 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwMjM0NDMsImV4cCI6MTY3MzAyNzA0M30.dhFTvv3uQCjnGxdzGpxtmryO9FihAoHCKl3mKA2Kv5w
+
+###
+
+# Get comments by task
+GET http://localhost:3335/api/tasks/task/14/comment HTTP/1.1
+
+###
+
+# Get comments by task with pagination
+GET http://localhost:3335/api/tasks/task/14/comment?limit=1&page=1 HTTP/1.1
 
 ###
 
 # Create new category
 POST http://localhost:3335/api/tasks/category HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzI5ODk0NTEsImV4cCI6MTY3Mjk5MzA1MX0.MA8tgj9Pr9IFbfEvdpxBQtU1Q194WbStnHcDhpcNCVE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwMjM0NDMsImV4cCI6MTY3MzAyNzA0M30.dhFTvv3uQCjnGxdzGpxtmryO9FihAoHCKl3mKA2Kv5w
 
 {
   "name": "cleaning"
@@ -107,8 +124,9 @@ GET http://localhost:3335/api/tasks/category HTTP/1.1
 ###
 
 # Create new contractor's response
-POST http://localhost:3335/api/tasks/task/11/response HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I4MjA2YTkwZDRjMDA3YTNkYWI2YWIiLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3MzAxMTM0NiwiZXhwIjoxNjczMDE0OTQ2fQ.gvsv8zUIi3KaiSNmWI1fvgMOMJ69kdoi5hETzJ8YXqI
+POST http://localhost:3335/api/tasks/task/14/response HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I4MjA2YTkwZDRjMDA3YTNkYWI2YWIiLCJlbWFpbCI6InVzZXIzQHRlc3QuY29tIiwicm9sZSI6IkNvbnRyYWN0b3IiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTY3MzA3MzU3NiwiZXhwIjoxNjczMDc3MTc2fQ.7dKqT8bC8oEUsUSImG5Oi3XfrH0WAGaLNkuwOCfnot0
+
 ###
 
 # Get all responses by task

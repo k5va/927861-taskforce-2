@@ -7,6 +7,7 @@ import { Comment } from '@taskforce/shared-types';
 import { COMMENT_NOT_FOUND_ERROR } from './comment.const';
 import { CommentEntity } from './comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { CommentQuery } from './query';
 import { CommentRepository } from './repository/comment.repository';
 
 @Injectable()
@@ -39,7 +40,7 @@ export class CommentService {
     return this.commentRepository.destroy(commentId);
   }
 
-  public async deleteAll(taskId: number) {
-    return this.commentRepository.destroyByTaskId(taskId);
+  public async findByTask(taskId: number, query: CommentQuery) {
+    return this.commentRepository.findByTask(taskId, query);
   }
 }
