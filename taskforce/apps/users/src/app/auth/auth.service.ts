@@ -2,6 +2,7 @@ import {
   ConflictException,
   Inject,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -101,7 +102,7 @@ export class AuthService {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    if (existingUser._id !== userId) {
+    if (existingUser._id.toString() !== userId) {
       throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
@@ -118,7 +119,7 @@ export class AuthService {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    if (existingUser._id !== userId) {
+    if (existingUser._id.toString() !== userId) {
       throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
@@ -135,7 +136,7 @@ export class AuthService {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    if (existingUser._id !== userId) {
+    if (existingUser._id.toString() !== userId) {
       throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
