@@ -220,6 +220,20 @@ export class TaskRepository
         });
       }
 
+      if (data.status === TaskStatuses.Done) {
+        // update task contractor done tasks count
+        await tx.taskContractor.update({
+          where: {
+            contractor: updatedTask.contractor,
+          },
+          data: {
+            doneTasksCount: {
+              increment: 1,
+            },
+          },
+        });
+      }
+
       return updatedTask;
     });
   }
