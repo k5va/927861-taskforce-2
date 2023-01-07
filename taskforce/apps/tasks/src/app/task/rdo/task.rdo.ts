@@ -1,5 +1,5 @@
 import { TaskStatus, Category } from '@taskforce/shared-types';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TaskRdo {
@@ -114,4 +114,22 @@ export class TaskRdo {
   })
   @Expose()
   contractor: string;
+
+  @ApiProperty({
+    description: 'Number of comments',
+    required: true,
+    example: 10,
+  })
+  @Expose({ name: 'comments' })
+  @Transform(({ value }) => value.length)
+  commentsCount: number;
+
+  @ApiProperty({
+    description: 'Number of responses',
+    required: true,
+    example: 10,
+  })
+  @Expose({ name: 'responses' })
+  @Transform(({ value }) => value.length)
+  responsesCount: number;
 }
