@@ -1,4 +1,9 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { ClientProxy } from '@nestjs/microservices';
@@ -42,7 +47,7 @@ export class AuthService {
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
     if (existingUser) {
-      throw new UnauthorizedException(USER_EXISTS_ERROR);
+      throw new ConflictException(USER_EXISTS_ERROR);
     }
 
     const userEntity = new TaskUserEntity(taskUser);
