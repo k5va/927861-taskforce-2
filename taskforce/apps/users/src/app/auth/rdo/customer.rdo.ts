@@ -62,7 +62,7 @@ export class CustomerRdo {
   @ApiProperty({
     description: 'Number of published tasks',
     required: true,
-    example: '2',
+    example: 2,
   })
   @Expose()
   publishedTasks: number;
@@ -70,7 +70,7 @@ export class CustomerRdo {
   @ApiProperty({
     description: 'Number of new tasks',
     required: true,
-    example: '2',
+    example: 2,
   })
   @Expose()
   newTasks: number;

@@ -21,6 +21,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@taskforce/core';
 import { TaskStatusModule } from './task-status/task-status.module';
+import { TaskCustomerModule } from './task-customer/task-customer.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { TaskStatusModule } from './task-status/task-status.module';
     ResponseModule,
     ReviewModule,
     TaskContractorModule,
+    TaskCustomerModule,
     TaskStatusModule,
     PrismaModule,
   ],

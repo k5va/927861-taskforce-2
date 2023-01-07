@@ -1,7 +1,7 @@
 # Create a new task
 POST http://localhost:3335/api/tasks/task HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMwODg0MDUsImV4cCI6MTY3MzA5MjAwNX0.kv0D2iCYY4c3y7xo3IQlzOKl8slKR4aPub2IRtZlKx8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxMTIxMTcsImV4cCI6MTY3MzExNTcxN30.jTzFfG7aU6SuLDgRi8V7pgp2ygJmCgvI6Ml2EPfJGEQ
 
 {
   "title": "Task's title veeeeeeeeeeeeeery long",
@@ -147,8 +147,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjN
 
 ###
 
-# Get task contractor rating
-GET http://localhost:3335/api/tasks/contractor/63b325e47cd9f2573b2cf15d/rating HTTP/1.1
+# Get task contractor data
+GET http://localhost:3335/api/tasks/contractor/63b98c9ca575a1c6ae08abdd/rating HTTP/1.1
+
+###
+
+# Get task customer data
+GET http://localhost:3335/api/tasks/customer/63b7c7c5778c352a9f2e36cb HTTP/1.1
 
 ###
 
