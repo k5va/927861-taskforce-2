@@ -4,6 +4,7 @@ import { CITIES } from '@taskforce/shared-types';
 import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
+  ArrayMinSize,
   IsIn,
   IsISO8601,
   IsOptional,
@@ -21,6 +22,7 @@ import {
   USER_NAME_MAX_LENGTH,
   USER_NAME_MIN_LENGTH,
   USER_SKILLS_MAX_NUM,
+  USER_SKILLS_MIN_NUM,
   USER_TOO_YOUNG_ERROR,
 } from '../auth.const';
 
@@ -77,9 +79,11 @@ export class UpdateUserDto {
     description: 'user skills',
     required: true,
     isArray: true,
+    minItems: USER_SKILLS_MIN_NUM,
     maxItems: USER_SKILLS_MAX_NUM,
     example: ['react', 'typescript', 'html', 'css'],
   })
+  @ArrayMinSize(USER_SKILLS_MIN_NUM)
   @ArrayMaxSize(USER_SKILLS_MAX_NUM)
   @IsString({ each: true })
   @IsOptional()
