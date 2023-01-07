@@ -155,7 +155,7 @@ export class TaskRepository
         },
       },
       orderBy: {
-        status: 'asc',
+        status: 'desc',
       },
       include: {
         category: true,
