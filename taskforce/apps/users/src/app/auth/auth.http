@@ -4,22 +4,24 @@ Content-Type: application/json
 
 {
   "name": "Keks",
-  "email": "user@test.com",
+  "email": "user21@test.com",
   "city": "Москва",
-  "birthDate": "2012-02-22",
+  "birthDate": "1980-11-02",
   "password": "123456",
-  "role": "Customer"
+  "role": "Contractor"
 }
 
 ###
 
 # Update user data
-PATCH http://localhost:3334/api/auth/user/639c11a0d451cf0460d5bd38 HTTP/1.1
+PATCH http://localhost:3334/api/auth/user/63b98c9ca575a1c6ae08abdd HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MxMSIsImlhdCI6MTY3MjgzODIwMiwiZXhwIjoxNjcyODM4MjYyfQ.Ycs0orGUftSv8grd_YV_Do6MN_LHhaPyQN2qZ1HpqsA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjM1MDYsImV4cCI6MTY3MzE2NzEwNn0.hmpRAV-jm2PTrWSTeMNGle6NF3-iFKE2o4LQP9LRvOs
 
 {
-  "name": "NotKeks"
+  "name": "NotKeks",
+  "description": "I liiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiike cats!",
+  "skills": ["reading", "gaming","react", "gaming"]
 }
 
 ###
@@ -46,7 +48,7 @@ POST http://localhost:3334/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user1@test.com",
+  "email": "user21@test.com",
   "password": "123456"
 }
 
@@ -55,14 +57,14 @@ Content-Type: application/json
 # Refresh auth token
 POST http://localhost:3334/api/auth/refresh HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzExNzc5NDgsImV4cCI6MTY3MTc4Mjc0OH0.yc1LmgUWJzVHm7wVzd63R-ZXjSsfYvJhAsOoOu5-hCI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjQzNjMsImV4cCI6MTY3Mzc2OTE2M30.FDBJibparIi00fFegHXcGYk_ydcIGOXZAnrxhISYhQU
 
 ###
 
 # Upload avatar
 POST http://localhost:3334/api/auth/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzI4NDAxODEsImV4cCI6MTY3Mjg0MDI0MX0.GQh_EMEaaCKUF_QtlWlvdD3Hip6SIYEjp73mcD2wUaA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjQzODEsImV4cCI6MTY3MzE2Nzk4MX0.XWANs1IH4fHEa_aTtikMTowKxry-k7qG-UJ4X2hhU5Y
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"

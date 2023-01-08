@@ -3,6 +3,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -89,7 +90,7 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(USER_NOT_FOUND_ERROR);
     }
 
     return existingUser;
@@ -99,7 +100,7 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(USER_NOT_FOUND_ERROR);
     }
 
     if (existingUser._id.toString() !== userId) {
