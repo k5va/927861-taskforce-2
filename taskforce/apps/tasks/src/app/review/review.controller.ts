@@ -1,12 +1,13 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import {
-  Body,
-  Controller,
-  HttpStatus,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+  ApiTags,
+  ApiOperation,
+  ApiHeader,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import {
   fillObject,
   GetUser,
@@ -25,10 +26,23 @@ export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post('task/:id/review')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Creates new task review' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiCreatedResponse({
     type: ReviewRdo,
-    status: HttpStatus.CREATED,
     description: 'Review was successfully created',
+  })
+  @ApiNotFoundResponse({
+    description: 'Task not found',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)

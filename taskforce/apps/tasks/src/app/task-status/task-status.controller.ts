@@ -1,16 +1,17 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import {
-  Body,
-  Controller,
-  HttpStatus,
-  Param,
-  Patch,
-  UseGuards,
-} from '@nestjs/common';
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiHeader,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
+import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
 import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { TaskStatusService } from './task-status.service';
 import { TaskRdo } from '../task/rdo/task.rdo';
-import { UserRole } from '@taskforce/shared-types';
+import { TaskCommands, UserRole } from '@taskforce/shared-types';
 import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 
 @ApiTags('tasks')
@@ -19,14 +20,27 @@ export class TaskStatusController {
   constructor(private readonly taskStatusService: TaskStatusService) {}
 
   @Patch('task/:id/status')
-  @ApiResponse({
-    type: TaskRdo,
-    status: HttpStatus.OK,
-    description: 'Task status successfully updated',
+  @ApiOperation({
+    summary: `Updates task status by sending corresponding commands: ${Object.values(
+      TaskCommands
+    )}`,
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
+    type: TaskRdo,
+    description: 'Task status was successfully updated',
+  })
+  @ApiNotFoundResponse({
     description: 'Task with give id not found',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @UseGuards(JwtAuthGuard)
   async changeTaskStatus(

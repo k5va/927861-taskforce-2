@@ -1,11 +1,21 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiOkResponse,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+  ApiHeader,
+  ApiNotFoundResponse,
+  ApiNoContentResponse,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import {
   Body,
   Controller,
   Delete,
   FileTypeValidator,
   Get,
-  HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -38,10 +48,20 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Post('task')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Creates new task' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiCreatedResponse({
     type: TaskRdo,
-    status: HttpStatus.CREATED,
     description: 'Task was successfully created',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)
@@ -52,13 +72,12 @@ export class TaskController {
   }
 
   @Get('task/:id')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Gets task details by id' })
+  @ApiOkResponse({
     type: TaskRdo,
-    status: HttpStatus.OK,
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found',
+  @ApiNotFoundResponse({
+    description: 'Task not found',
   })
   async show(@Param('id') id: number) {
     const task = await this.taskService.getTask(id);
@@ -66,14 +85,23 @@ export class TaskController {
   }
 
   @Patch('task/:id')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Updates task' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
     type: TaskRdo,
-    status: HttpStatus.OK,
     description: 'Task successfully updated',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: 'Task with give id not found',
+  @ApiNotFoundResponse({
+    description: 'Task not found',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)
@@ -88,13 +116,19 @@ export class TaskController {
   }
 
   @Delete('task/:id')
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
+  @ApiOperation({ summary: 'Deletes task' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiNoContentResponse({
     description: 'Task successfully deleted',
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
+  @ApiNotFoundResponse({
     description: 'Task with give id not found',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)
@@ -104,10 +138,17 @@ export class TaskController {
   }
 
   @Get('new')
-  @ApiResponse({
+  @ApiOperation({ summary: 'gets new tasks' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
     type: TaskRdo,
     isArray: true,
-    status: HttpStatus.OK,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @Roles(UserRoles.Contractor)
   @UseGuards(RolesGuard)
@@ -117,10 +158,17 @@ export class TaskController {
   }
 
   @Get('personal')
-  @ApiResponse({
+  @ApiOperation({ summary: 'gets personal tasks' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
     type: TaskRdo,
     isArray: true,
-    status: HttpStatus.OK,
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @UseGuards(JwtAuthGuard)
   async showPersonal(
@@ -140,10 +188,24 @@ export class TaskController {
   }
 
   @Post('task/:id/image')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Uploads task image' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse({
     type: TaskRdo,
-    status: HttpStatus.OK,
     description: 'Task image was sussessfully uploaded',
+  })
+  @ApiNotFoundResponse({
+    description: 'Task not found',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
   })
   @UseInterceptors(FileInterceptor('image'))
   @Roles(UserRoles.Customer)

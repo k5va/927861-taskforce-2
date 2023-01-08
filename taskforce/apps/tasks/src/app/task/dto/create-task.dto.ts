@@ -93,6 +93,11 @@ export class CreateTaskDto {
   @IsOptional()
   public address?: string;
 
+  @ApiProperty({
+    description: `City. One of: ${CITIES}`,
+    required: true,
+    example: 'Москва',
+  })
   @IsString()
   @IsIn(CITIES)
   public city: string;

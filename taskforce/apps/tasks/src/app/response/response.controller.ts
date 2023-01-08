@@ -1,12 +1,15 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import {
-  Controller,
-  Get,
-  HttpStatus,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+  ApiTags,
+  ApiOperation,
+  ApiHeader,
+  ApiCreatedResponse,
+  ApiNotFoundResponse,
+  ApiUnauthorizedResponse,
+  ApiConflictResponse,
+  ApiBadRequestResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import {
   fillObject,
   GetUser,
@@ -16,7 +19,7 @@ import {
 } from '@taskforce/core';
 import { ResponseService } from './response.service';
 import { ResponseRdo } from './rdo/response.rdo';
-import { UserRole, UserRoles } from '@taskforce/shared-types';
+import { UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -24,10 +27,26 @@ export class ResponseController {
   constructor(private readonly responseService: ResponseService) {}
 
   @Post('task/:id/response')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Creates new customer response to Task' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiCreatedResponse({
     type: ResponseRdo,
-    status: HttpStatus.CREATED,
     description: 'Response was successfully created',
+  })
+  @ApiNotFoundResponse({
+    description: 'Task not found',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @ApiConflictResponse({
+    description: 'Contractor response to task already exists',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
   })
   @Roles(UserRoles.Contractor)
   @UseGuards(RolesGuard)
@@ -38,10 +57,13 @@ export class ResponseController {
   }
 
   @Get('task/:id/response')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Gets all contractor responses to task' })
+  @ApiOkResponse({
     type: ResponseRdo,
     isArray: true,
-    status: HttpStatus.OK,
+  })
+  @ApiNotFoundResponse({
+    description: 'Task not found',
   })
   async showAll(@Param('id') taskId: number) {
     return fillObject(

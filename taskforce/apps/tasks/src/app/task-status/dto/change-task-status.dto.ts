@@ -4,7 +4,7 @@ import { IsIn, IsNotEmpty, IsString, ValidateIf } from 'class-validator';
 
 export class ChangeTaskStatusDto {
   @ApiProperty({
-    description: 'Change task status command',
+    description: `Change task status command: ${Object.values(TaskCommands)}`,
     required: true,
     example: TaskCommands.cancel,
   })

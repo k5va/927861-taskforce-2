@@ -1,12 +1,14 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import {
-  Body,
-  Controller,
-  Get,
-  HttpStatus,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+  ApiTags,
+  ApiOperation,
+  ApiHeader,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+  ApiUnauthorizedResponse,
+  ApiConflictResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { fillObject, JwtAuthGuard, Roles, RolesGuard } from '@taskforce/core';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -19,10 +21,23 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Post('category')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Creates new category' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiCreatedResponse({
     type: CategoryRdo,
-    status: HttpStatus.CREATED,
     description: 'Category was successfully created',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @ApiConflictResponse({
+    description: 'Conflict',
   })
   @Roles(UserRoles.Customer)
   @UseGuards(RolesGuard)
@@ -32,12 +47,12 @@ export class CategoryController {
     return fillObject(CategoryRdo, newCategory);
   }
 
-  @ApiResponse({
+  @Get('category')
+  @ApiOperation({ summary: 'Gets list of all categories' })
+  @ApiOkResponse({
     type: CategoryRdo,
     isArray: true,
-    status: HttpStatus.OK,
   })
-  @Get('category')
   async showAll() {
     return fillObject(CategoryRdo, await this.categoryService.findAll());
   }

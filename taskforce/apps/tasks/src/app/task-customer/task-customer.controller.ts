@@ -1,5 +1,10 @@
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiOkResponse,
+} from '@nestjs/swagger';
+import { Controller, Get, Param } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { TaskCustomerService } from './task-customer.service';
 import { TaskCustomerRdo } from './rdo/task-customer.rdo';
@@ -10,10 +15,13 @@ export class TaskContractorController {
   constructor(private readonly taskContractorService: TaskCustomerService) {}
 
   @Get('customer/:id')
-  @ApiResponse({
-    type: TaskCustomerRdo,
-    status: HttpStatus.OK,
+  @ApiOperation({
+    summary: 'Get task customer data: number of published and new tasks',
   })
+  @ApiOkResponse({
+    type: TaskCustomerRdo,
+  })
+  @ApiParam({ name: 'id', description: 'user id' })
   async show(@Param('id') customer: string) {
     return fillObject(
       TaskCustomerRdo,

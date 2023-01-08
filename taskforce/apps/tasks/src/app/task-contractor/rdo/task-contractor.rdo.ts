@@ -1,7 +1,7 @@
 import { Expose } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ContractorRatingRdo {
+export class TaskContractorRdo {
   @ApiProperty({
     description: 'contractor Id',
     required: true,

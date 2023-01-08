@@ -8,7 +8,7 @@ export class TaskContractorService {
     private readonly taskContractorRepository: TaskContractorRepository
   ) {}
 
-  public async getRating(contractor: string) {
+  public async findByContractorId(contractor: string) {
     const taskContractors =
       await this.taskContractorRepository.findAllWithRatingSorted();
     const index = taskContractors.findIndex(
