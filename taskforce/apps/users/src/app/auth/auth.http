@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Keks",
-  "email": "user21@test.com",
+  "email": "user23@test.com",
   "city": "Москва",
   "birthDate": "1980-11-02",
   "password": "123456",
@@ -16,7 +16,7 @@ Content-Type: application/json
 # Update user data
 PATCH http://localhost:3334/api/auth/user/63b98c9ca575a1c6ae08abdd HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjM1MDYsImV4cCI6MTY3MzE2NzEwNn0.hmpRAV-jm2PTrWSTeMNGle6NF3-iFKE2o4LQP9LRvOs
+Authorization: Bearer {token}
 
 {
   "name": "NotKeks",
@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlO
 # Change password
 PUT http://localhost:3334/api/auth/user/639c11a0d451cf0460d5bd38/password HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Ik5vdEtla3MxMSIsImlhdCI6MTY3MjgzODIwMiwiZXhwIjoxNjcyODM4MjYyfQ.Ycs0orGUftSv8grd_YV_Do6MN_LHhaPyQN2qZ1HpqsA
+Authorization: Bearer {token}
 
 {
   "oldPassword": "123456",
@@ -48,7 +48,7 @@ POST http://localhost:3334/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user21@test.com",
+  "email": "user22@test.com",
   "password": "123456"
 }
 
@@ -57,14 +57,14 @@ Content-Type: application/json
 # Refresh auth token
 POST http://localhost:3334/api/auth/refresh HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjQzNjMsImV4cCI6MTY3Mzc2OTE2M30.FDBJibparIi00fFegHXcGYk_ydcIGOXZAnrxhISYhQU
+Authorization: Bearer {token}
 
 ###
 
 # Upload avatar
 POST http://localhost:3334/api/auth/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhNzJlODc1YjNiZGQ1YjExYWFkMjAiLCJlbWFpbCI6InVzZXIyMUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxNjQzODEsImV4cCI6MTY3MzE2Nzk4MX0.XWANs1IH4fHEa_aTtikMTowKxry-k7qG-UJ4X2hhU5Y
+Authorization: Bearer {token}
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
