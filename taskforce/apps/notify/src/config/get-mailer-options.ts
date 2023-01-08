@@ -1,5 +1,8 @@
 import { MailerAsyncOptions } from '@nestjs-modules/mailer/dist/interfaces/mailer-async-options.interface';
 import { ConfigService } from '@nestjs/config';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { formatDate } from '@taskforce/core';
+import * as path from 'path';
 
 export function getMailerOptions(): MailerAsyncOptions {
   return {
@@ -11,6 +14,16 @@ export function getMailerOptions(): MailerAsyncOptions {
       )}:${configService.get<string>('mail.port')}`,
       defaults: {
         from: configService.get<string>('mail.from'),
+      },
+      template: {
+        dir: path.resolve(__dirname, 'assets'),
+        adapter: new HandlebarsAdapter({
+          formatDate,
+          increment: (num: number) => num + 1,
+        }),
+        options: {
+          strict: true,
+        },
       },
     }),
     inject: [ConfigService],

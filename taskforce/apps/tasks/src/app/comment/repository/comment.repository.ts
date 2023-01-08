@@ -3,6 +3,7 @@ import { Comment } from '@taskforce/shared-types';
 import { CommentEntity } from '../comment.entity';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
+import { CommentQuery } from '../query';
 
 @Injectable()
 export class CommentRepository
@@ -26,19 +27,24 @@ export class CommentRepository
     });
   }
 
-  public async destroyByTaskId(taskId: number): Promise<void> {
-    await this.prisma.comment.deleteMany({
-      where: {
-        taskId,
-      },
-    });
-  }
-
   public findById(id: number): Promise<Comment | null> {
     return this.prisma.comment.findFirst({
       where: {
         id,
       },
+    });
+  }
+
+  public findByTask(
+    taskId: number,
+    { limit, page }: CommentQuery
+  ): Promise<Comment[]> {
+    return this.prisma.comment.findMany({
+      where: {
+        taskId,
+      },
+      take: limit,
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 

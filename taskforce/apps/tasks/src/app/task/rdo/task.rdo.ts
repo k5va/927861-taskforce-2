@@ -1,12 +1,12 @@
 import { TaskStatus, Category } from '@taskforce/shared-types';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class TaskRdo {
   @ApiProperty({
     description: 'Task Id',
     required: true,
-    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+    example: 0,
   })
   @Expose()
   id: number;
@@ -68,9 +68,9 @@ export class TaskRdo {
   dueDate: Date;
 
   @ApiProperty({
-    description: 'Task image link',
+    description: 'Task image',
     required: false,
-    example: '...',
+    example: 'MRV11zknpPKDulCtVIUez.jpeg',
   })
   @Expose()
   image: string;
@@ -82,6 +82,14 @@ export class TaskRdo {
   })
   @Expose()
   address: string;
+
+  @ApiProperty({
+    description: 'Task city',
+    required: false,
+    example: 'Москва',
+  })
+  @Expose()
+  city: string;
 
   @ApiProperty({
     description: 'Task tags',
@@ -98,4 +106,30 @@ export class TaskRdo {
   })
   @Expose()
   customer: string;
+
+  @ApiProperty({
+    description: 'Task contractor id',
+    required: false,
+    example: '1282499d-5b42-4007-b103-a8b7f8f51835',
+  })
+  @Expose()
+  contractor: string;
+
+  @ApiProperty({
+    description: 'Number of comments',
+    required: true,
+    example: 10,
+  })
+  @Expose({ name: 'comments' })
+  @Transform(({ value }) => value.length)
+  commentsCount: number;
+
+  @ApiProperty({
+    description: 'Number of responses',
+    required: true,
+    example: 10,
+  })
+  @Expose({ name: 'responses' })
+  @Transform(({ value }) => value.length)
+  responsesCount: number;
 }

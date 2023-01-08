@@ -1,12 +1,22 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@taskforce/shared-types';
+import { ClientProxy } from '@nestjs/microservices';
+import { CommandEvent, User, Subscriber } from '@taskforce/shared-types';
 import { TaskUserRepository } from '../task-user/repository/task-user.repository';
 import { TaskUserEntity } from '../task-user/task-user.entity';
 import {
   ACCESS_TOKEN_EXPIRE,
+  DIFFERENT_USER_ERROR,
   INVALID_REFRESH_TOKEN_ERROR,
+  RABBITMQ_SERVICE,
   REFRESH_TOKEN_EXPIRE,
   USER_EXISTS_ERROR,
   USER_NOT_FOUND_ERROR,
@@ -21,7 +31,8 @@ export class AuthService {
   constructor(
     private readonly taskUserRepository: TaskUserRepository,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
   async register(dto: CreateUserDto): Promise<User> {
@@ -38,13 +49,25 @@ export class AuthService {
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
     if (existingUser) {
-      throw new UnauthorizedException(USER_EXISTS_ERROR);
+      throw new ConflictException(USER_EXISTS_ERROR);
     }
 
     const userEntity = new TaskUserEntity(taskUser);
     await userEntity.setPassword(password);
 
-    return this.taskUserRepository.create(userEntity);
+    const newUser = await this.taskUserRepository.create(userEntity);
+
+    this.rabbitClient.emit<void, Subscriber>(
+      { cmd: CommandEvent.AddSubscriber },
+      {
+        email: newUser.email,
+        name: newUser.name,
+        role: newUser.role,
+        userId: newUser._id.toString(),
+      }
+    );
+
+    return newUser;
   }
 
   async verifyUser(dto: LoginUserDto): Promise<User> {
@@ -67,40 +90,64 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(USER_NOT_FOUND_ERROR);
     }
 
     return existingUser;
   }
 
-  async updateUser(id: string, dto: UpdateUserDto): Promise<User> {
-    const existingUser = await this.taskUserRepository.findById(id);
+  async updateUser(userId: string, dto: UpdateUserDto): Promise<User> {
+    const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(USER_NOT_FOUND_ERROR);
     }
 
-    return this.taskUserRepository.update(id, {
+    if (existingUser._id.toString() !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+    }
+
+    return this.taskUserRepository.update(userId, {
       ...dto,
       birthDate: dto.birthDate && new Date(dto.birthDate),
     });
   }
 
-  async changePassword(id: string, dto: ChangePasswordDto): Promise<User> {
-    const { newPassword, oldPassword } = dto;
-    const existingUser = await this.taskUserRepository.findById(id);
+  async setAvatar(userId: string, fileName: string): Promise<User> {
+    const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+    }
+
+    if (existingUser._id.toString() !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+    }
+
+    return this.taskUserRepository.update(userId, {
+      avatar: fileName,
+    });
+  }
+
+  async changePassword(userId: string, dto: ChangePasswordDto): Promise<User> {
+    const { newPassword, oldPassword } = dto;
+    const existingUser = await this.taskUserRepository.findById(userId);
+
+    if (!existingUser) {
+      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+    }
+
+    if (existingUser._id.toString() !== userId) {
+      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.comparePassword(oldPassword))) {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
-    await userEntity.setPassword(newPassword); // TODO: no need to create user entity?
+    await userEntity.setPassword(newPassword);
 
-    return this.taskUserRepository.update(id, {
+    return this.taskUserRepository.update(userId, {
       passwordHash: userEntity.passwordHash,
     });
   }
@@ -109,7 +156,7 @@ export class AuthService {
     const { token, refreshToken } = await this.generateTokens(user);
 
     const userEntity = new TaskUserEntity(user);
-    await userEntity.setRefreshToken(refreshToken); // TODO: no need to create user entity?
+    await userEntity.setRefreshToken(refreshToken);
     await this.taskUserRepository.update(user._id, {
       refreshTokenHash: userEntity.refreshTokenHash,
     });
@@ -132,7 +179,7 @@ export class AuthService {
       userEntity
     );
 
-    await userEntity.setRefreshToken(newRefreshToken); // TODO: no need to create user entity?
+    await userEntity.setRefreshToken(newRefreshToken);
     await this.taskUserRepository.update(userId, {
       refreshTokenHash: userEntity.refreshTokenHash,
     });

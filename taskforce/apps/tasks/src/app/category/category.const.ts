@@ -1,1 +1,1 @@
-export const CATEGORY_ALREADY_EXISTS = 'categoey with such name already exists';
+export const CATEGORY_ALREADY_EXISTS = 'category with such name already exists';

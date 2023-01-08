@@ -1,6 +1,13 @@
-import { CITIES, UserRole } from '@taskforce/shared-types';
+import { CITIES, UserRoles, UserRole } from '@taskforce/shared-types';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsIn, IsISO8601, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsIn,
+  IsISO8601,
+  IsString,
+  Length,
+  Matches,
+} from 'class-validator';
 import {
   CITY_NOT_VALID_ERROR,
   USER_NAME_MAX_LENGTH,
@@ -10,7 +17,11 @@ import {
   USER_EMAIL_NOT_VALID_ERROR,
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
+  USER_TOO_YOUNG_ERROR,
+  USER_MIN_AGE,
+  USER_BIRTHDATE_PATTERN,
 } from '../auth.const';
+import { IsOlderThan } from '@taskforce/core';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -56,16 +67,21 @@ export class CreateUserDto {
     required: true,
     example: 'Customer',
   })
-  @IsIn(Object.values(UserRole), { message: ROLE_NOT_VALID_ERROR })
+  @IsIn(Object.values(UserRoles), { message: ROLE_NOT_VALID_ERROR })
   public role: UserRole;
 
   @ApiProperty({
     description: 'Birth date',
+    format: 'YYYY-MM-DD',
     required: true,
     example: '1990-12-01',
   })
   @IsISO8601({
     message: USER_DATE_BIRTH_NOT_VALID_ERROR,
   })
+  @Matches(USER_BIRTHDATE_PATTERN, {
+    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+  })
+  @IsOlderThan(USER_MIN_AGE, { message: USER_TOO_YOUNG_ERROR })
   public birthDate: string;
 }

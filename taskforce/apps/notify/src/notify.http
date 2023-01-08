@@ -1,4 +1,4 @@
-# send mail
-GET http://localhost:3333/api/send HTTP/1.1
+# sends new tasks mail notifications to all subscribers
+POST http://localhost:3333/api/notify HTTP/1.1
 
 ###

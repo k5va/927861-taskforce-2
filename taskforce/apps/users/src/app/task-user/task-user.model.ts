@@ -1,9 +1,10 @@
 import { Document } from 'mongoose';
-import { User, UserRole } from '@taskforce/shared-types';
+import { User, UserRole, UserRoles } from '@taskforce/shared-types';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({
   collection: 'users',
+  timestamps: true,
 })
 export class TaskUserModel extends Document implements User {
   @Prop({
@@ -30,8 +31,7 @@ export class TaskUserModel extends Document implements User {
   @Prop({
     required: true,
     type: String,
-    enum: UserRole,
-    default: UserRole.Contractor,
+    enum: Object.values(UserRoles),
   })
   public role: UserRole;
 
@@ -42,9 +42,6 @@ export class TaskUserModel extends Document implements User {
     required: true,
   })
   public birthDate: Date;
-
-  @Prop()
-  public registerDate: Date;
 
   @Prop()
   public description: string;

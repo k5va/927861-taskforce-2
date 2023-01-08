@@ -6,7 +6,7 @@ export class CommentEntity extends AbstractEntity implements Comment {
   public text: string;
   public taskId: number;
   public author: string;
-  public rergisterDate?: Date;
+  public registerDate?: Date;
 
   constructor(data: Comment) {
     super();
@@ -15,6 +15,6 @@ export class CommentEntity extends AbstractEntity implements Comment {
     this.text = data.text;
     this.taskId = data.taskId;
     this.author = data.author;
-    this.rergisterDate = data.rergisterDate;
+    this.registerDate = data.registerDate;
   }
 }

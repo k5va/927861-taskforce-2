@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDateGreaterThan, transformTags } from '@taskforce/core';
+import { Transform } from 'class-transformer';
 import {
   ArrayMaxSize,
   IsISO8601,
@@ -6,9 +8,15 @@ import {
   IsOptional,
   IsString,
   Length,
+  Matches,
   Min,
 } from 'class-validator';
 import {
+  DUE_DATE_LESS_THAN_CURRENT_ERROR,
+  TAG_FORMAT_NOT_VALID_ERROR,
+  TAG_FORMAT_PATTERN,
+  TAG_MAX_LENGTH,
+  TAG_MIN_LENGTH,
   TASK_ADDRESS_MAX_LENGTH,
   TASK_ADDRESS_MIN_LENGTH,
   TASK_DESCRIPTION_MAX_LENGTH,
@@ -69,8 +77,9 @@ export class UpdateTaskDto {
     required: false,
     example: '2022-11-29',
   })
-  @IsISO8601()
   @IsOptional()
+  @IsISO8601()
+  @IsDateGreaterThan(new Date(), { message: DUE_DATE_LESS_THAN_CURRENT_ERROR })
   public dueDate?: string;
 
   @ApiProperty({
@@ -90,8 +99,14 @@ export class UpdateTaskDto {
     required: false,
     example: ['tag1', 'tag2'],
   })
-  @IsString({ each: true })
-  @ArrayMaxSize(TASK_TAGS_MAX_NUM)
   @IsOptional()
+  @IsString({ each: true })
+  @Length(TAG_MIN_LENGTH, TAG_MAX_LENGTH, { each: true })
+  @ArrayMaxSize(TASK_TAGS_MAX_NUM)
+  @Matches(TAG_FORMAT_PATTERN, {
+    each: true,
+    message: TAG_FORMAT_NOT_VALID_ERROR,
+  })
+  @Transform(transformTags) // makes lowercase and removes dublicates
   public tags?: string[];
 }

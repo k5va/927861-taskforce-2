@@ -1,18 +1,33 @@
 import {
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpCode,
   HttpStatus,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   Patch,
   Post,
   Put,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { fillObject } from '@taskforce/core';
-import { UserRole } from '@taskforce/shared-types';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+  ApiBadRequestResponse,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiNotFoundResponse,
+  ApiHeader,
+  ApiConsumes,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -23,8 +38,10 @@ import { CustomerRdo } from './rdo/customer.rdo';
 import { LoggedInUserRdo } from './rdo/logged-in-user.rdo';
 import { UserRdo } from './rdo/user.rdo';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
-import { JwtAuthGuard, RtAuthGuard } from './guards';
-import { GetUser } from './decorators';
+import { RtAuthGuard } from './guards';
+import { UserRoles } from '@taskforce/shared-types';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AVATAR_FILE_TYPE, MAX_AVATAR_SIZE } from './auth.const';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -32,10 +49,16 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('user')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Creates new user' })
+  @ApiCreatedResponse({
     type: UserRdo,
-    status: HttpStatus.CREATED,
     description: 'User was successfully created',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+  })
+  @ApiConflictResponse({
+    description: 'User with this email exists',
   })
   async create(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
@@ -44,46 +67,62 @@ export class AuthController {
 
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @ApiResponse({
+  @ApiOperation({ summary: 'Login with email and password' })
+  @ApiOkResponse({
     type: LoggedInUserRdo,
-    status: HttpStatus.OK,
     description: 'User was successfully logged in',
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'User such login or password not found',
+  @ApiUnauthorizedResponse({
+    description: 'User with such login or password not found',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
   })
   async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
     const { token, refreshToken } = await this.authService.loginUser(
       verifiedUser
     );
-    const { _id: id, email } = verifiedUser;
+    const { _id, email } = verifiedUser;
 
-    return fillObject(LoggedInUserRdo, { id, email, token, refreshToken });
+    return fillObject(LoggedInUserRdo, { _id, email, token, refreshToken });
   }
 
   @Get('user/:id')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Get user details' })
+  @ApiOkResponse({
     type: CustomerRdo,
-    status: HttpStatus.OK,
   })
-  @ApiResponse({
+  @ApiOkResponse({
     type: ContractorRdo,
-    status: HttpStatus.OK,
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({
+    description: 'User not found',
   })
   async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existingUser = await this.authService.getUser(id);
-    return existingUser.role === UserRole.Customer
+    return existingUser.role === UserRoles.Customer
       ? fillObject(CustomerRdo, existingUser)
       : fillObject(ContractorRdo, existingUser);
   }
 
   @Patch('user/:id')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Updates user data' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
     type: UserRdo,
-    status: HttpStatus.OK,
     description: 'User was successfully updated',
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @UseGuards(JwtAuthGuard)
   async update(
@@ -95,10 +134,18 @@ export class AuthController {
   }
 
   @Put('user/:id/password')
-  @ApiResponse({
+  @ApiOperation({ summary: 'Changes user password' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiOkResponse({
     type: UserRdo,
-    status: HttpStatus.OK,
     description: 'Password was successfully updated',
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
   })
   @UseGuards(JwtAuthGuard)
   async changePassword(
@@ -109,16 +156,59 @@ export class AuthController {
     return fillObject(UserRdo, updatedUser);
   }
 
+  @Post('avatar')
+  @ApiOperation({ summary: 'Uploads user avatar image' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer token',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse({
+    type: UserRdo,
+    description: 'Avatar was sussessfully uploaded',
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({
+    description: 'User not found',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('avatar'))
+  async uploadAvatar(
+    @GetUser('id') userId: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
+          new FileTypeValidator({ fileType: AVATAR_FILE_TYPE }),
+        ],
+      })
+    )
+    file: Express.Multer.File
+  ) {
+    const updatedUser = await this.authService.setAvatar(userId, file.filename);
+    return fillObject(UserRdo, updatedUser);
+  }
+
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  @ApiResponse({
+  @ApiOperation({ summary: 'Refreshes authorization token' })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Bearer refresh token',
+  })
+  @ApiOkResponse({
     type: LoggedInUserRdo,
-    status: HttpStatus.OK,
     description: 'Token was refreshed',
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
+  @ApiUnauthorizedResponse({
     description: 'Invalid refresh token',
+  })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({
+    description: 'User not found',
   })
   @UseGuards(RtAuthGuard)
   async refresh(@GetUser() user) {

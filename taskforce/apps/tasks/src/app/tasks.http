@@ -1,65 +1,90 @@
 # Create a new task
-POST http://localhost:3333/api/tasks/task HTTP/1.1
+POST http://localhost:3335/api/tasks/task HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {token}
 
 {
   "title": "Task's title veeeeeeeeeeeeeery long",
   "description": "Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
   "categoryId": 1,
   "price": 100,
-  "dueDate": "2023-02-22",
-  "role": "Customer"
+  "dueDate": "2023-01-10",
+  "city": "Санкт-Петербург",
+  "tags": ["tag1", "TAG2", "tag2"]
 }
 
 ###
 
 # Update task data
-PATCH http://localhost:3333/api/tasks/task/5 HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/32 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {token}
 
 {
   "title": "Not Task's title veeeeeeeeeeeeeery long",
-  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla "
+  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
+  "tags": ["tag1", "TAG2", "tag2"]
 }
 
 ###
 
 # Get task by ID
-GET http://localhost:3333/api/tasks/task/5 HTTP/1.1
+GET http://localhost:3335/api/tasks/task/34 HTTP/1.1
 
 ###
 
 # Delete task by Id
-DELETE http://localhost:3333/api/tasks/task/5 HTTP/1.1
+DELETE http://localhost:3335/api/tasks/task/32 HTTP/1.1
+Authorization: Bearer {token}
 
 ###
 
 # Get new tasks
-GET http://localhost:3333/api/tasks/new HTTP/1.1
+GET http://localhost:3335/api/tasks/new HTTP/1.1
+Authorization: Bearer {token}
+
 ###
 
 # Get new tasks (filtered by categories, sorted and with pagination)
-GET http://localhost:3333/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+GET http://localhost:3335/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular HTTP/1.1
+Authorization: Bearer {token}
+
+###
+
+# Get new tasks (filtered by cities)
+GET http://localhost:3335/api/tasks/new?cities=Москва HTTP/1.1
+Authorization: Bearer {token}
+
 ###
 
 # Get new tasks (filtered by tags)
-GET http://localhost:3333/api/tasks/new?tags=cleaning HTTP/1.1
+GET http://localhost:3335/api/tasks/new?tags=cleaning HTTP/1.1
+Authorization: Bearer {token}
+
+###
+
+# Get personal tasks
+GET http://localhost:3335/api/tasks/personal HTTP/1.1
+Authorization: Bearer {token}
 
 ###
 
 # Change task's status
-PATCH http://localhost:3333/api/tasks/task/5/status HTTP/1.1
+PATCH http://localhost:3335/api/tasks/task/34/status HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {token}
 
 {
-  "status": "canceled"
+  "command": "start",
+  "contractor": "63ba8f0aa99e326258f2ea6a"
 }
 
 ###
 
 # Add comment to task
-POST http://localhost:3333/api/tasks/task/5/comment HTTP/1.1
+POST http://localhost:3335/api/tasks/task/34/comment HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {token}
 
 {
   "text": "Nice comment text!"
@@ -68,31 +93,86 @@ Content-Type: application/json
 ###
 
 # Delete comment
-DELETE http://localhost:3333/api/tasks/task/5/comment/5 HTTP/1.1
+DELETE http://localhost:3335/api/tasks/task/34/comment/10 HTTP/1.1
+Authorization: Bearer {token}
+
+###
+
+# Get comments by task
+GET http://localhost:3335/api/tasks/task/34/comment HTTP/1.1
+
+###
+
+# Get comments by task with pagination
+GET http://localhost:3335/api/tasks/task/14/comment?limit=1&page=1 HTTP/1.1
 
 ###
 
 # Create new category
-POST http://localhost:3333/api/tasks/category HTTP/1.1
+POST http://localhost:3335/api/tasks/category HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer {token}
 
 {
-  "name": "cleaning"
+  "name": "gaming"
 }
 
 ###
 
 # Get all categories
-GET http://localhost:3333/api/tasks/category HTTP/1.1
+GET http://localhost:3335/api/tasks/category HTTP/1.1
 
 ###
 
 # Create new contractor's response
-POST http://localhost:3333/api/tasks/task/5/response HTTP/1.1
+POST http://localhost:3335/api/tasks/task/34/response HTTP/1.1
+Authorization: Bearer {token}
 
 ###
 
 # Get all responses by task
-GET http://localhost:3333/api/tasks/task/5/response HTTP/1.1
+GET http://localhost:3335/api/tasks/task/34/response HTTP/1.1
+
+###
+
+# Add review to task
+POST http://localhost:3335/api/tasks/task/34/review HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {token}
+
+{
+  "text": "Nice doooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooone!",
+  "contractor": "63ba8f0aa99e326258f2ea6a",
+  "rating": 5
+}
+
+###
+
+# Get task contractor data
+GET http://localhost:3335/api/tasks/contractor/63ba8f0aa99e326258f2ea6a HTTP/1.1
+
+###
+
+# Get task customer data
+GET http://localhost:3335/api/tasks/customer/63b7c7c5778c352a9f2e36cb HTTP/1.1
+
+###
+
+# Upload task image
+POST http://localhost:3335/api/tasks/task/33/image HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {token}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="image.jpg"
+Content-Type: image/jpeg
+
+< avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# download task image
+GET http://localhost:3335/static/TLfZQbxGFhGLZewCxctlS.jpeg HTTP/1.1
 
 ###

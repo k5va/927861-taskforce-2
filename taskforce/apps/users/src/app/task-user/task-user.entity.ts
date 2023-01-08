@@ -12,7 +12,6 @@ export class TaskUserEntity extends AbstractEntity implements User {
   public role: UserRole;
   public avatar: string;
   public birthDate: Date;
-  public registerDate?: Date;
   public description?: string;
   public skills?: string[];
   public refreshTokenHash?: string;
@@ -28,7 +27,6 @@ export class TaskUserEntity extends AbstractEntity implements User {
     this.role = data.role;
     this.avatar = data.avatar;
     this.birthDate = data.birthDate;
-    this.registerDate = data.registerDate;
     this.description = data.description;
     this.skills = data.skills;
     this.refreshTokenHash = data.refreshTokenHash;
