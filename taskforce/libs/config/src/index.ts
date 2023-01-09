@@ -7,3 +7,4 @@ export * from './lib/mongodb.config';
 export * from './lib/get-mongodb-options';
 export * from './lib/jwt.config';
 export * from './lib/get-jwt-options';
+export * from './lib/services.config';
