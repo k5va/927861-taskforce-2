@@ -35,3 +35,4 @@ export * from './lib/rdo/task-contractor.rdo';
 export * from './lib/rdo/task-customer.rdo';
 export * from './lib/rdo/task.rdo';
 export * from './lib/rdo/user.rdo';
+export * from './lib/utils/parse-query-from-url';

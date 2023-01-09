@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { HttpModule } from '@nestjs/axios';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ENV_FILE_PATH } from './app.const';
 import { envSchema } from './env.schema';
 import { servicesConfig } from '@taskforce/config';
+import { TaskModule } from './task/task.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -16,9 +15,10 @@ import { servicesConfig } from '@taskforce/config';
       load: [servicesConfig],
       validationSchema: envSchema,
     }),
-    HttpModule,
+    AuthModule,
+    TaskModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [ConfigService],
 })
 export class AppModule {}

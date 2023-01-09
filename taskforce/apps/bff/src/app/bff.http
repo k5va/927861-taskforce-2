@@ -1,10 +1,10 @@
 # Create a new user
-POST http://localhost:3332/api/tasks/user HTTP/1.1
+POST http://localhost:3336/api/auth/user HTTP/1.1
 Content-Type: application/json
 
 {
   "name": "Keks",
-  "email": "user24@test.com",
+  "email": "user25@test.com",
   "city": "Москва",
   "birthDate": "1980-11-02",
   "password": "123456",
@@ -14,46 +14,154 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3332/api/tasks/user/63b7c7c5778c352a9f2e36cb HTTP/1.1
+GET http://localhost:3336/api/auth/user/63b7c7c5778c352a9f2e36cb HTTP/1.1
 
 ###
 
 # Login user by email and password
-POST http://localhost:3332/api/tasks/login HTTP/1.1
+POST http://localhost:3336/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user24@test.com",
-  "password": "123456"
+  "email": "user2@test.com",
+  "password": "1234567"
+}
+
+###
+
+# Refresh auth token
+POST http://localhost:3336/api/auth/refresh HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNjU0NjQsImV4cCI6MTY3Mzg3MDI2NH0.Qb8rfpSqM1z045oTBzBzVcXgdIygzVBJ8u1Nzkgfcz0
+
+###
+
+# Update user data
+PATCH http://localhost:3336/api/auth/user/63bbf87280ed17fba7d7ebad HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNjUwMTIsImV4cCI6MTY3MzI2ODYxMn0.TpQfRbiuXHy2HKIuaXqjpNM3-3u0bk-dzaDtadFHeK8
+
+{
+  "name": "NotKeks",
+  "description": "I liiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiike cats!",
+  "skills": ["reading", "gaming","react", "gaming"]
 }
 
 ###
 
 # Change password
-PUT http://localhost:3332/api/tasks/user/639c11a0d451cf0460d5bd38/password HTTP/1.1
+PUT http://localhost:3336/api/auth/user/63bbf87280ed17fba7d7ebad/password HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhY2MwOThkZTI2OWY0YjZhOTJhOWQiLCJlbWFpbCI6InVzZXIyNEB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxODcwMjksImV4cCI6MTY3MzE5MDYyOX0.0zOLX_M0wzMJUEhsk9fbzVKHuzsng7TcvP9a8uSI4_0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNjUwMTIsImV4cCI6MTY3MzI2ODYxMn0.TpQfRbiuXHy2HKIuaXqjpNM3-3u0bk-dzaDtadFHeK8
 
 {
-  "oldPassword": "123456",
-  "newPassword": "1234567"
+  "oldPassword": "1234567",
+  "newPassword": "123456"
+}
+
+###
+
+# Upload avatar
+POST http://localhost:3336/api/auth/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNjUwMTIsImV4cCI6MTY3MzI2ODYxMn0.TpQfRbiuXHy2HKIuaXqjpNM3-3u0bk-dzaDtadFHeK8
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# Create a new task
+POST http://localhost:3336/api/tasks/task HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+
+{
+  "title": "Task's title veeeeeeeeeeeeeery long",
+  "description": "Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
+  "categoryId": 1,
+  "price": 100,
+  "dueDate": "2023-01-10",
+  "city": "Санкт-Петербург",
+  "tags": ["tag1", "TAG2", "tag2"]
+}
+
+###
+
+# Update task data
+PATCH http://localhost:3336/api/tasks/task/6 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+
+{
+  "title": "Not Task's title veeeeeeeeeeeeeery long",
+  "description": "Not Task's description Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla ",
+  "tags": ["tag1", "TAG2", "tag2"]
+}
+
+###
+
+# Upload task image
+POST http://localhost:3336/api/tasks/task/6/image HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="image.jpg"
+Content-Type: image/jpeg
+
+< avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+# Change task's status
+PATCH http://localhost:3336/api/tasks/task/6/status HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+
+{
+  "command": "start",
+  "contractor": "63ba8f0aa99e326258f2ea6a"
 }
 
 ###
 
 # Get task by ID
-GET http://localhost:3332/api/tasks/task/1 HTTP/1.1
+GET http://localhost:3336/api/tasks/task/6 HTTP/1.1
+
+###
+
+# Delete task by Id
+DELETE http://localhost:3336/api/tasks/task/5 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
 
 ###
 
 # Get new tasks
-GET http://localhost:3332/api/tasks/new HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhY2MwOThkZTI2OWY0YjZhOTJhOWQiLCJlbWFpbCI6InVzZXIyNEB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxOTE3ODMsImV4cCI6MTY3MzE5NTM4M30.diH6-RhX_b18gRhYY_EWw6G1z31jM-TnRuyUd4m7qa0
+GET http://localhost:3336/api/tasks/new  HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNzI5MzksImV4cCI6MTY3MzI3NjUzOX0.5Ug86yczwIE92F8a_b_MmS7-Ijzf1--5RDEWdMBsHUc
+
+###
+
+# Get new tasks
+GET http://localhost:3336/api/tasks/new?categories=2,1&limit=2&page=1&sort=popular  HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNzI5MzksImV4cCI6MTY3MzI3NjUzOX0.5Ug86yczwIE92F8a_b_MmS7-Ijzf1--5RDEWdMBsHUc
+
+###
+
+# Get personal tasks
+GET http://localhost:3336/api/tasks/personal?statuses=new,done HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
 
 ###
 
 # Add comment to task
-POST http://localhost:3332/api/tasks/task/34/comment HTTP/1.1
+POST http://localhost:3336/api/tasks/task/34/comment HTTP/1.1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhY2MwOThkZTI2OWY0YjZhOTJhOWQiLCJlbWFpbCI6InVzZXIyNEB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxOTE3ODMsImV4cCI6MTY3MzE5NTM4M30.diH6-RhX_b18gRhYY_EWw6G1z31jM-TnRuyUd4m7qa0
 
@@ -64,20 +172,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhY2MwO
 ###
 
 # Get task comments
-GET http://localhost:3332/api/tasks/task/33/comment HTTP/1.1
-
-###
-
-# Upload avatar
-POST http://localhost:3332/api/tasks/user/avatar HTTP/1.1
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JhY2MwOThkZTI2OWY0YjZhOTJhOWQiLCJlbWFpbCI6InVzZXIyNEB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMxODcwMjksImV4cCI6MTY3MzE5MDYyOX0.0zOLX_M0wzMJUEhsk9fbzVKHuzsng7TcvP9a8uSI4_0
-
-------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
-Content-Type: image/jpeg
-
-< avatar.jpg
-------WebKitFormBoundary7MA4YWxkTrZu0gW--
+GET http://localhost:3336/api/tasks/task/33/comment HTTP/1.1
 
 ###
