@@ -128,10 +128,15 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   async update(
-    @Param('id', MongoIdValidationPipe) id: string,
+    @GetUser('id') tokenUserId: string,
+    @Param('id', MongoIdValidationPipe) userId: string,
     @Body() dto: UpdateUserDto
   ) {
-    const updatedUser = await this.authService.updateUser(id, dto);
+    const updatedUser = await this.authService.updateUser(
+      userId,
+      tokenUserId,
+      dto
+    );
     return fillObject(UserRdo, updatedUser);
   }
 
@@ -151,10 +156,15 @@ export class AuthController {
   })
   @UseGuards(JwtAuthGuard)
   async changePassword(
-    @Param('id', MongoIdValidationPipe) id: string,
+    @GetUser('id') tokenUserId: string,
+    @Param('id', MongoIdValidationPipe) userId: string,
     @Body() dto: ChangePasswordDto
   ) {
-    const updatedUser = await this.authService.changePassword(id, dto);
+    const updatedUser = await this.authService.changePassword(
+      userId,
+      tokenUserId,
+      dto
+    );
     return fillObject(UserRdo, updatedUser);
   }
 
