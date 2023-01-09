@@ -3,9 +3,11 @@ import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { Task, Comment, User, UserRoles } from '@taskforce/shared-types';
 import { catchError, firstValueFrom, map, Observable } from 'rxjs';
 import { AxiosError } from 'axios';
-import { CreateUserDto } from 'apps/users/src/app/auth/dto/create-user.dto';
-import { LoginUserDto } from 'apps/users/src/app/auth/dto/login-user.dto';
-import { ChangePasswordDto } from 'apps/users/src/app/auth/dto/change-password.dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  ChangePasswordDto,
+} from '@taskforce/core';
 import * as FormData from 'form-data';
 
 const TASKS_SERVICE_URL = 'http://localhost:3335/api/tasks';

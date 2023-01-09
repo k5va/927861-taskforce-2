@@ -10,9 +10,8 @@ import {
 import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
 import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { TaskStatusService } from './task-status.service';
-import { TaskRdo } from '../task/rdo/task.rdo';
+import { ChangeTaskStatusDto, TaskRdo } from '@taskforce/core';
 import { TaskCommands, UserRole } from '@taskforce/shared-types';
-import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
 
 @ApiTags('tasks')
 @Controller('tasks')

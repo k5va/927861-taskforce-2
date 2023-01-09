@@ -11,8 +11,7 @@ import {
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { fillObject, JwtAuthGuard, Roles, RolesGuard } from '@taskforce/core';
 import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { CategoryRdo } from './rdo/category.rdo';
+import { CreateCategoryDto, CategoryRdo } from '@taskforce/core';
 import { UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('tasks')

@@ -5,7 +5,7 @@ import {
   RATING_MIN,
   TEXT_MAX_LENGTH,
   TEXT_MIN_LENGTH,
-} from '../review.const';
+} from '../const/review.const';
 
 export class CreateReviewDto {
   @ApiProperty({

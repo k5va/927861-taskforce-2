@@ -2,7 +2,6 @@ import {
   ConflictException,
   Inject,
   Injectable,
-  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -21,10 +20,12 @@ import {
   USER_EXISTS_ERROR,
   USER_NOT_FOUND_ERROR,
 } from './auth.const';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ChangePasswordDto,
+  CreateUserDto,
+  LoginUserDto,
+  UpdateUserDto,
+} from '@taskforce/core';
 
 @Injectable()
 export class AuthService {

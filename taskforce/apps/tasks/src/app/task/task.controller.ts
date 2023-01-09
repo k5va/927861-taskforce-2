@@ -34,9 +34,7 @@ import {
   RolesGuard,
 } from '@taskforce/core';
 import { UserRole, UserRoles } from '@taskforce/shared-types';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
-import { TaskRdo } from './rdo/task.rdo';
+import { CreateTaskDto, UpdateTaskDto, TaskRdo } from '@taskforce/core';
 import { TaskService } from './task.service';
 import { PersonalTaskQuery, TaskQuery } from './query';
 import { FileInterceptor } from '@nestjs/platform-express';

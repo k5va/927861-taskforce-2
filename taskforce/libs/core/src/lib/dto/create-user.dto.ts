@@ -20,7 +20,7 @@ import {
   USER_TOO_YOUNG_ERROR,
   USER_MIN_AGE,
   USER_BIRTHDATE_PATTERN,
-} from '../auth.const';
+} from '../const/auth.const';
 import { IsOlderThan } from '@taskforce/core';
 
 export class CreateUserDto {

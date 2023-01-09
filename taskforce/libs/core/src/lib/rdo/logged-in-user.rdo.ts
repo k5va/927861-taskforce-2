@@ -22,8 +22,6 @@ export class LoggedInUserRdo {
   @ApiProperty({
     description: 'Auth token',
     required: true,
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzExNzI1NzgsImV4cCI6MTY3MTc3NzM3OH0.KgsnlQa45nWlaCmqTqM5q9mmz3jYTTem5kdIvpqcVMQ',
   })
   @Expose()
   token: string;
@@ -31,8 +29,6 @@ export class LoggedInUserRdo {
   @ApiProperty({
     description: 'Refresh token',
     required: true,
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MzljMTFhMGQ0NTFjZjA0NjBkNWJkMzgiLCJlbWFpbCI6InVzZXIxQG5vdGZvdW5kLmxvY2FsIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzExNzI1NzgsImV4cCI6MTY3MTc3NzM3OH0.KgsnlQa45nWlaCmqTqM5q9mmz3jYTTem5kdIvpqcVMQ',
   })
   @Expose()
   refreshToken: string;

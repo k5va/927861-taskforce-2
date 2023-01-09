@@ -7,7 +7,7 @@ import {
 import { Controller, Get, Param } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { TaskCustomerService } from './task-customer.service';
-import { TaskCustomerRdo } from './rdo/task-customer.rdo';
+import { TaskCustomerRdo } from '@taskforce/core';
 
 @ApiTags('tasks')
 @Controller('tasks')

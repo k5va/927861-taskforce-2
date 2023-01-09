@@ -10,9 +10,11 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { CreateUserDto } from '../../../users/src/app/auth/dto/create-user.dto';
-import { LoginUserDto } from '../../../users/src/app/auth/dto/login-user.dto';
-import { ChangePasswordDto } from '../../../users/src/app/auth/dto/change-password.dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  ChangePasswordDto,
+} from '@taskforce/core';
 import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Observable } from 'rxjs';

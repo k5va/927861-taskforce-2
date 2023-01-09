@@ -25,7 +25,7 @@ import {
   TASK_TAGS_MAX_NUM,
   TASK_TITLE_MAX_LENGTH,
   TASK_TITLE_MIN_LENGTH,
-} from '../task.const';
+} from '../const/task.const';
 
 export class UpdateTaskDto {
   @ApiProperty({

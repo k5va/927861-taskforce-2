@@ -16,8 +16,7 @@ import {
   RolesGuard,
 } from '@taskforce/core';
 import { ReviewService } from './review.service';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { ReviewRdo } from './rdo/review.rdo';
+import { CreateReviewDto, ReviewRdo } from '@taskforce/core';
 import { UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('tasks')

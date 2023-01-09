@@ -2,7 +2,7 @@ import { ConflictException, Injectable } from '@nestjs/common';
 import { Category } from '@taskforce/shared-types';
 import { CATEGORY_ALREADY_EXISTS } from './category.const';
 import { CategoryEntity } from './category.entity';
-import { CreateCategoryDto } from './dto/create-category.dto';
+import { CreateCategoryDto } from '@taskforce/core';
 import { CategoryRepository } from './repository/category.repository';
 
 @Injectable()

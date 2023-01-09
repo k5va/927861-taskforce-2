@@ -24,7 +24,7 @@ import {
   USER_SKILLS_MAX_NUM,
   USER_SKILLS_MIN_NUM,
   USER_TOO_YOUNG_ERROR,
-} from '../auth.const';
+} from '../const/auth.const';
 
 export class UpdateUserDto {
   @ApiProperty({
