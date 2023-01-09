@@ -5,6 +5,10 @@ import { envSchema } from './env.schema';
 import { servicesConfig } from '@taskforce/config';
 import { TaskModule } from './task/task.module';
 import { AuthModule } from './auth/auth.module';
+import { CommentModule } from './comment/comment.module';
+import { CategoryModule } from './category/category.module';
+import { ReviewModule } from './review/review.module';
+import { ResponseModule } from './response/response.module';
 
 @Module({
   imports: [
@@ -17,6 +21,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     AuthModule,
     TaskModule,
+    CommentModule,
+    CategoryModule,
+    ReviewModule,
+    ResponseModule,
   ],
   controllers: [],
   providers: [ConfigService],
