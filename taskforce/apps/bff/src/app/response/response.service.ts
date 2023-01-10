@@ -20,7 +20,7 @@ export class ResponseService {
     const { data } = await firstValueFrom(
       this.httpService
         .post<Response>(
-          `${this.configService.get('services.tasks')}/${taskId}/response`,
+          `${this.configService.get('services.tasks')}/task/${taskId}/response`,
           {},
           {
             headers: {
@@ -40,7 +40,7 @@ export class ResponseService {
     const { data } = await firstValueFrom(
       this.httpService
         .get<Response[]>(
-          `${this.configService.get('services.tasks')}/${taskId}/response`,
+          `${this.configService.get('services.tasks')}/task/${taskId}/response`,
           {}
         )
         .pipe(catchError(this.handleError))
