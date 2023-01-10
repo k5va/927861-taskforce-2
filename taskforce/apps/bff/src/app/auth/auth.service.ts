@@ -67,6 +67,10 @@ export class AuthService {
       fullUser = { ...user, ...contractor };
     }
 
+    fullUser.avatar = fullUser.avatar
+      ? `${this.configService.get('services.usersStatic')}/${fullUser.avatar}`
+      : undefined;
+
     return fullUser;
   }
 
@@ -90,6 +94,12 @@ export class AuthService {
         )
         .pipe(catchError(this.handleError))
     );
+
+    updatedUser.avatar = updatedUser.avatar
+      ? `${this.configService.get('services.usersStatic')}/${
+          updatedUser.avatar
+        }`
+      : undefined;
 
     return updatedUser;
   }
@@ -117,6 +127,12 @@ export class AuthService {
         )
         .pipe(catchError(this.handleError))
     );
+
+    updatedUser.avatar = updatedUser.avatar
+      ? `${this.configService.get('services.usersStatic')}/${
+          updatedUser.avatar
+        }`
+      : undefined;
 
     return updatedUser;
   }

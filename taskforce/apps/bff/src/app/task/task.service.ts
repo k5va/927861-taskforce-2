@@ -39,13 +39,15 @@ export class TaskService {
   async getTask(taskId: string): Promise<Task> {
     this.logger.debug(`getTask: ${taskId}`);
 
-    const { data } = await firstValueFrom(
+    const { data: task } = await firstValueFrom(
       this.httpService
         .get<Task>(`${this.configService.get('services.tasks')}/task/${taskId}`)
         .pipe(catchError(this.handleError))
     );
 
-    return data;
+    task.image = this.makeFullImageUrl(task.image);
+
+    return task;
   }
 
   async updateTask(
@@ -55,7 +57,7 @@ export class TaskService {
   ): Promise<Task> {
     this.logger.debug(`updateTask: ${taskId}`);
 
-    const { data } = await firstValueFrom(
+    const { data: task } = await firstValueFrom(
       this.httpService
         .patch<Task>(
           `${this.configService.get('services.tasks')}/task/${taskId}`,
@@ -69,7 +71,9 @@ export class TaskService {
         .pipe(catchError(this.handleError))
     );
 
-    return data;
+    task.image = this.makeFullImageUrl(task.image);
+
+    return task;
   }
 
   async setImage(
@@ -96,6 +100,8 @@ export class TaskService {
         )
         .pipe(catchError(this.handleError))
     );
+
+    updatedTask.image = this.makeFullImageUrl(updatedTask.image);
 
     return updatedTask;
   }
@@ -145,6 +151,7 @@ export class TaskService {
       );
       return {
         ...task,
+        image: this.makeFullImageUrl(task.image),
         customerName: customer.name,
         customerEmail: customer.email,
       };
@@ -202,4 +209,10 @@ export class TaskService {
     this.logger.error(error.response.data);
     throw new HttpException(error.response.data, error.response.status);
   };
+
+  private makeFullImageUrl(image: string): string {
+    return image
+      ? `${this.configService.get('services.tasksStatic')}/${image}`
+      : undefined;
+  }
 }
