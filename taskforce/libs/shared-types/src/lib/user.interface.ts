@@ -7,7 +7,7 @@ export interface User {
   city: string;
   passwordHash: string;
   role: UserRole;
-  avatar: string;
+  avatar?: string;
   birthDate: Date;
   registerDate?: Date;
   description?: string;

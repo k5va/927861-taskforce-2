@@ -11,8 +11,7 @@ import {
   TaskNotification,
   TaskStatuses,
 } from '@taskforce/shared-types';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { CreateTaskDto, UpdateTaskDto } from '@taskforce/core';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
 import { RABBITMQ_SERVICE, TASK_NOT_FOUND_ERROR } from './task.const';

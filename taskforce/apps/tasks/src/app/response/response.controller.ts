@@ -18,7 +18,7 @@ import {
   RolesGuard,
 } from '@taskforce/core';
 import { ResponseService } from './response.service';
-import { ResponseRdo } from './rdo/response.rdo';
+import { ResponseRdo } from '@taskforce/core';
 import { UserRoles } from '@taskforce/shared-types';
 
 @ApiTags('tasks')
@@ -27,7 +27,7 @@ export class ResponseController {
   constructor(private readonly responseService: ResponseService) {}
 
   @Post('task/:id/response')
-  @ApiOperation({ summary: 'Creates new customer response to Task' })
+  @ApiOperation({ summary: 'Creates new contractor response to Task' })
   @ApiHeader({
     name: 'Authorization',
     description: 'Bearer token',

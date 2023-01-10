@@ -2,6 +2,7 @@ import { AbstractEntity } from '@taskforce/core';
 import { User, UserRole } from '@taskforce/shared-types';
 import { genSalt, compare, hash } from 'bcrypt';
 import { SALT_ROUNDS } from './task-user.const';
+import { createHash } from 'crypto';
 
 export class TaskUserEntity extends AbstractEntity implements User {
   public _id: string;
@@ -39,8 +40,9 @@ export class TaskUserEntity extends AbstractEntity implements User {
   }
 
   public async setRefreshToken(token: string): Promise<TaskUserEntity> {
+    const hash256 = createHash('sha256').update(token).digest('hex');
     const salt = await genSalt(SALT_ROUNDS);
-    this.refreshTokenHash = await hash(token, salt);
+    this.refreshTokenHash = await hash(hash256, salt);
     return this;
   }
 
@@ -49,6 +51,7 @@ export class TaskUserEntity extends AbstractEntity implements User {
   }
 
   public async compareRefreshToken(token: string): Promise<boolean> {
-    return compare(token, this.refreshTokenHash);
+    const hash256 = createHash('sha256').update(token).digest('hex');
+    return compare(hash256, this.refreshTokenHash);
   }
 }

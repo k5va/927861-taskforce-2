@@ -2,7 +2,7 @@ import { ApiTags, ApiOperation, ApiOkResponse } from '@nestjs/swagger';
 import { Controller, Get, Param } from '@nestjs/common';
 import { fillObject } from '@taskforce/core';
 import { TaskContractorService } from './task-contractor.service';
-import { TaskContractorRdo } from './rdo/task-contractor.rdo';
+import { TaskContractorRdo } from '@taskforce/core';
 
 @ApiTags('tasks')
 @Controller('tasks')

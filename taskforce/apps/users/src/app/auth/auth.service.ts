@@ -2,7 +2,6 @@ import {
   ConflictException,
   Inject,
   Injectable,
-  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -21,10 +20,12 @@ import {
   USER_EXISTS_ERROR,
   USER_NOT_FOUND_ERROR,
 } from './auth.const';
-import { ChangePasswordDto } from './dto/change-password.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  ChangePasswordDto,
+  CreateUserDto,
+  LoginUserDto,
+  UpdateUserDto,
+} from '@taskforce/core';
 
 @Injectable()
 export class AuthService {
@@ -44,7 +45,6 @@ export class AuthService {
       passwordHash: '',
       role,
       birthDate: new Date(birthDate),
-      avatar: '',
     };
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
@@ -96,14 +96,18 @@ export class AuthService {
     return existingUser;
   }
 
-  async updateUser(userId: string, dto: UpdateUserDto): Promise<User> {
+  async updateUser(
+    userId: string,
+    tokenUserId: string,
+    dto: UpdateUserDto
+  ): Promise<User> {
     const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
       throw new NotFoundException(USER_NOT_FOUND_ERROR);
     }
 
-    if (existingUser._id.toString() !== userId) {
+    if (tokenUserId !== userId) {
       throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 
@@ -129,7 +133,11 @@ export class AuthService {
     });
   }
 
-  async changePassword(userId: string, dto: ChangePasswordDto): Promise<User> {
+  async changePassword(
+    userId: string,
+    tokenUserId: string,
+    dto: ChangePasswordDto
+  ): Promise<User> {
     const { newPassword, oldPassword } = dto;
     const existingUser = await this.taskUserRepository.findById(userId);
 
@@ -137,7 +145,7 @@ export class AuthService {
       throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
     }
 
-    if (existingUser._id.toString() !== userId) {
+    if (tokenUserId !== userId) {
       throw new UnauthorizedException(DIFFERENT_USER_ERROR);
     }
 

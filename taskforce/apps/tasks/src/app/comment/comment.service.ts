@@ -6,7 +6,7 @@ import {
 import { Comment } from '@taskforce/shared-types';
 import { COMMENT_NOT_FOUND_ERROR } from './comment.const';
 import { CommentEntity } from './comment.entity';
-import { CreateCommentDto } from './dto/create-comment.dto';
+import { CreateCommentDto } from '@taskforce/core';
 import { CommentQuery } from './query';
 import { CommentRepository } from './repository/comment.repository';
 

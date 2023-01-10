@@ -12,7 +12,7 @@ import {
 import { ResponseService } from '../response/response.service';
 import { TaskRepository } from '../task/repository/task.repository';
 import { TaskService } from '../task/task.service';
-import { ChangeTaskStatusDto } from './dto/change-task-status.dto';
+import { ChangeTaskStatusDto } from '@taskforce/core';
 import {
   CONTRACTOR_NOT_FREE_ERROR,
   INVALID_COMMAND_ERROR,

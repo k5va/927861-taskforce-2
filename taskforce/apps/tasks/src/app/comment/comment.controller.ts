@@ -21,8 +21,7 @@ import {
 } from '@nestjs/common';
 import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
 import { CommentService } from './comment.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { CommentRdo } from './rdo/comment.rdo';
+import { CreateCommentDto, CommentRdo } from '@taskforce/core';
 import { CommentQuery } from './query';
 
 @ApiTags('tasks')

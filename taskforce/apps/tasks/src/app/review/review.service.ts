@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Review, TaskStatuses } from '@taskforce/shared-types';
 import { TaskService } from '../task/task.service';
-import { CreateReviewDto } from './dto/create-review.dto';
+import { CreateReviewDto } from '@taskforce/core';
 import { ReviewRepository } from './repository/review.repository';
 import {
   REVIEW_ALREADY_EXISTS_ERROR,
