@@ -19,7 +19,7 @@ export class ResponseController {
   constructor(private readonly responseService: ResponseService) {}
 
   @Post('task/:id/response')
-  @ApiOperation({ summary: 'Creates new customer response to Task' })
+  @ApiOperation({ summary: 'Creates new contractor response to Task' })
   @ApiHeader({
     name: 'Authorization',
     description: 'Bearer token',
