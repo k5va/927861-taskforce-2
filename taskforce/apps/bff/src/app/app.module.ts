@@ -9,6 +9,7 @@ import { CommentModule } from './comment/comment.module';
 import { CategoryModule } from './category/category.module';
 import { ReviewModule } from './review/review.module';
 import { ResponseModule } from './response/response.module';
+import { NotifyModule } from './notify/notify.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ResponseModule } from './response/response.module';
     CategoryModule,
     ReviewModule,
     ResponseModule,
+    NotifyModule,
   ],
   controllers: [],
   providers: [ConfigService],

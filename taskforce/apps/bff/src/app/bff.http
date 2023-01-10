@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "name": "Keks",
-  "email": "user41@test.com",
+  "email": "user42@test.com",
   "city": "Москва",
   "birthDate": "1980-11-02",
   "password": "123456",
@@ -14,7 +14,7 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3336/api/auth/user/63bd0a90f21de8ef1e51c551 HTTP/1.1
+GET http://localhost:3336/api/auth/user/63bd1d7c729d882f77e17f25 HTTP/1.1
 
 ###
 
@@ -23,7 +23,7 @@ POST http://localhost:3336/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user40@test.com",
+  "email": "user41@test.com",
   "password": "123456"
 }
 
@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3M
 # Update user data
 PATCH http://localhost:3336/api/auth/user/63bd0a90f21de8ef1e51c551 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE5MGYyMWRlOGVmMWU1MWM1NTEiLCJlbWFpbCI6InVzZXI0MUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMzMzM3MDcsImV4cCI6MTY3MzMzNzMwN30.jEORKl23LDjniwwreRDBBmHHQyX3PDk9eY1yuP139fU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE5MGYyMWRlOGVmMWU1MWM1NTEiLCJlbWFpbCI6InVzZXI0MUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMzMzgxNjksImV4cCI6MTY3MzM0MTc2OX0.Xi9oSjhjGTIqWrpHoIxwK9iXfU-IM6CMjYD3feSe9ns
 
 {
   "name": "NotKeks",
@@ -64,7 +64,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3M
 # Upload avatar
 POST http://localhost:3336/api/auth/avatar HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNjUwMTIsImV4cCI6MTY3MzI2ODYxMn0.TpQfRbiuXHy2HKIuaXqjpNM3-3u0bk-dzaDtadFHeK8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMWQ3YzcyOWQ4ODJmNzdlMTdmMjUiLCJlbWFpbCI6InVzZXI0MkB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMzMzgyNjksImV4cCI6MTY3MzM0MTg2OX0.BIieDIA-kVk_EgJbLQXu2wco_gf7nHedNIj--6XXGkM
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
@@ -78,7 +78,7 @@ Content-Type: image/jpeg
 # Create a new task
 POST http://localhost:3336/api/tasks/task HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzMzNzg0LCJleHAiOjE2NzMzMzczODR9.k_xkpjVIlkUvIZ3a4MO1A1upvwgvMJzZ5T5b8Xdtplg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzM4NTc3LCJleHAiOjE2NzMzNDIxNzd9.xkpjuJx3X-V1nohp1ju4IbIJGGBL0YNSLUf8zBV9IGA
 
 {
   "title": "Task's title veeeeeeeeeeeeeery long",
@@ -93,9 +93,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3O
 ###
 
 # Update task data
-PATCH http://localhost:3336/api/tasks/task/7 HTTP/1.1
+PATCH http://localhost:3336/api/tasks/task/11 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzMzNzg0LCJleHAiOjE2NzMzMzczODR9.k_xkpjVIlkUvIZ3a4MO1A1upvwgvMJzZ5T5b8Xdtplg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzM4NTc3LCJleHAiOjE2NzMzNDIxNzd9.xkpjuJx3X-V1nohp1ju4IbIJGGBL0YNSLUf8zBV9IGA
 
 {
   "title": "Not Task's title veeeeeeeeeeeeeery long",
@@ -106,9 +106,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3O
 ###
 
 # Upload task image
-POST http://localhost:3336/api/tasks/task/6/image HTTP/1.1
+POST http://localhost:3336/api/tasks/task/11/image HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzM4NTc3LCJleHAiOjE2NzMzNDIxNzd9.xkpjuJx3X-V1nohp1ju4IbIJGGBL0YNSLUf8zBV9IGA
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="image"; filename="image.jpg"
@@ -132,7 +132,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3O
 ###
 
 # Get task by ID
-GET http://localhost:3336/api/tasks/task/6 HTTP/1.1
+GET http://localhost:3336/api/tasks/task/11 HTTP/1.1
 
 ###
 
@@ -144,7 +144,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjN
 
 # Get new tasks
 GET http://localhost:3336/api/tasks/new  HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3MjgwZWQxN2ZiYTdkN2ViYWQiLCJlbWFpbCI6InVzZXIyNUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMyNzI5MzksImV4cCI6MTY3MzI3NjUzOX0.5Ug86yczwIE92F8a_b_MmS7-Ijzf1--5RDEWdMBsHUc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE5MGYyMWRlOGVmMWU1MWM1NTEiLCJlbWFpbCI6InVzZXI0MUB0ZXN0LmNvbSIsInJvbGUiOiJDb250cmFjdG9yIiwibmFtZSI6Ik5vdEtla3MiLCJpYXQiOjE2NzMzMzk4ODQsImV4cCI6MTY3MzM0MzQ4NH0.lPhdnCgRuzZwEPdcv-IPkB8hK4C9GL3HNt7tnDpShTk
 
 ###
 
@@ -156,7 +156,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JiZjg3M
 
 # Get personal tasks
 GET http://localhost:3336/api/tasks/personal?statuses=new,done HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2I3YzdjNTc3OGMzNTJhOWYyZTM2Y2IiLCJlbWFpbCI6InVzZXIyQHRlc3QuY29tIiwicm9sZSI6IkN1c3RvbWVyIiwibmFtZSI6Iktla3MiLCJpYXQiOjE2NzMyNzQxMjUsImV4cCI6MTY3MzI3NzcyNX0.vVY4ZUPTJisAaqS-edcf7Ojep-GL-FHpswocyQULyQc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3OGYyMWRlOGVmMWU1MWM1NGQiLCJlbWFpbCI6InVzZXI0MEB0ZXN0LmNvbSIsInJvbGUiOiJDdXN0b21lciIsIm5hbWUiOiJOb3RLZWtzIiwiaWF0IjoxNjczMzM4NTc3LCJleHAiOjE2NzMzNDIxNzd9.xkpjuJx3X-V1nohp1ju4IbIJGGBL0YNSLUf8zBV9IGA
 
 ###
 
@@ -225,5 +225,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2M2JkMGE3O
   "contractor": "63bd0a90f21de8ef1e51c551",
   "rating": 5
 }
+
+###
+
+# sends new tasks mail notifications to all subscribers
+POST http://localhost:3336/api/notify HTTP/1.1
 
 ###
