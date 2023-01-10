@@ -111,4 +111,12 @@ export class ContractorRdo {
   @Expose({ name: 'birthDate' })
   @Transform(({ value }) => calculateAge(value))
   age: number;
+
+  @ApiProperty({
+    description: 'User avatar',
+    example: '7pDY9SzWb_rIH_6sHcRbb.jpeg',
+    required: false,
+  })
+  @Expose()
+  avatar: string;
 }

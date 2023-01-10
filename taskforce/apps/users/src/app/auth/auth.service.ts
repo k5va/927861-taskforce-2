@@ -45,7 +45,6 @@ export class AuthService {
       passwordHash: '',
       role,
       birthDate: new Date(birthDate),
-      avatar: '',
     };
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
