@@ -145,11 +145,8 @@ export class TaskService {
       );
       return {
         ...task,
-        customerDetails: {
-          id: customer._id,
-          name: customer.name,
-          email: customer.email,
-        },
+        customerName: customer.name,
+        customerEmail: customer.email,
       };
     });
 
