@@ -1,4 +1,5 @@
 export const TASK_NOT_FOUND_ERROR = 'task not found';
+export const CATEGORY_NOT_FOUND_ERROR = 'Category not found';
 export const DEFAULT_TASKS_LIMIT = 25;
 export const TASK_SORT_TYPES = ['created', 'popular', 'discussed'] as const;
 export const DEFAULT_TASK_SORT_TYPE = 'created';

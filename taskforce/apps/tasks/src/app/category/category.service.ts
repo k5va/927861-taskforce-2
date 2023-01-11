@@ -25,4 +25,8 @@ export class CategoryService {
   public async findAll(): Promise<Category[]> {
     return this.categoryRepository.findAll();
   }
+
+  public async findById(categoryId: number): Promise<Category | null> {
+    return this.categoryRepository.findById(categoryId);
+  }
 }

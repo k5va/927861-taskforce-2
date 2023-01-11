@@ -14,13 +14,19 @@ import {
 import { CreateTaskDto, UpdateTaskDto } from '@taskforce/core';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
-import { RABBITMQ_SERVICE, TASK_NOT_FOUND_ERROR } from './task.const';
+import {
+  CATEGORY_NOT_FOUND_ERROR,
+  RABBITMQ_SERVICE,
+  TASK_NOT_FOUND_ERROR,
+} from './task.const';
 import { TaskEntity } from './task.entity';
+import { CategoryService } from '../category/category.service';
 
 @Injectable()
 export class TaskService {
   constructor(
     private readonly taskRepository: TaskRepository,
+    private readonly categoryService: CategoryService,
     @Inject(RABBITMQ_SERVICE) private readonly rabbitClient: ClientProxy
   ) {}
 
@@ -33,6 +39,10 @@ export class TaskService {
       comments: [],
       responses: [],
     });
+
+    if (!(await this.categoryService.findById(dto.categoryId))) {
+      throw new NotFoundException(CATEGORY_NOT_FOUND_ERROR);
+    }
 
     const newTask = await this.taskRepository.create(taskEntity);
 
@@ -69,6 +79,13 @@ export class TaskService {
     const existingTask = await this.getTask(taskId);
 
     this.validateTaskOwner(existingTask, userId);
+
+    if (
+      dto.categoryId &&
+      !(await this.categoryService.findById(dto.categoryId))
+    ) {
+      throw new NotFoundException(CATEGORY_NOT_FOUND_ERROR);
+    }
 
     return this.taskRepository.update(taskId, {
       ...dto,
