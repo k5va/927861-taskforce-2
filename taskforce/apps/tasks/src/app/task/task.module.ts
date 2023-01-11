@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { CommentModule } from '../comment/comment.module';
 import { TaskRepository } from './repository/task.repository';
 import { TaskController } from './task.controller';
 import { TaskService } from './task.service';
@@ -9,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import { getRabbitMqOptions } from '@taskforce/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { getMulterOptions } from '@taskforce/config';
+import { CategoryModule } from '../category/category.module';
 
 @Module({
   imports: [
@@ -23,6 +23,7 @@ import { getMulterOptions } from '@taskforce/config';
       useFactory: getMulterOptions,
       inject: [ConfigService],
     }),
+    CategoryModule,
   ],
   controllers: [TaskController],
   providers: [TaskRepository, TaskService, ConfigService],
