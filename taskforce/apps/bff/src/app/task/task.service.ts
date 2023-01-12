@@ -1,5 +1,9 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { Task, User } from '@taskforce/shared-types';
 import {
   ChangeTaskStatusDto,
@@ -207,7 +211,9 @@ export class TaskService {
 
   private handleError = (error: AxiosError) => {
     this.logger.error(error.response.data);
-    throw new HttpException(error.response.data, error.response.status);
+    throw new InternalServerErrorException(error.response.data, {
+      cause: error,
+    });
   };
 
   private makeFullImageUrl(image: string): string {

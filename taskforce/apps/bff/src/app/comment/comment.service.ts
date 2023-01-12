@@ -1,4 +1,8 @@
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { Comment } from '@taskforce/shared-types';
 import { CreateCommentDto } from '@taskforce/core';
 import { ConfigService } from '@nestjs/config';
@@ -80,6 +84,8 @@ export class CommentService {
 
   private handleError = (error: AxiosError) => {
     this.logger.error(error.response.data);
-    throw new HttpException(error.response.data, error.response.status);
+    throw new InternalServerErrorException(error.response.data, {
+      cause: error,
+    });
   };
 }

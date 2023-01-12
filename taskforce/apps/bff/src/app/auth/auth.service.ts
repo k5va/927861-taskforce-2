@@ -1,5 +1,9 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
   ChangePasswordDto,
@@ -198,6 +202,8 @@ export class AuthService {
 
   private handleError = (error: AxiosError) => {
     this.logger.error(error.response.data);
-    throw new HttpException(error.response.data, error.response.status);
+    throw new InternalServerErrorException(error.response.data, {
+      cause: error,
+    });
   };
 }

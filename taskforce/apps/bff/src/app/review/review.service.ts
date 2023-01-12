@@ -1,4 +1,8 @@
-import { HttpException, Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { Review } from '@taskforce/shared-types';
 import { CreateReviewDto } from '@taskforce/core';
 import { ConfigService } from '@nestjs/config';
@@ -41,6 +45,8 @@ export class ReviewService {
 
   private handleError = (error: AxiosError) => {
     this.logger.error(error.response.data);
-    throw new HttpException(error.response.data, error.response.status);
+    throw new InternalServerErrorException(error.response.data, {
+      cause: error,
+    });
   };
 }
