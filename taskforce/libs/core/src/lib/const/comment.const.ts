@@ -1,2 +1,4 @@
-export const COMMENT_MIN_LENGTH = 10;
-export const COMMENT_MAX_LENGTH = 300;
+export const CommentLength = {
+  Min: 10,
+  Max: 300,
+} as const;

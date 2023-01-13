@@ -15,7 +15,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { fillObject, GetUser, JwtAuthGuard } from '@taskforce/core';
+import { fillObject, GetUser, JwtAuthGuard, UserAvatar } from '@taskforce/core';
 import {
   ApiTags,
   ApiOperation,
@@ -43,7 +43,6 @@ import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 import { RtAuthGuard } from './guards';
 import { UserRoles } from '@taskforce/shared-types';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AVATAR_FILE_TYPE, MAX_AVATAR_SIZE } from './auth.const';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -193,8 +192,8 @@ export class AuthController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: MAX_AVATAR_SIZE }),
-          new FileTypeValidator({ fileType: AVATAR_FILE_TYPE }),
+          new MaxFileSizeValidator({ maxSize: UserAvatar.MaxSize }),
+          new FileTypeValidator({ fileType: UserAvatar.FileType }),
         ],
       })
     )

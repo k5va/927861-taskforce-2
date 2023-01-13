@@ -32,13 +32,13 @@ import {
   JwtAuthGuard,
   Roles,
   RolesGuard,
+  TaskImage,
 } from '@taskforce/core';
 import { UserRole, UserRoles } from '@taskforce/shared-types';
 import { CreateTaskDto, UpdateTaskDto, TaskRdo } from '@taskforce/core';
 import { TaskService } from './task.service';
 import { PersonalTaskQuery, TaskQuery } from './query';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { MAX_TASK_IMAGE_SIZE, TASK_IMAGE_FILE_TYPE } from './task.const';
 
 @ApiTags('tasks')
 @Controller('tasks')
@@ -215,8 +215,8 @@ export class TaskController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: MAX_TASK_IMAGE_SIZE }),
-          new FileTypeValidator({ fileType: TASK_IMAGE_FILE_TYPE }),
+          new MaxFileSizeValidator({ maxSize: TaskImage.MaxSize }),
+          new FileTypeValidator({ fileType: TaskImage.FileType }),
         ],
       })
     )

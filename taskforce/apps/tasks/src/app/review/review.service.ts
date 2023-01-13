@@ -8,12 +8,7 @@ import { Review, TaskStatuses } from '@taskforce/shared-types';
 import { TaskService } from '../task/task.service';
 import { CreateReviewDto } from '@taskforce/core';
 import { ReviewRepository } from './repository/review.repository';
-import {
-  REVIEW_ALREADY_EXISTS_ERROR,
-  TASK_STATUS_NOT_DONE_ERROR,
-  WRONG_CONTRACTOR_ERROR as CONTRACTOR_MISMATCH_ERROR,
-  WRONG_CUSTOMER_ERROR as CUSTOMER_MISMATCH_ERROR,
-} from './review.const';
+import { ReviewError } from './review.const';
 import { ReviewEntity } from './review.entity';
 
 @Injectable()
@@ -31,15 +26,15 @@ export class ReviewService {
     const task = await this.taskService.getTask(taskId);
 
     if (task.customer !== customer) {
-      throw new UnauthorizedException(CUSTOMER_MISMATCH_ERROR);
+      throw new UnauthorizedException(ReviewError.CustomerMismatch);
     }
 
     if (task.contractor !== dto.contractor) {
-      throw new BadRequestException(CONTRACTOR_MISMATCH_ERROR);
+      throw new BadRequestException(ReviewError.ContractorMismatch);
     }
 
     if (task.status !== TaskStatuses.Done) {
-      throw new BadRequestException(TASK_STATUS_NOT_DONE_ERROR);
+      throw new BadRequestException(ReviewError.TaskStatusNotDone);
     }
 
     // check if review was created earlier
@@ -48,7 +43,7 @@ export class ReviewService {
       taskId
     );
     if (existingReview.length > 0) {
-      throw new ConflictException(REVIEW_ALREADY_EXISTS_ERROR);
+      throw new ConflictException(ReviewError.AlreadyExists);
     }
 
     const newReview = await this.reviewRepository.create(

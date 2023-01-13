@@ -13,11 +13,7 @@ import { ResponseService } from '../response/response.service';
 import { TaskRepository } from '../task/repository/task.repository';
 import { TaskService } from '../task/task.service';
 import { ChangeTaskStatusDto } from '@taskforce/core';
-import {
-  CONTRACTOR_NOT_FREE_ERROR,
-  INVALID_COMMAND_ERROR,
-  NO_RESPONSE_CONTRACTOR_ERROR,
-} from './task-status.const';
+import { TaskStatusError } from './task-status.const';
 import { createTaskStateMachine } from './task-status.utils';
 
 @Injectable()
@@ -40,7 +36,7 @@ export class TaskStatusService {
     const taskStateMachine = createTaskStateMachine(existingTask.status);
     if (!taskStateMachine.initialState.can(dto.command)) {
       // can't make state transition with recieved command
-      throw new BadRequestException(INVALID_COMMAND_ERROR);
+      throw new BadRequestException(TaskStatusError.InvalidCommand);
     }
 
     // make state transition to get a new state
@@ -74,7 +70,7 @@ export class TaskStatusService {
           dto.contractor
         );
         if (responses.length === 0) {
-          throw new BadRequestException(NO_RESPONSE_CONTRACTOR_ERROR);
+          throw new BadRequestException(TaskStatusError.ContractorNotResponded);
         }
 
         // check if contractor has no other tasks in work
@@ -83,7 +79,7 @@ export class TaskStatusService {
           { statuses: [TaskStatuses.InProgress] }
         );
         if (contractorTasks.length !== 0) {
-          throw new BadRequestException(CONTRACTOR_NOT_FREE_ERROR);
+          throw new BadRequestException(TaskStatusError.ContractorNotFree);
         }
       }
     }

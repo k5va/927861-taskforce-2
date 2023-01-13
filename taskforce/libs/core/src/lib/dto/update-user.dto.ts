@@ -14,28 +14,24 @@ import {
   MaxLength,
 } from 'class-validator';
 import {
-  CITY_NOT_VALID_ERROR,
+  UserDtoError,
+  UserNameLength,
+  UserSkillsCount,
   USER_BIRTHDATE_PATTERN,
-  USER_DATE_BIRTH_NOT_VALID_ERROR,
   USER_DESCRIPTON_MAX_LENGTH,
   USER_MIN_AGE,
-  USER_NAME_MAX_LENGTH,
-  USER_NAME_MIN_LENGTH,
-  USER_SKILLS_MAX_NUM,
-  USER_SKILLS_MIN_NUM,
-  USER_TOO_YOUNG_ERROR,
 } from '../const/auth.const';
 
 export class UpdateUserDto {
   @ApiProperty({
     description: 'User name',
     required: false,
-    minLength: USER_NAME_MIN_LENGTH,
-    maxLength: USER_NAME_MAX_LENGTH,
+    minLength: UserNameLength.Min,
+    maxLength: UserNameLength.Max,
     example: 'Keks Ivanov',
   })
   @IsString()
-  @Length(USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH)
+  @Length(UserNameLength.Min, UserNameLength.Max)
   @IsOptional()
   public name?: string;
 
@@ -44,7 +40,7 @@ export class UpdateUserDto {
     required: false,
     example: 'Москва',
   })
-  @IsIn(CITIES, { message: CITY_NOT_VALID_ERROR })
+  @IsIn(CITIES, { message: UserDtoError.CityNotValid })
   @IsOptional()
   public city?: string;
 
@@ -55,12 +51,12 @@ export class UpdateUserDto {
     example: '1990-12-01',
   })
   @IsISO8601({
-    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+    message: UserDtoError.BirthdateNotValid,
   })
   @Matches(USER_BIRTHDATE_PATTERN, {
-    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+    message: UserDtoError.BirthdateNotValid,
   })
-  @IsOlderThan(USER_MIN_AGE, { message: USER_TOO_YOUNG_ERROR })
+  @IsOlderThan(USER_MIN_AGE, { message: UserDtoError.TooYoung })
   @IsOptional()
   public birthDate?: string;
 
@@ -79,12 +75,12 @@ export class UpdateUserDto {
     description: 'user skills',
     required: true,
     isArray: true,
-    minItems: USER_SKILLS_MIN_NUM,
-    maxItems: USER_SKILLS_MAX_NUM,
+    minItems: UserSkillsCount.Min,
+    maxItems: UserSkillsCount.Max,
     example: ['react', 'typescript', 'html', 'css'],
   })
-  @ArrayMinSize(USER_SKILLS_MIN_NUM)
-  @ArrayMaxSize(USER_SKILLS_MAX_NUM)
+  @ArrayMinSize(UserSkillsCount.Min)
+  @ArrayMaxSize(UserSkillsCount.Max)
   @IsString({ each: true })
   @IsOptional()
   @Transform(({ value, obj, key }) => {

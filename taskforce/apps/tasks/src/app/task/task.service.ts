@@ -14,11 +14,7 @@ import {
 import { CreateTaskDto, UpdateTaskDto } from '@taskforce/core';
 import { TaskQuery, PersonalTaskQuery } from './query';
 import { TaskRepository } from './repository/task.repository';
-import {
-  CATEGORY_NOT_FOUND_ERROR,
-  RABBITMQ_SERVICE,
-  TASK_NOT_FOUND_ERROR,
-} from './task.const';
+import { TaskError, RABBITMQ_SERVICE } from './task.const';
 import { TaskEntity } from './task.entity';
 import { CategoryService } from '../category/category.service';
 
@@ -41,7 +37,7 @@ export class TaskService {
     });
 
     if (!(await this.categoryService.findById(dto.categoryId))) {
-      throw new NotFoundException(CATEGORY_NOT_FOUND_ERROR);
+      throw new NotFoundException(TaskError.CategoryNotFound);
     }
 
     const newTask = await this.taskRepository.create(taskEntity);
@@ -65,7 +61,7 @@ export class TaskService {
     const existingTask = await this.taskRepository.findById(id);
 
     if (!existingTask) {
-      throw new NotFoundException(TASK_NOT_FOUND_ERROR);
+      throw new NotFoundException(TaskError.NotFound);
     }
 
     return existingTask;
@@ -84,7 +80,7 @@ export class TaskService {
       dto.categoryId &&
       !(await this.categoryService.findById(dto.categoryId))
     ) {
-      throw new NotFoundException(CATEGORY_NOT_FOUND_ERROR);
+      throw new NotFoundException(TaskError.CategoryNotFound);
     }
 
     return this.taskRepository.update(taskId, {

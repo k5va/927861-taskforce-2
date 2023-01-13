@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { EmailSubscriberRepository } from './email-subscriber.repository';
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
-import { EMAIL_SUBSCRIBER_EXISTS } from './email-subscriber.const';
+import { EmailSubscriberError } from './email-subscriber.const';
 import { EmailSubscriberEntity } from './email-subscriber.entity';
 import { SenderService } from '../sender/sender.service';
 import { Subscriber } from '@taskforce/shared-types';
@@ -22,7 +22,7 @@ export class EmailSubscriberService {
     );
 
     if (existingSubscriber) {
-      throw new ConflictException(EMAIL_SUBSCRIBER_EXISTS);
+      throw new ConflictException(EmailSubscriberError.AlreadyExists);
     }
 
     const newSubscriber = await this.emailSubscriberRepository.create(

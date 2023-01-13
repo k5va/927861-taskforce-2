@@ -11,15 +11,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { CommandEvent, User, Subscriber } from '@taskforce/shared-types';
 import { TaskUserRepository } from '../task-user/repository/task-user.repository';
 import { TaskUserEntity } from '../task-user/task-user.entity';
-import {
-  ACCESS_TOKEN_EXPIRE,
-  DIFFERENT_USER_ERROR,
-  INVALID_REFRESH_TOKEN_ERROR,
-  RABBITMQ_SERVICE,
-  REFRESH_TOKEN_EXPIRE,
-  USER_EXISTS_ERROR,
-  USER_NOT_FOUND_ERROR,
-} from './auth.const';
+import { RABBITMQ_SERVICE, AuthToken, AuthError } from './auth.const';
 import {
   ChangePasswordDto,
   CreateUserDto,
@@ -49,7 +41,7 @@ export class AuthService {
 
     const existingUser = await this.taskUserRepository.findByEmail(email);
     if (existingUser) {
-      throw new ConflictException(USER_EXISTS_ERROR);
+      throw new ConflictException(AuthError.EmailAlreadyExists);
     }
 
     const userEntity = new TaskUserEntity(taskUser);
@@ -75,12 +67,12 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findByEmail(email);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.comparePassword(password))) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
 
     return userEntity.toObject();
@@ -90,7 +82,7 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(id);
 
     if (!existingUser) {
-      throw new NotFoundException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(AuthError.UserNotFound);
     }
 
     return existingUser;
@@ -104,11 +96,11 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
-      throw new NotFoundException(USER_NOT_FOUND_ERROR);
+      throw new NotFoundException(AuthError.UserNotFound);
     }
 
     if (tokenUserId !== userId) {
-      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+      throw new UnauthorizedException(AuthError.UserMismatch);
     }
 
     return this.taskUserRepository.update(userId, {
@@ -121,11 +113,11 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
 
     if (existingUser._id.toString() !== userId) {
-      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+      throw new UnauthorizedException(AuthError.UserMismatch);
     }
 
     return this.taskUserRepository.update(userId, {
@@ -142,16 +134,16 @@ export class AuthService {
     const existingUser = await this.taskUserRepository.findById(userId);
 
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
 
     if (tokenUserId !== userId) {
-      throw new UnauthorizedException(DIFFERENT_USER_ERROR);
+      throw new UnauthorizedException(AuthError.UserMismatch);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.comparePassword(oldPassword))) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
     await userEntity.setPassword(newPassword);
 
@@ -175,12 +167,12 @@ export class AuthService {
   async refresh(userId: string, refreshToken: string) {
     const existingUser = await this.taskUserRepository.findById(userId);
     if (!existingUser) {
-      throw new UnauthorizedException(USER_NOT_FOUND_ERROR);
+      throw new UnauthorizedException(AuthError.UserNotFound);
     }
 
     const userEntity = new TaskUserEntity(existingUser);
     if (!(await userEntity.compareRefreshToken(refreshToken))) {
-      throw new UnauthorizedException(INVALID_REFRESH_TOKEN_ERROR);
+      throw new UnauthorizedException(AuthError.InvalidToken);
     }
 
     const { token, refreshToken: newRefreshToken } = await this.generateTokens(
@@ -199,7 +191,7 @@ export class AuthService {
     const payload = { sub: _id, email, role, name };
     return this.jwtService.signAsync(payload, {
       secret: this.configService.get('rt.secret'),
-      expiresIn: REFRESH_TOKEN_EXPIRE,
+      expiresIn: AuthToken.RefreshExpire,
     });
   }
 
@@ -207,7 +199,7 @@ export class AuthService {
     const payload = { sub: _id, email, role, name };
     return this.jwtService.signAsync(payload, {
       secret: this.configService.get('jwt.secret'),
-      expiresIn: ACCESS_TOKEN_EXPIRE,
+      expiresIn: AuthToken.AccessExpire,
     });
   }
 

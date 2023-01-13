@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsString } from 'class-validator';
-import { USER_EMAIL_NOT_VALID_ERROR } from '../const/auth.const';
+import { UserDtoError } from '../const/auth.const';
 
 export class LoginUserDto {
   @ApiProperty({
@@ -8,7 +8,7 @@ export class LoginUserDto {
     required: true,
     example: 'keks@mail.no',
   })
-  @IsEmail({}, { message: USER_EMAIL_NOT_VALID_ERROR })
+  @IsEmail({}, { message: UserDtoError.EmailNotValid })
   public email: string;
 
   @ApiProperty({

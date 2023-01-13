@@ -9,15 +9,9 @@ import {
   Matches,
 } from 'class-validator';
 import {
-  CITY_NOT_VALID_ERROR,
-  USER_NAME_MAX_LENGTH,
-  USER_NAME_MIN_LENGTH,
-  ROLE_NOT_VALID_ERROR,
-  USER_DATE_BIRTH_NOT_VALID_ERROR,
-  USER_EMAIL_NOT_VALID_ERROR,
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_MAX_LENGTH,
-  USER_TOO_YOUNG_ERROR,
+  UserDtoError,
+  UserNameLength,
+  PasswordLength,
   USER_MIN_AGE,
   USER_BIRTHDATE_PATTERN,
 } from '../const/auth.const';
@@ -27,12 +21,12 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User name',
     required: true,
-    minLength: USER_NAME_MIN_LENGTH,
-    maxLength: USER_NAME_MAX_LENGTH,
+    minLength: UserNameLength.Min,
+    maxLength: UserNameLength.Max,
     example: 'Keks Ivanov',
   })
   @IsString()
-  @Length(USER_NAME_MIN_LENGTH, USER_NAME_MAX_LENGTH)
+  @Length(UserNameLength.Min, UserNameLength.Max)
   public name: string;
 
   @ApiProperty({
@@ -40,7 +34,7 @@ export class CreateUserDto {
     required: true,
     example: 'keks@mail.no',
   })
-  @IsEmail({}, { message: USER_EMAIL_NOT_VALID_ERROR })
+  @IsEmail({}, { message: UserDtoError.EmailNotValid })
   public email: string;
 
   @ApiProperty({
@@ -48,18 +42,18 @@ export class CreateUserDto {
     required: true,
     example: 'Москва',
   })
-  @IsIn(CITIES, { message: CITY_NOT_VALID_ERROR })
+  @IsIn(CITIES, { message: UserDtoError.CityNotValid })
   public city: string;
 
   @ApiProperty({
     description: 'Password',
     required: true,
-    minLength: PASSWORD_MIN_LENGTH,
-    maxLength: PASSWORD_MAX_LENGTH,
+    minLength: PasswordLength.Min,
+    maxLength: PasswordLength.Max,
     example: '123456',
   })
   @IsString()
-  @Length(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
+  @Length(PasswordLength.Min, PasswordLength.Max)
   public password: string;
 
   @ApiProperty({
@@ -67,7 +61,7 @@ export class CreateUserDto {
     required: true,
     example: 'Customer',
   })
-  @IsIn(Object.values(UserRoles), { message: ROLE_NOT_VALID_ERROR })
+  @IsIn(Object.values(UserRoles), { message: UserDtoError.RoleNotValid })
   public role: UserRole;
 
   @ApiProperty({
@@ -77,11 +71,11 @@ export class CreateUserDto {
     example: '1990-12-01',
   })
   @IsISO8601({
-    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+    message: UserDtoError.BirthdateNotValid,
   })
   @Matches(USER_BIRTHDATE_PATTERN, {
-    message: USER_DATE_BIRTH_NOT_VALID_ERROR,
+    message: UserDtoError.BirthdateNotValid,
   })
-  @IsOlderThan(USER_MIN_AGE, { message: USER_TOO_YOUNG_ERROR })
+  @IsOlderThan(USER_MIN_AGE, { message: UserDtoError.TooYoung })
   public birthDate: string;
 }

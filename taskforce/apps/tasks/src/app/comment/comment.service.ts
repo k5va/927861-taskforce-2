@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Comment } from '@taskforce/shared-types';
-import { COMMENT_NOT_FOUND_ERROR } from './comment.const';
+import { CommentError } from './comment.const';
 import { CommentEntity } from './comment.entity';
 import { CreateCommentDto } from '@taskforce/core';
 import { CommentQuery } from './query';
@@ -30,7 +30,7 @@ export class CommentService {
   public async deleteComment(userId: string, commentId: number): Promise<void> {
     const existingComment = await this.commentRepository.findById(commentId);
     if (!existingComment) {
-      throw new NotFoundException(COMMENT_NOT_FOUND_ERROR);
+      throw new NotFoundException(CommentError.NotFound);
     }
 
     if (existingComment.author !== userId) {

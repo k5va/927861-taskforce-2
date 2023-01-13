@@ -12,43 +12,38 @@ import {
   Min,
 } from 'class-validator';
 import {
-  DUE_DATE_LESS_THAN_CURRENT_ERROR,
-  TAG_FORMAT_NOT_VALID_ERROR,
   TAG_FORMAT_PATTERN,
-  TAG_MAX_LENGTH,
-  TAG_MIN_LENGTH,
-  TASK_ADDRESS_MAX_LENGTH,
-  TASK_ADDRESS_MIN_LENGTH,
-  TASK_DESCRIPTION_MAX_LENGTH,
-  TASK_DESCRIPTION_MIN_LENGTH,
+  TaskAddressLength,
+  TaskDescriptionLength,
+  TaskDtoError,
+  TaskTagLength,
+  TaskTitleLength,
   TASK_PRICE_MIN_VALUE,
   TASK_TAGS_MAX_NUM,
-  TASK_TITLE_MAX_LENGTH,
-  TASK_TITLE_MIN_LENGTH,
 } from '../const/task.const';
 
 export class UpdateTaskDto {
   @ApiProperty({
     description: 'Task title',
     required: false,
-    minLength: TASK_TITLE_MIN_LENGTH,
-    maxLength: TASK_TITLE_MAX_LENGTH,
+    minLength: TaskTitleLength.Min,
+    maxLength: TaskTitleLength.Max,
     example: 'Need cleaning services',
   })
   @IsString()
-  @Length(TASK_TITLE_MIN_LENGTH, TASK_TITLE_MAX_LENGTH)
+  @Length(TaskTitleLength.Min, TaskTitleLength.Max)
   @IsOptional()
   public title?: string;
 
   @ApiProperty({
     description: 'Task description',
     required: false,
-    minLength: TASK_DESCRIPTION_MIN_LENGTH,
-    maxLength: TASK_DESCRIPTION_MAX_LENGTH,
+    minLength: TaskDescriptionLength.Min,
+    maxLength: TaskDescriptionLength.Max,
     example: 'Description ...',
   })
   @IsString()
-  @Length(TASK_DESCRIPTION_MIN_LENGTH, TASK_DESCRIPTION_MAX_LENGTH)
+  @Length(TaskDescriptionLength.Min, TaskDescriptionLength.Max)
   @IsOptional()
   public description?: string;
 
@@ -79,18 +74,20 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsISO8601()
-  @IsDateGreaterThan(new Date(), { message: DUE_DATE_LESS_THAN_CURRENT_ERROR })
+  @IsDateGreaterThan(new Date(), {
+    message: TaskDtoError.DueDateLessThanCurrent,
+  })
   public dueDate?: string;
 
   @ApiProperty({
     description: 'Task address',
     required: false,
-    minLength: TASK_ADDRESS_MIN_LENGTH,
-    maxLength: TASK_ADDRESS_MAX_LENGTH,
+    minLength: TaskAddressLength.Min,
+    maxLength: TaskAddressLength.Max,
     example: 'Some address...',
   })
   @IsString()
-  @Length(TASK_ADDRESS_MIN_LENGTH, TASK_ADDRESS_MAX_LENGTH)
+  @Length(TaskAddressLength.Min, TaskAddressLength.Max)
   @IsOptional()
   public address?: string;
 
@@ -101,11 +98,11 @@ export class UpdateTaskDto {
   })
   @IsOptional()
   @IsString({ each: true })
-  @Length(TAG_MIN_LENGTH, TAG_MAX_LENGTH, { each: true })
+  @Length(TaskTagLength.Min, TaskTagLength.Max, { each: true })
   @ArrayMaxSize(TASK_TAGS_MAX_NUM)
   @Matches(TAG_FORMAT_PATTERN, {
     each: true,
-    message: TAG_FORMAT_NOT_VALID_ERROR,
+    message: TaskDtoError.TagFormatNotValid,
   })
   @Transform(transformTags) // makes lowercase and removes dublicates
   public tags?: string[];

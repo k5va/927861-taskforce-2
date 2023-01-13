@@ -1,4 +1,9 @@
-export const TEXT_MAX_LENGTH = 500;
-export const TEXT_MIN_LENGTH = 50;
-export const RATING_MIN = 1;
-export const RATING_MAX = 5;
+export const ReviewTextLength = {
+  Min: 50,
+  Max: 500,
+} as const;
+
+export const RatingValue = {
+  Min: 1,
+  Max: 5,
+} as const;

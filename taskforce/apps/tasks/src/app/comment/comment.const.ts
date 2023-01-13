@@ -1,2 +1,5 @@
-export const COMMENT_NOT_FOUND_ERROR = 'comment not found';
+export const CommentError = {
+  NotFound: 'comment not found',
+} as const;
+
 export const DEFAULT_COMMENTS_LIMIT = 50;

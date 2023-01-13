@@ -6,7 +6,7 @@ import {
 import { Response, TaskStatuses } from '@taskforce/shared-types';
 import { TaskService } from '../task/task.service';
 import { ResponseRepository } from './repository/response.repository';
-import { NOT_NEW_TASK, RESPONSE_ALREADY_EXISTS } from './response.const';
+import { ResponseError } from './response.const';
 import { ResponseEntity } from './response.entity';
 
 @Injectable()
@@ -20,14 +20,14 @@ export class ResponseService {
     // check task status === new
     const task = await this.taskService.getTask(taskId);
     if (task.status !== TaskStatuses.New) {
-      throw new BadRequestException(NOT_NEW_TASK);
+      throw new BadRequestException(ResponseError.NotNewTask);
     }
 
     // check response already exists
     const existingResponses =
       await this.responseRepository.findByContractorAndTask(userId, taskId);
     if (existingResponses.length > 0) {
-      throw new ConflictException(RESPONSE_ALREADY_EXISTS);
+      throw new ConflictException(ResponseError.AlreadyExists);
     }
 
     const responseEntity = new ResponseEntity({
